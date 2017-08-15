@@ -104,6 +104,11 @@ public class MouseController : MonoBehaviour
             Camera.main.transform.Translate(dif);
         }
 
+        Camera.main.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") *Camera.main.orthographicSize;
+
+        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 3f, 40f);
+
+
         this.lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 

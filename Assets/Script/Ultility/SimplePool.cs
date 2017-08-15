@@ -1,62 +1,92 @@
-﻿// Simple pooling for Unity.
-//   Author: Martin "quill18" Glaude (quill18@quill18.com)
-//   Latest Version: https://gist.github.com/quill18/5a7cfffae68892621267
-//   License: CC0 (http://creativecommons.org/publicdomain/zero/1.0/)
-//   UPDATES:
-// 	2015-04-16: Changed Pool to use a Stack generic.
-// 
-// Usage:
-// 
-//   There's no need to do any special setup of any kind.
-// 
-//   Instead of call Instantiate(), use this:
-//       SimplePool.Spawn(somePrefab, somePosition, someRotation);
-// 
-//   Instead of destroying an object, use this:
-//       SimplePool.Despawn(myGameObject);
-// 
-//   If desired, you can preload the pool with a number of instances:
-//       SimplePool.Preload(somePrefab, 20);
-// 
-// Remember that Awake and Start will only ever be called on the first instantiation
-// and that member variables won't be reset automatically.  You should reset your
-// object yourself after calling Spawn().  (i.e. You'll have to do things like set
-// the object's HPs to max, reset animation states, etc...) 
+﻿/// Simple pooling for Unity.
+///   Author: Martin "quill18" Glaude (quill18@quill18.com)
+///   Latest Version: https://gist.github.com/quill18/5a7cfffae68892621267
+///   License: CC0 (http://creativecommons.org/publicdomain/zero/1.0/)
+///   UPDATES:
+/// 	2015-04-16: Changed Pool to use a Stack generic.
+/// 
+/// Usage:
+/// 
+///   There's no need to do any special setup of any kind.
+/// 
+///   Instead of calling Instantiate(), use this:
+///       SimplePool.Spawn(somePrefab, somePosition, someRotation);
+/// 
+///   Instead of destroying an object, use this:
+///       SimplePool.Despawn(myGameObject);
+/// 
+///   If desired, you can preload the pool with a number of instances:
+///       SimplePool.Preload(somePrefab, 20);
+/// 
+/// Remember that Awake and Start will only ever be called on the first instantiation
+/// and that member variables won't be reset automatically.  You should reset your
+/// object yourself after calling Spawn().  (i.e. You'll have to do things like set
+/// the object's HPs to max, reset animation states, etc...)
 
-
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class SimplePool
 {
-    const int DefaultPoolSize = 3;
 
+    // You can avoid resizing of the Stack's internal data by
+    // setting this to a number equal to or greater to what you
+    // expect most of your pool sizes to be.
+    // Note, you can also use Preload() to set the initial size
+    // of a pool -- this can be handy if only some of your pools
+    // are going to be exceptionally large (for example, your bullets.)
+    private const int DefaultPoolSize = 3;
+
+    /// <summary>
+    /// The Pool class represents the pool for a particular prefab.
+    /// </summary>
     class Pool
     {
-        int nextId = 1;
+        // We append an id to the name of anything we instantiate.
+        // This is purely cosmetic.
+        private int nextId = 1;
 
-        Stack<GameObject> inactive;
+        // The structure containing our inactive objects.
+        // Why a Stack and not a List? Because we'll never need to
+        // pluck an object from the start or middle of the array.
+        // We'll always just grab the last one, which eliminates
+        // any need to shuffle the objects around in memory.
+        private Stack<GameObject> inactive;
 
-        GameObject prefab;
+        // The prefab that we are pooling
+        private GameObject prefab;
 
+        // Constructor
         public Pool(GameObject prefab, int initialQty)
         {
             this.prefab = prefab;
+
+            // If Stack uses a linked list internally, then this
+            // whole initialQty thing is a placebo that we could
+            // strip out for more minimal code. But it can't *hurt*.
             inactive = new Stack<GameObject>(initialQty);
         }
 
+        // Spawn an object from our pool
         public GameObject Spawn(Vector3 pos, Quaternion rot)
         {
             GameObject obj;
             if (inactive.Count == 0)
             {
+                // We don't have an object in our pool, so we
+                // instantiate a whole new object.
                 obj = (GameObject)GameObject.Instantiate(prefab, pos, rot);
                 obj.name = prefab.name + " (" + (nextId++) + ")";
+
+                // Add a PoolMember component so we know what pool
+                // we belong to.
                 obj.AddComponent<PoolMember>().myPool = this;
             }
             else
             {
+                // Grab the last object in the inactive array
                 obj = inactive.Pop();
+
                 if (obj == null)
                 {
                     // The inactive object we expected to find no longer exists.
@@ -64,9 +94,8 @@ public static class SimplePool
                     //   - Someone calling Destroy() on our object
                     //   - A scene change (which will destroy all our objects).
                     //     NOTE: This could be prevented with a DontDestroyOnLoad
-                    //	   if you really don't want this.
+                    //     if you really don't want this.
                     // No worries -- we'll just try the next one in our sequence.
-
                     return Spawn(pos, rot);
                 }
             }
@@ -86,8 +115,8 @@ public static class SimplePool
             // Since Stack doesn't have a Capacity member, we can't control
             // the growth factor if it does have to expand an internal array.
             // On the other hand, it might simply be using a linked list 
-            // internally.  But then, why does it allow us to specificy a size
-            // in the constructor? Stack is weird.
+            // internally.  But then, why does it allow us to specify a size
+            // in the constructor? Maybe it's a placebo? Stack is weird.
             inactive.Push(obj);
         }
 
@@ -104,18 +133,12 @@ public static class SimplePool
     }
 
     // All of our pools
-    private static Dictionary<GameObject, Pool> pools;
+    static Dictionary<GameObject, Pool> pools;
 
     /// <summary>
-    /// Initialization of our dictionary.
+    /// Initialize our dictionary.
     /// </summary>
-    /// <param name="prefab">
-    /// The game object prefab
-    /// </param>
-    /// <param name="qty">
-    /// The pool size.
-    /// </param>
-    private static void Init(GameObject prefab = null, int qty = DefaultPoolSize)
+    static void Init(GameObject prefab = null, int qty = DefaultPoolSize)
     {
         if (pools == null)
         {
@@ -130,16 +153,11 @@ public static class SimplePool
     /// <summary>
     /// If you want to preload a few copies of an object at the start
     /// of a scene, you can use this. Really not needed unless you're
-    /// going to go from zero instances to 10+ very quickly.
+    /// going to go from zero instances to 100+ very quickly.
     /// Could technically be optimized more, but in practice the
+    /// Spawn/Despawn sequence is going to be pretty darn quick and
     /// this avoids code duplication.
     /// </summary>
-    /// <param name="prefab">
-    /// The object to preload.
-    /// </param>
-    /// <param name="qty">
-    /// The amount of preloaded objects
-    /// </param>
     public static void Preload(GameObject prefab, int qty = 1)
     {
         Init(prefab, qty);
@@ -165,18 +183,6 @@ public static class SimplePool
     /// after spawning -- but remember that toggling IsActive will also
     /// call that function.
     /// </summary>
-    /// <param name="prefab">
-    /// Prefab to create a instance of a object
-    /// </param>
-    /// <param name="pos">
-    /// The position.
-    /// </param>
-    /// <param name="rot">
-    /// The rotation
-    /// </param>
-    /// <returns>
-    /// The <see cref="GameObject"/>.
-    /// </returns>
     public static GameObject Spawn(GameObject prefab, Vector3 pos, Quaternion rot)
     {
         Init(prefab);
@@ -185,11 +191,8 @@ public static class SimplePool
     }
 
     /// <summary>
-    /// Deactivate the specified GameObject and put back into its pool.
+    /// Despawn the specified gameobject back into its pool.
     /// </summary>
-    /// <param name="obj">
-    /// The object to deactivate.
-    /// </param>
     public static void Despawn(GameObject obj)
     {
         PoolMember pm = obj.GetComponent<PoolMember>();
