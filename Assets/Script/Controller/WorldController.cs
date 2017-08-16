@@ -22,6 +22,8 @@ public class WorldController : MonoBehaviour
     [SerializeField]
     private Sprite[] sprites;
 
+    private Dictionary<Tile, GameObject> tileToGameObjectMap;
+
 
     private void Start()
     {
@@ -33,6 +35,8 @@ public class WorldController : MonoBehaviour
 
         // Create the world with the size in parentheses
         this.World = new World(100, 100);
+        
+        tileToGameObjectMap = new Dictionary<Tile, GameObject>();
 
         for (var x = 0; x < this.World.Width; x++)
         {
@@ -41,20 +45,28 @@ public class WorldController : MonoBehaviour
                 // Instanciate all tiles in the respective position
                 var tileData = this.World.GeTileAt(x, y);
                 var newTileObj = new GameObject { name = "Tile_" + x + "_" + y };
+                //Add both data and GameObject to the dictionary
+                tileToGameObjectMap.Add(tileData,newTileObj);
+
                 newTileObj.transform.position = new Vector3(tileData.X, tileData.Y);
                 newTileObj.transform.SetParent(this.transform, true);
 
                 newTileObj.AddComponent<SpriteRenderer>();
 
                 // Funcao anonima que recebe tile como paramentro e chama OnTileTypeChanged
-                tileData.RegisterTileTypeChangedCb((tile) => { this.OnTileTypeChanged(tile, newTileObj); });
+                tileData.RegisterTileTypeChangedCb(OnTileTypeChanged);
             }
         }
         this.World.RandomizeTiles();
     }
 
-    private void OnTileTypeChanged(Tile tileData, GameObject tileGo)
+    private void OnTileTypeChanged(Tile tileData)
     {
+        if (!tileToGameObjectMap.ContainsKey(tileData))
+        {
+            return;
+        }
+        GameObject tileGo = tileToGameObjectMap[tileData];
         switch (tileData.Type)
         {
             case Tile.TileType.Grass:

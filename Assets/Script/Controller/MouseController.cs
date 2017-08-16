@@ -8,6 +8,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEditor.Events;
 
 /// <summary>
 /// The mouse controller.
@@ -16,6 +18,9 @@ public class MouseController : MonoBehaviour
 {
     [SerializeField]
     private GameObject circleCursor;
+
+    private Tile.TileType buildType = Tile.TileType.Grass;
+
     private Vector3 lastFramePosition;
     private Vector3 currFramePosition;
 
@@ -38,7 +43,12 @@ public class MouseController : MonoBehaviour
 
     private void SelectionArea()
     {
-        
+        //Check if mouse is over something in the UI
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             this.dragStartPosition = this.currFramePosition;
@@ -89,8 +99,18 @@ public class MouseController : MonoBehaviour
             Debug.Log("Dragging");
         }
 
-        if (Input.GetMouseButtonUp(0))
-        {
+        if (Input.GetMouseButtonUp(0)) {
+            for ( int x = xStart ; x <= xEnd ; x++ ) {
+                for ( int y = yStart ; y <= yEnd ; y++ ) {
+                    Tile tempTile = WorldController.Instance.World.GeTileAt(x , y);
+                    if ( tempTile != null ) {
+                        GameObject go = SimplePool.Spawn(this.circleCursor , new Vector3(x , y , 0) , Quaternion.identity);
+                        go.transform.parent = this.transform;
+                        this.dragCircles.Add(go);
+                        tempTile.Type = buildType;
+                    }
+                }
+            }
             Debug.Log("DragEnded");
         }
     }
@@ -110,6 +130,23 @@ public class MouseController : MonoBehaviour
 
 
         this.lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
+
+    public void ConstructRoadTiles(string type)
+    {
+        if (type == "Stone")
+        {
+            buildType = Tile.TileType.Rock;
+        }
+        else if (type == "Dirt")
+        {
+            buildType = Tile.TileType.Dirt;
+        }
+    }
+
+    public void Bulldozer()
+    {
+        buildType = Tile.TileType.Grass;
     }
 
 }
