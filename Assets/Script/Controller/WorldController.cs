@@ -20,9 +20,9 @@ public class WorldController : MonoBehaviour
     public World World { get; protected set; }
 
     [SerializeField]
-    private Sprite[] sprites;
+    private Sprite[] _sprites;
 
-    private Dictionary<Tile, GameObject> tileToGameObjectMap;
+    private Dictionary<Tile, GameObject> _tileToGameObjectMap;
 
 
     private void Start()
@@ -36,24 +36,24 @@ public class WorldController : MonoBehaviour
         // Create the world with the size in parentheses
         this.World = new World(100, 100);
         
-        tileToGameObjectMap = new Dictionary<Tile, GameObject>();
+        _tileToGameObjectMap = new Dictionary<Tile, GameObject>();
 
         for (var x = 0; x < this.World.Width; x++)
         {
             for (var y = 0; y < this.World.Height; y++)
             {
                 // Instanciate all tiles in the respective position
-                var tileData = this.World.GeTileAt(x, y);
+                Tile tileData = this.World.GeTileAt(x, y);
                 var newTileObj = new GameObject { name = "Tile_" + x + "_" + y };
                 //Add both data and GameObject to the dictionary
-                tileToGameObjectMap.Add(tileData,newTileObj);
+                _tileToGameObjectMap.Add(tileData,newTileObj);
+
 
                 newTileObj.transform.position = new Vector3(tileData.X, tileData.Y);
                 newTileObj.transform.SetParent(this.transform, true);
 
                 newTileObj.AddComponent<SpriteRenderer>();
 
-                // Funcao anonima que recebe tile como paramentro e chama OnTileTypeChanged
                 tileData.RegisterTileTypeChangedCb(OnTileTypeChanged);
             }
         }
@@ -62,24 +62,32 @@ public class WorldController : MonoBehaviour
 
     private void OnTileTypeChanged(Tile tileData)
     {
-        if (!tileToGameObjectMap.ContainsKey(tileData))
-        {
+        if (_tileToGameObjectMap.ContainsKey(tileData) == false) {
+            Debug.LogError("Isso é um erro");
             return;
         }
-        GameObject tileGo = tileToGameObjectMap[tileData];
+        Debug.Log("Achou o Tile");
+        GameObject tileGo = _tileToGameObjectMap[tileData];
+        Debug.Log("Achou o Game Object do tile");
+        if (tileGo == null)
+        {
+            Debug.LogError("Isso é o erro 2");
+            return;
+        }
+
         switch (tileData.Type)
         {
             case Tile.TileType.Grass:
-                tileGo.GetComponent<SpriteRenderer>().sprite = this.sprites[(int)Tile.TileType.Grass];
+                tileGo.GetComponent<SpriteRenderer>().sprite = this._sprites[(int) Tile.TileType.Grass];
                 break;
             case Tile.TileType.Dirt:
-                tileGo.GetComponent<SpriteRenderer>().sprite = this.sprites[(int)Tile.TileType.Dirt];
+                tileGo.GetComponent<SpriteRenderer>().sprite = this._sprites[(int) Tile.TileType.Dirt];
                 break;
             case Tile.TileType.Rock:
-                tileGo.GetComponent<SpriteRenderer>().sprite = this.sprites[(int)Tile.TileType.Rock];
+                tileGo.GetComponent<SpriteRenderer>().sprite = this._sprites[(int) Tile.TileType.Rock];
                 break;
             case Tile.TileType.Water:
-                tileGo.GetComponent<SpriteRenderer>().sprite = this.sprites[(int)Tile.TileType.Water];
+                tileGo.GetComponent<SpriteRenderer>().sprite = this._sprites[(int) Tile.TileType.Water];
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

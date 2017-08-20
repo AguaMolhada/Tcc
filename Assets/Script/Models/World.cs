@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class World
 {
-    private Tile[,] tiles;
+    private Tile[,] _tiles;
 
     public int Width { get; private set; }
 
@@ -19,13 +19,13 @@ public class World
     {
         this.Width = width;
         this.Height = height;
-        this.tiles = new Tile[width, height];
+        this._tiles = new Tile[width, height];
 
         for (var x = 0; x < this.Width; x++)
         {
             for (var y = 0; y < this.Height; y++)
             {
-                this.tiles[x, y] = new Tile(this, x, y);
+                this._tiles[x, y] = new Tile(this, x, y);
             }
         }
 
@@ -42,13 +42,13 @@ public class World
                 switch (i)
                 {
                     case 0:
-                        this.tiles[x, y].Type = Tile.TileType.Grass;
+                        this._tiles[x, y].Type = Tile.TileType.Grass;
                         break;
                     case 1:
-                        this.tiles[x, y].Type = Tile.TileType.Dirt;
+                        this._tiles[x, y].Type = Tile.TileType.Dirt;
                         break;
                     default:
-                        this.tiles[x, y].Type = Tile.TileType.Water;
+                        this._tiles[x, y].Type = Tile.TileType.Water;
                         break;
                 }
             }
@@ -59,7 +59,7 @@ public class World
     {
         if (x <= this.Width && x >= 0 && y <= this.Height && y >= 0)
         {
-            return this.tiles[x, y];
+            return this._tiles[x, y];
         }
         Debug.LogError("Position:{" + x + "," + y + "} out of range");
         return null;

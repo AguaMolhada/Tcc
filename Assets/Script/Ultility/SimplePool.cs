@@ -44,48 +44,48 @@ public static class SimplePool
     {
         // We append an id to the name of anything we instantiate.
         // This is purely cosmetic.
-        private int nextId = 1;
+        private int _nextId = 1;
 
         // The structure containing our inactive objects.
         // Why a Stack and not a List? Because we'll never need to
         // pluck an object from the start or middle of the array.
         // We'll always just grab the last one, which eliminates
         // any need to shuffle the objects around in memory.
-        private Stack<GameObject> inactive;
+        private Stack<GameObject> _inactive;
 
         // The prefab that we are pooling
-        private GameObject prefab;
+        private GameObject _prefab;
 
         // Constructor
         public Pool(GameObject prefab, int initialQty)
         {
-            this.prefab = prefab;
+            this._prefab = prefab;
 
             // If Stack uses a linked list internally, then this
             // whole initialQty thing is a placebo that we could
             // strip out for more minimal code. But it can't *hurt*.
-            inactive = new Stack<GameObject>(initialQty);
+            _inactive = new Stack<GameObject>(initialQty);
         }
 
         // Spawn an object from our pool
         public GameObject Spawn(Vector3 pos, Quaternion rot)
         {
             GameObject obj;
-            if (inactive.Count == 0)
+            if (_inactive.Count == 0)
             {
                 // We don't have an object in our pool, so we
                 // instantiate a whole new object.
-                obj = (GameObject)GameObject.Instantiate(prefab, pos, rot);
-                obj.name = prefab.name + " (" + (nextId++) + ")";
+                obj = (GameObject)GameObject.Instantiate(_prefab, pos, rot);
+                obj.name = _prefab.name + " (" + (_nextId++) + ")";
 
                 // Add a PoolMember component so we know what pool
                 // we belong to.
-                obj.AddComponent<PoolMember>().myPool = this;
+                obj.AddComponent<PoolMember>().MyPool = this;
             }
             else
             {
                 // Grab the last object in the inactive array
-                obj = inactive.Pop();
+                obj = _inactive.Pop();
 
                 if (obj == null)
                 {
@@ -117,7 +117,7 @@ public static class SimplePool
             // On the other hand, it might simply be using a linked list 
             // internally.  But then, why does it allow us to specify a size
             // in the constructor? Maybe it's a placebo? Stack is weird.
-            inactive.Push(obj);
+            _inactive.Push(obj);
         }
 
     }
@@ -129,24 +129,24 @@ public static class SimplePool
     /// </summary>
     class PoolMember : MonoBehaviour
     {
-        public Pool myPool;
+        public Pool MyPool;
     }
 
     // All of our pools
-    static Dictionary<GameObject, Pool> pools;
+    static Dictionary<GameObject, Pool> _pools;
 
     /// <summary>
     /// Initialize our dictionary.
     /// </summary>
     static void Init(GameObject prefab = null, int qty = DefaultPoolSize)
     {
-        if (pools == null)
+        if (_pools == null)
         {
-            pools = new Dictionary<GameObject, Pool>();
+            _pools = new Dictionary<GameObject, Pool>();
         }
-        if (prefab != null && pools.ContainsKey(prefab) == false)
+        if (prefab != null && _pools.ContainsKey(prefab) == false)
         {
-            pools[prefab] = new Pool(prefab, qty);
+            _pools[prefab] = new Pool(prefab, qty);
         }
     }
 
@@ -187,7 +187,7 @@ public static class SimplePool
     {
         Init(prefab);
 
-        return pools[prefab].Spawn(pos, rot);
+        return _pools[prefab].Spawn(pos, rot);
     }
 
     /// <summary>
@@ -203,7 +203,7 @@ public static class SimplePool
         }
         else
         {
-            pm.myPool.Despawn(obj);
+            pm.MyPool.Despawn(obj);
         }
     }
 

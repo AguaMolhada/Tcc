@@ -17,25 +17,25 @@ using UnityEditor.Events;
 public class MouseController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject circleCursor;
+    private GameObject _circleCursor;
 
-    private Tile.TileType buildType = Tile.TileType.Grass;
+    private Tile.TileType _buildType = Tile.TileType.Grass;
 
-    private Vector3 lastFramePosition;
-    private Vector3 currFramePosition;
+    private Vector3 _lastFramePosition;
+    private Vector3 _currFramePosition;
 
-    private Vector3 dragStartPosition;
+    private Vector3 _dragStartPosition;
 
-    private List<GameObject> dragCircles;
+    private List<GameObject> _dragCircles;
 
     private void Start()
     {
-        this.dragCircles = new List<GameObject>();
+        this._dragCircles = new List<GameObject>();
     }
 
     private void Update()
     {
-        this.currFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        this._currFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         this.CameraMovment();
         this.SelectionArea();
        
@@ -51,12 +51,12 @@ public class MouseController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            this.dragStartPosition = this.currFramePosition;
+            this._dragStartPosition = this._currFramePosition;
             Debug.Log("DragStart");
         }
 
-        var xStart = Mathf.FloorToInt(this.dragStartPosition.x);
-        var xEnd = Mathf.FloorToInt(this.currFramePosition.x);
+        var xStart = Mathf.FloorToInt(this._dragStartPosition.x);
+        var xEnd = Mathf.FloorToInt(this._currFramePosition.x);
         if (xEnd < xStart)
         {
             var temp = xEnd;
@@ -64,8 +64,8 @@ public class MouseController : MonoBehaviour
             xStart = temp;
         }
 
-        var yStart = Mathf.FloorToInt(this.dragStartPosition.y);
-        var yEnd = Mathf.FloorToInt(this.currFramePosition.y);
+        var yStart = Mathf.FloorToInt(this._dragStartPosition.y);
+        var yEnd = Mathf.FloorToInt(this._currFramePosition.y);
         if (yEnd < yStart)
         {
             var temp = yEnd;
@@ -73,10 +73,10 @@ public class MouseController : MonoBehaviour
             yStart = temp;
         }
 
-        while (this.dragCircles.Count > 0)
+        while (this._dragCircles.Count > 0)
         {
-            GameObject go = this.dragCircles[0];
-            this.dragCircles.RemoveAt(0);
+            GameObject go = this._dragCircles[0];
+            this._dragCircles.RemoveAt(0);
             SimplePool.Despawn(go);
         }
 
@@ -90,9 +90,9 @@ public class MouseController : MonoBehaviour
                     Tile tempTile = WorldController.Instance.World.GeTileAt(x, y);
                     if (tempTile != null)
                     {
-                        GameObject go = SimplePool.Spawn(this.circleCursor, new Vector3(x, y, 0), Quaternion.identity);
+                        GameObject go = SimplePool.Spawn(this._circleCursor, new Vector3(x, y, 0), Quaternion.identity);
                         go.transform.parent = this.transform;
-                        this.dragCircles.Add(go);
+                        this._dragCircles.Add(go);
                     }
                 }
             }
@@ -104,10 +104,10 @@ public class MouseController : MonoBehaviour
                 for ( int y = yStart ; y <= yEnd ; y++ ) {
                     Tile tempTile = WorldController.Instance.World.GeTileAt(x , y);
                     if ( tempTile != null ) {
-                        GameObject go = SimplePool.Spawn(this.circleCursor , new Vector3(x , y , 0) , Quaternion.identity);
+                        GameObject go = SimplePool.Spawn(this._circleCursor , new Vector3(x , y , 0) , Quaternion.identity);
                         go.transform.parent = this.transform;
-                        this.dragCircles.Add(go);
-                        tempTile.Type = buildType;
+                        this._dragCircles.Add(go);
+                        tempTile.Type = _buildType;
                     }
                 }
             }
@@ -120,7 +120,7 @@ public class MouseController : MonoBehaviour
         
         if (Input.GetMouseButton(1) || Input.GetMouseButton(2))
         {
-            var dif = this.lastFramePosition - this.currFramePosition;
+            var dif = this._lastFramePosition - this._currFramePosition;
             Camera.main.transform.Translate(dif);
         }
 
@@ -129,24 +129,24 @@ public class MouseController : MonoBehaviour
         Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 3f, 40f);
 
 
-        this.lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        this._lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
     public void ConstructRoadTiles(string type)
     {
         if (type == "Stone")
         {
-            buildType = Tile.TileType.Rock;
+            _buildType = Tile.TileType.Rock;
         }
         else if (type == "Dirt")
         {
-            buildType = Tile.TileType.Dirt;
+            _buildType = Tile.TileType.Dirt;
         }
     }
 
     public void Bulldozer()
     {
-        buildType = Tile.TileType.Grass;
+        _buildType = Tile.TileType.Grass;
     }
 
 }

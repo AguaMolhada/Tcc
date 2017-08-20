@@ -9,7 +9,7 @@ using System;
 
 public class Tile
 {
-    private Action<Tile> cbTypeChanged;
+    private Action<Tile> _cbTypeChanged;
 
     public enum TileType
     {
@@ -23,32 +23,32 @@ public class Tile
     {
         get
         {
-            return this.type;
+            return this._type;
         }
         set
         {
-            this.type = value;
-            if (this.cbTypeChanged != null)
+            this._type = value;
+            if (this._cbTypeChanged != null)
             {
-                this.cbTypeChanged(this);
+                this._cbTypeChanged(this);
             }
         }
     }
 
 
-    private TileType type = TileType.Grass;
+    private TileType _type = TileType.Grass;
 
-    private LooseObject looseObject;
-    private InstalledObject installedObject;
+    private LooseObject _looseObject;
+    private InstalledObject _installedObject;
 
-    private World world;
+    private World _world;
 
     public int X { get; private set; }
     public int Y { get; private set; }
 
     public Tile(World world, int x, int y)
     {
-        this.world = world;
+        this._world = world;
         this.X = x;
         this.Y = y;
 
@@ -56,11 +56,15 @@ public class Tile
 
     public void RegisterTileTypeChangedCb(Action<Tile> callback)
     {
-        this.cbTypeChanged += callback;
+        this._cbTypeChanged += callback;
     }
 
     public void UnregisterTileTypeChangeCb(Action<Tile> callback)
     {
-        this.cbTypeChanged -= callback;
+        var cbTypeChanged = this._cbTypeChanged;
+        if (cbTypeChanged != null)
+        {
+            this._cbTypeChanged -= callback;
+        }
     }
 }
