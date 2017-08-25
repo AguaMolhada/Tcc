@@ -6,18 +6,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using UnityEngine;
+
+public enum TileType {
+    Grass = 0,
+    Dirt = 1,
+    Rock = 2,
+    Water = 3
+}
 
 public class Tile
 {
     private Action<Tile> _cbTypeChanged;
-
-    public enum TileType
-    {
-        Grass = 0,
-        Dirt = 1,
-        Rock = 2,
-        Water = 3
-    }
 
     public TileType Type
     {
@@ -28,10 +28,7 @@ public class Tile
         set
         {
             this._type = value;
-            if (this._cbTypeChanged != null)
-            {
-                this._cbTypeChanged(this);
-            }
+            _cbTypeChanged?.Invoke(this);
         }
     }
 
@@ -53,7 +50,7 @@ public class Tile
         this.Y = y;
 
     }
-
+    
     public void RegisterTileTypeChangedCb(Action<Tile> callback)
     {
         this._cbTypeChanged += callback;
@@ -67,4 +64,22 @@ public class Tile
             this._cbTypeChanged -= callback;
         }
     }
+
+    public bool PlaceObject(InstalledObject objInstance)
+    {
+        //Removing the object
+        if (objInstance == null)
+        {
+            _installedObject = null;
+            return true;
+        }
+        if (_installedObject != null)
+        {
+            Debug.LogError("Tile Already Have an object Installed");
+            return false;
+        }
+        _installedObject = objInstance;
+        return true;
+    }
+
 }

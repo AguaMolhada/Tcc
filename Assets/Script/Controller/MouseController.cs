@@ -19,7 +19,13 @@ public class MouseController : MonoBehaviour
     [SerializeField]
     private GameObject _circleCursor;
 
-    private Tile.TileType _buildType = Tile.TileType.Grass;
+    #region Construction Param
+    public bool BuildObjects { get; private set; }
+    private TileType _buildType = TileType.Grass;
+    private string _buildModeObjectType;
+
+    #endregion
+
 
     private Vector3 _lastFramePosition;
     private Vector3 _currFramePosition;
@@ -75,7 +81,7 @@ public class MouseController : MonoBehaviour
 
         while (this._dragCircles.Count > 0)
         {
-            GameObject go = this._dragCircles[0];
+            var go = this._dragCircles[0];
             this._dragCircles.RemoveAt(0);
             SimplePool.Despawn(go);
         }
@@ -83,14 +89,14 @@ public class MouseController : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             Debug.Log("Start:" + xStart + "/" + yStart + "||| End:" + xEnd + "/" + yEnd);
-            for (int x = xStart; x <= xEnd; x++)
+            for (var x = xStart; x <= xEnd; x++)
             {
-                for (int y = yStart; y <= yEnd; y++)
+                for (var y = yStart; y <= yEnd; y++)
                 {
-                    Tile tempTile = WorldController.Instance.World.GeTileAt(x, y);
+                    var tempTile = WorldController.Instance.World.GeTileAt(x, y);
                     if (tempTile != null)
                     {
-                        GameObject go = SimplePool.Spawn(this._circleCursor, new Vector3(x, y, 0), Quaternion.identity);
+                        var go = SimplePool.Spawn(this._circleCursor, new Vector3(x, y, 0), Quaternion.identity);
                         go.transform.parent = this.transform;
                         this._dragCircles.Add(go);
                     }
@@ -100,16 +106,26 @@ public class MouseController : MonoBehaviour
         }
 
         if (Input.GetMouseButtonUp(0)) {
-            for ( int x = xStart ; x <= xEnd ; x++ ) {
-                for ( int y = yStart ; y <= yEnd ; y++ ) {
-                    Tile tempTile = WorldController.Instance.World.GeTileAt(x , y);
-                    if ( tempTile != null ) {
-                        GameObject go = SimplePool.Spawn(this._circleCursor , new Vector3(x , y , 0) , Quaternion.identity);
-                        go.transform.parent = this.transform;
-                        this._dragCircles.Add(go);
-                        tempTile.Type = _buildType;
+            for (var x = xStart; x <= xEnd; x++)
+            {
+                for (var y = yStart; y <= yEnd; y++)
+                {
+                    var tempTile = WorldController.Instance.World.GeTileAt(x, y);
+
+                    if (tempTile != null)
+                    {
+                        if (BuildObjects == true)
+                        {
+                            WorldController.Instance.World.PlaceInstalledObject(_buildModeObjectType, tempTile);
+                        }
+
+                        else
+                        {
+                            tempTile.Type = _buildType;
+                        }
                     }
                 }
+
             }
             Debug.Log("DragEnded");
         }
@@ -132,21 +148,16 @@ public class MouseController : MonoBehaviour
         this._lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
-    public void ConstructRoadTiles(string type)
+    public void SetMode_ConstructRoadTiles(string objecType)
     {
-        if (type == "Stone")
-        {
-            _buildType = Tile.TileType.Rock;
-        }
-        else if (type == "Dirt")
-        {
-            _buildType = Tile.TileType.Dirt;
-        }
+        BuildObjects = true;
+        _buildModeObjectType = objecType;
+
     }
 
-    public void Bulldozer()
+    public void SetMode_Bulldozer()
     {
-        _buildType = Tile.TileType.Grass;
+        _buildType = TileType.Grass;
     }
 
 }
