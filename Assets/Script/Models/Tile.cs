@@ -36,7 +36,7 @@ public class Tile
     private TileType _type = TileType.Grass;
 
     private LooseObject _looseObject;
-    private InstalledObject _installedObject;
+    public InstalledObject InstalledObject { get; private set; }
 
     private World _world;
 
@@ -70,15 +70,15 @@ public class Tile
         //Removing the object
         if (objInstance == null)
         {
-            _installedObject = null;
+            InstalledObject = null;
             return true;
         }
-        if (_installedObject != null)
+        if (InstalledObject != null)
         {
             Debug.LogError("Tile Already Have an object Installed");
             return false;
         }
-        _installedObject = objInstance;
+        InstalledObject = objInstance;
         return true;
     }
 

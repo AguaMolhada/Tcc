@@ -17,6 +17,8 @@ public class InstalledObject
     public int Width { get; private set; }
     public int Height { get; private set; }
 
+    public bool LinksToNeighbour { get; private set; }
+
     private Action<InstalledObject> cbOnChanged;
 
     //Type to know wich sprite will be redered;
@@ -31,14 +33,15 @@ public class InstalledObject
         
     }
 
-    public static InstalledObject CreatePrototype(string objectType, float movementCost,int widht,int height)
+    public static InstalledObject CreatePrototype(string objectType, float movementCost,int widht,int height, bool links)
     {
         var obj = new InstalledObject
         {
             ObjectType = objectType,
             MovementCost = movementCost,
             Width = widht,
-            Height = height
+            Height = height,
+            LinksToNeighbour = links
         };
 
         return obj;
@@ -50,6 +53,7 @@ public class InstalledObject
             MovementCost = proto.MovementCost,
             Width = proto.Width,
             Height = proto.Height,
+            LinksToNeighbour = proto.LinksToNeighbour,
             Tile = tile
     };
 

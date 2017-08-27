@@ -21,8 +21,8 @@ public class WorldController : MonoBehaviour
 
     [SerializeField]
     private Sprite[] _sprites; //TODO
-    [SerializeField]
-    private Sprite _road; //TODO
+
+    [SerializeField] private Dictionary<string, Sprite> _objSprites;
 
     private Dictionary<Tile, GameObject> _tileToGameObjectMap;
     private Dictionary<InstalledObject , GameObject> _installedObjectToGameObjectMap;
@@ -34,6 +34,15 @@ public class WorldController : MonoBehaviour
             Debug.LogError("You can't have 2 World Controllers");
         }
         Instance = this;
+
+        //Loading all Sprites to make the road and add to the dictionary
+        _objSprites = new Dictionary<string, Sprite>();
+        var temp = Resources.LoadAll<Sprite>("Tiles/Road");
+
+        foreach (var s in temp)
+        {
+            _objSprites[s.name] = s;
+        }
 
         // Create the world with the size in parentheses
         this.World = new World(100, 100);
@@ -117,10 +126,49 @@ public class WorldController : MonoBehaviour
         objGo.transform.position = new Vector3(obj.Tile.X , obj.Tile.Y);
         objGo.transform.SetParent(this.transform , true);
 
-        objGo.AddComponent<SpriteRenderer>().sprite = _road;
+        objGo.AddComponent<SpriteRenderer>().sprite = GetSpriteForInstalledObject(obj);
         objGo.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
         obj.RegisterOnChangedCallback(OnInstalledObjectChanged);
+    }
+
+    private Sprite GetSpriteForInstalledObject(InstalledObject obj)
+    {
+        if (obj.LinksToNeighbour == false)
+        {
+            return _objSprites[obj.ObjectType];
+        }
+//TODO
+        else
+        {
+            string spriteName = obj.ObjectType + "_";
+            //Checking Neighbours
+            Tile temp;
+
+            #region Tile Facing Check
+            //Order N E S W TODO FIX ME
+            temp = World.GeTileAt(obj.Tile.X, obj.Tile.Y + 1);
+            if (temp?.InstalledObject != null && temp.InstalledObject.ObjectType == obj.ObjectType)
+            {
+                spriteName += "N";
+            }
+            temp = World.GeTileAt(obj.Tile.X +1 , obj.Tile.Y);
+            if ( temp?.InstalledObject != null && temp.InstalledObject.ObjectType == obj.ObjectType ) {
+                spriteName += "E";
+            }
+            temp = World.GeTileAt(obj.Tile.X , obj.Tile.Y - 1);
+            if ( temp?.InstalledObject != null && temp.InstalledObject.ObjectType == obj.ObjectType ) {
+                spriteName += "S";
+            }
+            temp = World.GeTileAt(obj.Tile.X - 1 , obj.Tile.Y);
+            if ( temp?.InstalledObject != null && temp.InstalledObject.ObjectType == obj.ObjectType ) {
+                spriteName += "W";
+            }
+            #endregion
+
+
+            return _objSprites[spriteName];
+        }
     }
 
     private void OnInstalledObjectChanged(InstalledObject obj)

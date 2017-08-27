@@ -919,7 +919,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Stone_Road
+          m_StringArgument: Road
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -1057,7 +1057,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: dbcc5f3ec4c0cf94cac15d4db51368c8, type: 3}
   - {fileID: 21300000, guid: 9385914c7e64d084695f82c254c2d1ec, type: 3}
   - {fileID: 21300000, guid: 0521786a48d391d4eb4964559b15a825, type: 3}
-  _road: {fileID: 21300012, guid: 37dde8dcbca457a4e8300483e8e16e8f, type: 3}
 --- !u!4 &1331669663
 Transform:
   m_ObjectHideFlags: 0

@@ -40,7 +40,7 @@ public class World
     {
         _installedObjectPrototypes = new Dictionary<string, InstalledObject>
         {
-            {"Stone_Road", InstalledObject.CreatePrototype("Stone_Road", 0.5f, 1, 1)}
+            {"Road", InstalledObject.CreatePrototype("Road", 0.5f, 1, 1,true)}
         };
 
     }
@@ -54,6 +54,12 @@ public class World
         }
 
         InstalledObject obj = InstalledObject.PlaceInstance(_installedObjectPrototypes[objectType], t);
+
+        if (obj == null)
+        {
+            return;
+        }
+
         cbInstalledObject?.Invoke(obj);
     }
 
