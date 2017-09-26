@@ -35,17 +35,18 @@ public class Tile
 
     private TileType _type = TileType.Grass;
 
-    private LooseObject _looseObject;
-    public InstalledObject InstalledObject { get; private set; }
+    private Inventory _inventory;
 
-    private World _world;
+    public Furniture Furniture { get; private set; }
+
+    public World World { get; private set; }
 
     public int X { get; private set; }
     public int Y { get; private set; }
 
     public Tile(World world, int x, int y)
     {
-        this._world = world;
+        this.World = world;
         this.X = x;
         this.Y = y;
 
@@ -65,20 +66,20 @@ public class Tile
         }
     }
 
-    public bool PlaceObject(InstalledObject objInstance)
+    public bool PlaceObject(Furniture objInstance)
     {
         //Removing the object
         if (objInstance == null)
         {
-            InstalledObject = null;
+            Furniture = null;
             return true;
         }
-        if (InstalledObject != null)
+        if (Furniture != null)
         {
             Debug.LogError("Tile Already Have an object Installed");
             return false;
         }
-        InstalledObject = objInstance;
+        Furniture = objInstance;
         return true;
     }
 

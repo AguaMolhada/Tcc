@@ -13,8 +13,8 @@ using Random = UnityEngine.Random;
 public class World
 {
     private Tile[,] _tiles;
-    private Dictionary<string, InstalledObject> _installedObjectPrototypes;
-    private Action<InstalledObject> cbInstalledObject;
+    private Dictionary<string, Furniture> _installedObjectPrototypes;
+    private Action<Furniture> _cbFurniture;
 
     public int Width { get; private set; }
 
@@ -33,19 +33,19 @@ public class World
                 this._tiles[x, y] = new Tile(this, x, y);
             }
         }
-        CreateInstalledObjectPrototypes();
+        CreateFurniturePrototypes();
     }
 
-    private void CreateInstalledObjectPrototypes()
+    private void CreateFurniturePrototypes()
     {
-        _installedObjectPrototypes = new Dictionary<string, InstalledObject>
+        _installedObjectPrototypes = new Dictionary<string, Furniture>
         {
-            {"Road", InstalledObject.CreatePrototype("Road", 0.5f, 1, 1,true)}
+            {"Road", Furniture.CreatePrototype("Road", 0.5f, 1, 1,true)}
         };
 
     }
 
-    public void PlaceInstalledObject(string objectType, Tile t)
+    public void PlaceFurniture(string objectType, Tile t)
     {
         if (!_installedObjectPrototypes.ContainsKey((objectType)))
         {
@@ -53,46 +53,30 @@ public class World
             return;
         }
 
-        InstalledObject obj = InstalledObject.PlaceInstance(_installedObjectPrototypes[objectType], t);
+        Furniture obj = Furniture.PlaceInstance(_installedObjectPrototypes[objectType], t);
 
         if (obj == null)
         {
             return;
         }
 
-        cbInstalledObject?.Invoke(obj);
+        _cbFurniture?.Invoke(obj);
     }
 
-    public void RegisterInstalledObject(Action<InstalledObject> cbAction)
+    public void RegisterFurniture(Action<Furniture> cbAction)
     {
-        cbInstalledObject += cbAction;
+        _cbFurniture += cbAction;
     }
-    public void UnRegisterInstalledObject( Action<InstalledObject> cbAction ) {
-        cbInstalledObject -= cbAction;
+    public void UnRegisterFurniture( Action<Furniture> cbAction ) {
+        _cbFurniture -= cbAction;
     }
 
     //TODO create a World Generator
-    public void RandomizeTiles()
+    public void CreateWorld()
     {
-        for (var x = 0; x < this.Width; x++)
-        {
-            for (var y = 0; y < this.Height; y++)
-            {
-                var i = Random.Range(0, 3);
-                switch (i)
-                {
-                    case 0:
-                        this._tiles[x, y].Type = TileType.Grass;
-                        break;
-                    case 1:
-                        this._tiles[x, y].Type = TileType.Dirt;
-                        break;
-                    default:
-                        this._tiles[x, y].Type = TileType.Water;
-                        break;
-                }
-            }
-        }
+
+
+
     }
     
     public Tile GeTileAt(int x, int y)

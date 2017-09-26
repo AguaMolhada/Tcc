@@ -116,7 +116,7 @@ public class MouseController : MonoBehaviour
                     {
                         if (BuildObjects == true)
                         {
-                            WorldController.Instance.World.PlaceInstalledObject(_buildModeObjectType, tempTile);
+                            WorldController.Instance.World.PlaceFurniture(_buildModeObjectType, tempTile);
                         }
 
                         else
@@ -159,5 +159,6 @@ public class MouseController : MonoBehaviour
     {
         _buildType = TileType.Grass;
     }
+
 
 }
