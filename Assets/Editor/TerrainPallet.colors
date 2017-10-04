@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Presets:
   - m_Name: Deep Water
-    m_Color: {r: 0.20392159, g: 0.38431376, b: 0.76470596, a: 0}
+    m_Color: {r: 0, g: 0.08751539, b: 0.27205884, a: 0}
   - m_Name: Water
     m_Color: {r: 0.21176472, g: 0.40000004, b: 0.7843138, a: 0}
   - m_Name: Grass
@@ -22,6 +22,8 @@ MonoBehaviour:
     m_Color: {r: 0.24705884, g: 0.4156863, b: 0.078431375, a: 0}
   - m_Name: Sand
     m_Color: {r: 0.8117648, g: 0.8196079, b: 0.49411768, a: 0}
+  - m_Name: Sand2
+    m_Color: {r: 0.3123671, g: 0.31617647, b: 0.15808824, a: 0}
   - m_Name: Rock
     m_Color: {r: 0.3647059, g: 0.26666668, b: 0.2392157, a: 0}
   - m_Name: Rock2
