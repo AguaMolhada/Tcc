@@ -4,10 +4,29 @@
 //          http://github.com/DaulerPalhares
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
 using UnityEngine;
 
 [CreateAssetMenu()]
 public class JobData : UpdatableObject
 {
     public Job[] Jobs;
+
+    [ContextMenu("Sort Array")]
+    protected override void OnValidate()
+    {
+        if (AutoUpdate)
+        {
+            SortArray();
+            AutoUpdate = false;
+        }
+    }
+
+    private void SortArray()
+    {
+        System.Array.Sort(Jobs, (a, b) => string.Compare(a.JobName, b.JobName, StringComparison.Ordinal));
+
+    }
+
 }

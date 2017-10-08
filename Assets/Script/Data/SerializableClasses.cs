@@ -19,6 +19,8 @@ public class Season {
 public class Job {
     public string JobName;
     public float Speed;
+    public bool Female;
+    public bool Male;
 }
 
 [System.Serializable]
