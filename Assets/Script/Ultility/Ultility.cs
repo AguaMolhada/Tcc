@@ -1,7 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Ultility.cs" company="Dauler Palhares">
 //  © Copyright Dauler Palhares da Costa Viana 2017.
-//          http://github.com/AguaMolhada
+//          http://github.com/DaulerPalhares
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 // This Class have all the static classes used on the project
@@ -315,6 +315,26 @@ public static class FalloffGenerator
         float b = 3.45f;
 
         return Mathf.Pow(value, a) / (Mathf.Pow(value, a) + Mathf.Pow(b - b * value, a));
+    }
+}
+
+public static class BrownianEffectGenerator {
+    public static float ConsBoltzmann = 1.3806503e-23f;
+    public static float Temperature = 297.55f;
+    public static float Viscosidade = 891.0f;
+    public static float ParticleRay = 0.5f;
+
+    public static float[,] BrownianEffectMap( int size ) {
+        float[,] map = new float[size , size];
+        int t = 0;
+        for ( int x = 0 ; x < size ; x++ ) {
+            for ( int y = 0 ; y < size ; y++ ) {
+                map[x , y] = ((4 * ConsBoltzmann * Temperature) / (6 * Mathf.PI * Viscosidade * ParticleRay)) * t;
+                t++;
+            }
+        }
+
+        return map;
     }
 }
 

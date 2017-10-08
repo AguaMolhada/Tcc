@@ -1,4 +1,10 @@
-﻿using UnityEditor;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="WorldGeneratorEditor.cs" company="Dauler Palhares">
+//  © Copyright Dauler Palhares da Costa Viana 2017.
+//          http://github.com/AguaMolhada
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;

@@ -1,12 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Inventory.cs" company="Dauler Palhares">
+// <copyright file="SeasonData.cs" company="Dauler Palhares">
 //  © Copyright Dauler Palhares da Costa Viana 2017.
 //          http://github.com/DaulerPalhares
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+using UnityEngine;
 
-// LooseObjects == Things on floor
-public class Inventory
+[CreateAssetMenu()]
+public class SeasonData : UpdatableObject
 {
-    
+    public Season[] Seasons;
 }
