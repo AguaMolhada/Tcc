@@ -26,7 +26,6 @@ public class WorldGeneratorController : MonoBehaviour
     public TextureData TextureData;
 
     public int LevelOfDetail;
-    public TerrainType[] Regions;
 
     private float[,] _falloutMap;
 
@@ -60,12 +59,4 @@ public class WorldGeneratorController : MonoBehaviour
         world.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, TerrainData.MeshHeightMultiplier,TerrainData.MeshHeightCurve, LevelOfDetail, TerrainData.FlatShading));
 
     }
-}
-
-[System.Serializable]
-public struct TerrainType
-{
-    public string Name;
-    public float Height;
-    public Color TerrainColor;
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Presets:
   - m_Name: Deep Water
-    m_Color: {r: 0, g: 0.08751539, b: 0.27205884, a: 0}
+    m_Color: {r: 0, g: 0.070958406, b: 0.2205882, a: 0}
   - m_Name: Water
     m_Color: {r: 0.21176472, g: 0.40000004, b: 0.7843138, a: 0}
   - m_Name: Grass
