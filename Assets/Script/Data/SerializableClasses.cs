@@ -26,12 +26,32 @@ public class Job {
 [System.Serializable]
 public class Building
 {
-    public GameObject BuildingGameObject;
-    public int MaxCitzenInside;
-    public List<Citzen> Citzens;
+    public string BuildingName;
     public TypeBuilding Type;
+    public GameObject BuildingGameObject;
+    public float TimeToBuild;
+    public float Timer { get; protected set; }
+    public bool IsFinished { get; protected set; }
+    public int MaxCitzenInside;
+    public int X { get; protected set; }
+    public int Y { get; protected set; }
+
+    public List<Citzen> Habitants;
+
+    //Default Constructor
+    public Building()
+    {
+    }
+
+    IEnumerator LetsBuild()
+    {
+
+        yield return new WaitForSeconds(TimeToBuild);
+        IsFinished = true;
+    }
 
 }
+
 //All Building Types
 //--------------------Ignorar isso-------------------//
 //A-B-C-D-E-F-G-H-I-J-K-L-M-N-O-P-Q-R-S-T-U-V-W-X-Y-Z//
@@ -54,6 +74,15 @@ public enum TypeBuilding {
     Tavern,
     TownHall,
     Woodcutter,
+}
+
+public enum HouseEventsHandler
+{
+    Sucess,
+    HabitantesFull,
+    EnoughtFamilies,
+    TooCold,
+    EmptyHouse,
 }
 
 public enum CitzenGenere

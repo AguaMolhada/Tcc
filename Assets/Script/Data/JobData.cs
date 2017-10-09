@@ -6,26 +6,17 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(menuName = "Data/Job")]
 public class JobData : UpdatableObject
 {
-    public Job[] Jobs;
+    public List<Job> Jobs;
 
-    [ContextMenu("Sort Array")]
-    protected override void OnValidate()
+    public void SortArray()
     {
-        if (AutoUpdate)
-        {
-            SortArray();
-            AutoUpdate = false;
-        }
-    }
-
-    private void SortArray()
-    {
-        System.Array.Sort(Jobs, (a, b) => string.Compare(a.JobName, b.JobName, StringComparison.Ordinal));
+        Jobs.Sort((a, b) => string.Compare(a.JobName, b.JobName, StringComparison.Ordinal));
 
     }
 

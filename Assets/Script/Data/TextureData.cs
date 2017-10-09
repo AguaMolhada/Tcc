@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(menuName = "Data/Texutre")]
 public class TextureData : UpdatableObject
 {
     public string[] ColorName;

@@ -4,10 +4,12 @@
 //          http://github.com/DaulerPalhares
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(menuName = "Data/Season")]
 public class SeasonData : UpdatableObject
 {
-    public Season[] Seasons;
+    public List<Season> Seasons;
 }

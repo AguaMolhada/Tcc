@@ -15,57 +15,53 @@ MonoBehaviour:
   Jobs:
   - JobName: Barmen
     Speed: 0
-    Female: 0
+    Female: 1
     Male: 0
   - JobName: Blacksmith
     Speed: 0
-    Female: 0
+    Female: 1
     Male: 0
   - JobName: Builder
     Speed: 0
-    Female: 0
+    Female: 1
     Male: 0
   - JobName: Child
     Speed: 0
-    Female: 0
+    Female: 1
     Male: 0
   - JobName: Cook
     Speed: 0
-    Female: 0
+    Female: 1
     Male: 0
   - JobName: Farmer
     Speed: 0
-    Female: 0
+    Female: 1
     Male: 0
   - JobName: Fisherman
     Speed: 0
-    Female: 0
+    Female: 1
     Male: 0
   - JobName: Fisherwoman
     Speed: 0
-    Female: 0
+    Female: 1
     Male: 0
   - JobName: Lumberjack
     Speed: 0
-    Female: 0
+    Female: 1
     Male: 0
   - JobName: Medic
     Speed: 0
-    Female: 0
+    Female: 1
     Male: 0
   - JobName: Nomad
     Speed: 0
-    Female: 0
+    Female: 1
     Male: 0
   - JobName: Nurse
     Speed: 0
-    Female: 0
+    Female: 1
     Male: 0
   - JobName: Priest
     Speed: 0
-    Female: 0
-    Male: 0
-  - JobName: Tailor
-    Speed: 0
-    Female: 0
+    Female: 1
     Male: 0

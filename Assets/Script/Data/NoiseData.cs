@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(menuName = "Data/Noise")]
 public class NoiseData : UpdatableObject {
     public float NoiseScale;
 
