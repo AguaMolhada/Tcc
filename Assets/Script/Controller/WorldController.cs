@@ -19,8 +19,12 @@ public class WorldController : MonoBehaviour
 
     public World World { get; protected set; }
 
-    public MeshFilter MeshFilter;
-    public MeshRenderer MeshRenderer;
+    public MeshFilter WorldMeshFilter;
+    public MeshRenderer WorldMeshRender;
+
+    public MeshFilter WaterMeshFilter;
+    public MeshRenderer WaterMeshRender;
+
     public MeshCollider MeshColiderWorld;
 
     //Dictionary with all tile sprites used in the game.
@@ -58,10 +62,14 @@ public class WorldController : MonoBehaviour
 
     }
 
-    public void DrawMesh(MeshData meshdata)
+    public void DrawWorldMesh(MeshData meshdata)
     {
-        MeshFilter.sharedMesh = meshdata.CreateMesh();
+        WorldMeshFilter.sharedMesh = meshdata.CreateMesh();
         MeshColiderWorld.sharedMesh = meshdata.CreateMesh();
+    }
+    public void DrawWaterMesh(MeshData meshdata)
+    {
+        WaterMeshFilter.sharedMesh = meshdata.CreateMesh();
     }
 
     #region TileController
@@ -183,5 +191,4 @@ public class WorldController : MonoBehaviour
     }
 
     #endregion
-   
 }

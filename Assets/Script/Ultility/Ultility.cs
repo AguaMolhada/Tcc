@@ -402,10 +402,48 @@ public static class MeshGenerator
         {
             meshData.FlatShading();
         }
-        
-
         return meshData;
     }
+
+    public static MeshData GenerateTerrainMesh(float[,] heightMap,int levelOfDetail)
+    {
+        int w = heightMap.GetLength(0);
+        int h = heightMap.GetLength(1);
+        float topLeftX = (w - 1) / -2f;
+        float topleftZ = (h - 1) / 2f;
+
+        int meshSimplificationIncrement = 1;
+        int verticesPerLine = (w - 1) / meshSimplificationIncrement + 1;
+
+        MeshData meshData = new MeshData(verticesPerLine, verticesPerLine, false);
+        int vertexIndex = 0;
+
+        for (int y = 0; y < h; y += meshSimplificationIncrement)
+        {
+            for (int x = 0; x < w; x += meshSimplificationIncrement)
+            {
+                if (heightMap[x, y] < 0.46f)
+                {
+                    meshData.Vertices[vertexIndex] = new Vector3(topLeftX + x, 0, topleftZ - y);
+                    meshData.Uvs[vertexIndex] = new Vector2(x / (float)w, y / (float)h);
+                    if (x < w - 1 && y < h - 1)
+                    {
+                        meshData.AddTriangle(vertexIndex, vertexIndex + verticesPerLine + 1, vertexIndex + verticesPerLine);
+                        meshData.AddTriangle(vertexIndex + verticesPerLine + 1, vertexIndex, vertexIndex + 1);
+                    }
+
+                }
+                else
+                {
+                    meshData.Vertices[vertexIndex] = new Vector3(topLeftX + x-1, 0, topleftZ - y-1);
+                    meshData.Uvs[vertexIndex] = new Vector2(x-1 / (float)w, y-1 / (float)h);
+                }
+                vertexIndex++;
+            }
+        }
+        return meshData;
+    }
+
 }
 
 public class MeshData

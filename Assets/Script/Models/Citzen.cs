@@ -15,7 +15,7 @@ public class Citzen : MonoBehaviour {
     public CitzenGenere Genere { get; protected set; }
     public float DeathChance { get; protected set; }
     public float Saturation { get; protected set; }
-    public float Happines { get; protected set; }
+    public float Happiness { get; protected set; }
 
     public Job Profession;
 

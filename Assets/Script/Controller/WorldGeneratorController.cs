@@ -56,7 +56,10 @@ public class WorldGeneratorController : MonoBehaviour
         TextureData.UpdateMeshHeights(TerrainMaterial,TerrainData.MinHeight,TerrainData.MaxHeight);
         TextureData.ApplyToMaterial(TerrainMaterial);
         WorldController world = FindObjectOfType<WorldController>();
-        world.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, TerrainData.MeshHeightMultiplier,TerrainData.MeshHeightCurve, LevelOfDetail, TerrainData.FlatShading));
+        world.DrawWorldMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, TerrainData.MeshHeightMultiplier,TerrainData.MeshHeightCurve, LevelOfDetail, TerrainData.FlatShading));
+
+        world.DrawWaterMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, LevelOfDetail));
+
 
     }
 }

@@ -17,7 +17,6 @@ public class JobData : UpdatableObject
     public void SortArray()
     {
         Jobs.Sort((a, b) => string.Compare(a.JobName, b.JobName, StringComparison.Ordinal));
-
     }
 
 }

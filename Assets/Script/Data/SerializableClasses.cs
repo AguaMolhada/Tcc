@@ -9,6 +9,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
+public class DateTimeGame
+{
+    [Range(0,23)]
+    public int Hour;
+    [Range(0,59)]
+    public int Minutes;
+    public int Speed;
+}
+
+[System.Serializable]
 public class Season {
     public string SeasonName;
     public float MinTemp;
@@ -29,14 +39,15 @@ public class Building
     public string BuildingName;
     public TypeBuilding Type;
     public GameObject BuildingGameObject;
+    public int LumberCost;
+    public int RockCost;
+    public int MetalCost;
     public float TimeToBuild;
     public float Timer { get; protected set; }
     public bool IsFinished { get; protected set; }
     public int MaxCitzenInside;
     public int X { get; protected set; }
     public int Y { get; protected set; }
-
-    public List<Citzen> Habitants;
 
     //Default Constructor
     public Building()
@@ -67,6 +78,7 @@ public enum TypeBuilding {
     House,
     LivingFarm,
     Market,
+    Mine,
     Orchard,
     School,
     Storage,
@@ -74,6 +86,18 @@ public enum TypeBuilding {
     Tavern,
     TownHall,
     Woodcutter,
+}
+
+public enum OrganizerFilter
+{
+    Name,
+    AgeAsc,
+    AgeDesc,
+    HappyAsc,
+    HappyDesc,
+    Job,
+    GenereFM,
+    GenereMF,
 }
 
 public enum HouseEventsHandler

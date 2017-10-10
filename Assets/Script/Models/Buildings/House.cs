@@ -12,6 +12,8 @@ using UnityEngine;
 public class House : MonoBehaviour
 {
     public Building BuildingData { get; protected set; }
+    public List<Citzen> Habitants;
+
     public int MaxFamiles { get; protected set; }
     public float Temp { get; protected set; }
     public int PeopleInside { get; protected set; }
@@ -45,7 +47,7 @@ public class House : MonoBehaviour
     /// <returns>If the house isn't empy and the ammout not 0 return true</returns>
     public HouseEventsHandler AddFood(float a)
     {
-        if (a > 0 && BuildingData.Habitants.Count > 0)
+        if (a > 0 && Habitants.Count > 0)
         {
             AmmoutFood += a;
             return HouseEventsHandler.Sucess;
@@ -64,16 +66,16 @@ public class House : MonoBehaviour
     public HouseEventsHandler RegisterPeopleInHouse(Citzen people)
     {
         
-        var count = BuildingData.Habitants.Count(habitant => habitant.Age >= 20);
+        var count = Habitants.Count(habitant => habitant.Age >= 20);
         if (count > MaxFamiles*2)
         {
             return HouseEventsHandler.EnoughtFamilies;
         }
         else
         {
-            if (BuildingData.Habitants.Count < BuildingData.MaxCitzenInside)
+            if (Habitants.Count < BuildingData.MaxCitzenInside)
             {
-                BuildingData.Habitants.Add(people);
+                Habitants.Add(people);
                 return HouseEventsHandler.Sucess;
             }
             else
