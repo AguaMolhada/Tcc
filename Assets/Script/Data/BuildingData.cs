@@ -5,15 +5,23 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class storing all building data.
+/// </summary>
 [CreateAssetMenu(menuName = "Data/Building")]
 public class BuildingData : UpdatableObject
 {
+    /// <summary>
+    /// List with all buildings data
+    /// </summary>
     public List<Building> Buildings;
 
+    /// <summary>
+    /// Sort by alphabetical order
+    /// </summary>
     public void SortArray() {
         Buildings.Sort(( a , b ) => string.Compare(a.BuildingName , b.BuildingName , StringComparison.Ordinal));
     }

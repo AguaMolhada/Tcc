@@ -10,14 +10,33 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// City data used to save things in the game
+/// </summary>
 [CreateAssetMenu(menuName = "Data/CityData")]
-public class CityData : UpdatableObject {
-
+public class CityData : UpdatableObject
+{
+    /// <summary>
+    /// City name
+    /// </summary>
     public string CityName;
+    /// <summary>
+    /// List with all habitants living in the city
+    /// </summary>
     public List<Citzen> CityHabitants;
+    /// <summary>
+    /// Current season
+    /// </summary>
     public Season CurrentSeason;
+    /// <summary>
+    /// Current time in-game
+    /// </summary>
     public DateTimeGame Time;
 
+    /// <summary>
+    /// For sorting the citzen List
+    /// </summary>
+    /// <param name="comparsionType">Param used to determine how the List witch sort will be used</param>
     public void SortArray(OrganizerFilter comparsionType)
     {
         switch (comparsionType)
@@ -40,9 +59,9 @@ public class CityData : UpdatableObject {
             case OrganizerFilter.Job:
                 CityHabitants.Sort((a, b) => string.Compare(a.Profession.JobName, b.Profession.JobName, StringComparison.Ordinal));
                 break;
-            case OrganizerFilter.GenereFM:
+            case OrganizerFilter.GenereFm:
                 break;
-            case OrganizerFilter.GenereMF:
+            case OrganizerFilter.GenereMf:
                 break;
             default:
                 break;

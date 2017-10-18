@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Dummy class used on all Data
+/// </summary>
 public class UpdatableObject : ScriptableObject
 {
 

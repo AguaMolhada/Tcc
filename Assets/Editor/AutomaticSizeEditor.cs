@@ -23,7 +23,6 @@ public class AutomaticSizeEditor : Editor
         {
             _myScript.AdjustSize();
         }
-
     }
 
 }

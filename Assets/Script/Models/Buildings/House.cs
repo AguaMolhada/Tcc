@@ -4,21 +4,43 @@
 //          http://github.com/DaulerPalhares
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Class used on all houses
+/// </summary>
 public class House : MonoBehaviour
 {
+    /// <summary>
+    /// Base building data
+    /// </summary>
     public Building BuildingData { get; protected set; }
+    /// <summary>
+    /// List with all habitants living in this house
+    /// </summary>
     public List<Citzen> Habitants;
-
+    /// <summary>
+    /// Max families allowed on the house
+    /// </summary>
     public int MaxFamiles { get; protected set; }
-    public float Temp { get; protected set; }
+    /// <summary>
+    /// House temperature
+    /// </summary>
+    public float Temp { get; protected set; }       
+    /// <summary>
+    /// How many people inside the house at the moment
+    /// </summary>
     public int PeopleInside { get; protected set; }
-    public float AmmoutFood { get; protected set; } // Each food will give some amount. Depends on the season.
-    public float AmoutCharcoal { get; protected set; } // Charcoal will provide heat to the house
+    /// <summary>
+    /// Each food will give some ammout. Depens on the season.
+    /// </summary>
+    public float AmmoutFood { get; protected set; }
+    /// <summary>
+    /// Ammout charcoal inside the house
+    /// </summary>
+    public float AmoutCharcoal { get; protected set; }
 
     /// <summary>
     /// Constructor for the House Class
@@ -40,6 +62,7 @@ public class House : MonoBehaviour
         MaxFamiles = familes;
         Temp = t;
     }
+
     /// <summary>
     /// Method to add food to the house storage
     /// </summary>
@@ -55,9 +78,6 @@ public class House : MonoBehaviour
         return HouseEventsHandler.EmptyHouse;
     }
 
-    //Try to register one citzen in the house.
-    //If have more than 2 familes (4people over 20years) new citzen cant move
-    //Otherwise will add the citzen to the house
     /// <summary>
     /// Method to register one citzen to the house
     /// </summary>

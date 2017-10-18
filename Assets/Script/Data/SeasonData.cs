@@ -8,8 +8,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class Used to store all seasons 
+/// </summary>
 [CreateAssetMenu(menuName = "Data/Season")]
 public class SeasonData : UpdatableObject
 {
+    /// <summary>
+    /// List with all seasons
+    /// </summary>
     public List<Season> Seasons;
 }
