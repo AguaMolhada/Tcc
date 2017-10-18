@@ -9,6 +9,117 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
+/// Class used for the mesh generation script
+/// </summary>
+public class MeshData
+{
+    /// <summary>
+    /// Array with all vertices
+    /// </summary>
+    public Vector3[] Vertices;
+    /// <summary>
+    /// Array with all triangles
+    /// </summary>
+    public int[] Triangles;
+    /// <summary>
+    /// Mesh uv map
+    /// </summary>
+    public Vector2[] Uvs;
+    /// <summary>
+    /// I DONT FUCKING KNOW HOW TO EXPLAIN SEE MESHDATA.
+    /// </summary>
+    private int _triangleIndex;
+    /// <summary>
+    /// Bool to use activate the flat shading
+    /// </summary>
+    private bool _flatShading;
+
+    /// <summary>
+    /// MeshData constructor
+    /// </summary>
+    /// <param name="meshWidth">Mesh width</param>
+    /// <param name="meshHeight">Mesh Height</param>
+    /// <param name="flat">Will use flat shading?</param>
+    public MeshData(int meshWidth, int meshHeight, bool flat)
+    {
+        this._flatShading = flat;
+        Vertices = new Vector3[meshWidth * meshHeight];
+        Uvs = new Vector2[meshWidth * meshHeight];
+        Triangles = new int[(meshWidth - 1) * (meshHeight - 1) * 6];
+    }
+
+    /// <summary>
+    /// To add triangles in the trinangles array.
+    /// </summary>
+    /// <param name="a">Position a</param>
+    /// <param name="b">Position b</param>
+    /// <param name="c">Position c</param>
+    public void AddTriangle(int a, int b, int c)
+    {
+        Triangles[_triangleIndex] = a;
+        Triangles[_triangleIndex + 1] = b;
+        Triangles[_triangleIndex + 2] = c;
+        _triangleIndex += 3;
+    }
+
+    /// <summary>
+    /// Flat shading function. This will put all triangles independent 
+    /// </summary>
+    public void FlatShading()
+    {
+        Vector3[] flatShadedVertices = new Vector3[Triangles.Length];
+        Vector2[] flatShaderUv = new Vector2[Triangles.Length];
+        for (int i = 0; i < Triangles.Length; i++)
+        {
+            flatShadedVertices[i] = Vertices[Triangles[i]];
+            flatShaderUv[i] = Uvs[Triangles[i]];
+
+            Triangles[i] = i;
+        }
+        Vertices = flatShadedVertices;
+        Uvs = flatShaderUv;
+
+    }
+    /// <summary>
+    /// Function to mesh creation
+    /// </summary>
+    /// <returns>New Mesh</returns>
+    public Mesh CreateMesh()
+    {
+        Mesh mesh = new Mesh
+        {
+            vertices = Vertices,
+            triangles = Triangles,
+            uv = Uvs
+        };
+        mesh.RecalculateNormals();
+        return mesh;
+    }
+}
+/// <summary>
+/// Class used to manager the resources in-game
+/// </summary>
+public class GameResources
+{
+    /// <summary>
+    /// Ammout of wood
+    /// </summary>
+    public int Wood;
+    /// <summary>
+    /// Ammout of stone
+    /// </summary>
+    public int Stone;
+    /// <summary>
+    /// Ammout of Iron
+    /// </summary>
+    public int Iron;
+    /// <summary>
+    /// Ammout of food
+    /// </summary>
+    public int Food;
+}
+
+/// <summary>
 /// Class used for monitoring the game time.
 /// </summary>
 [System.Serializable]

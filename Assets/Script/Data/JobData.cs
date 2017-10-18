@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Class used to store all jobs in the game
+/// Class used to store all jobs in the game. (this will be loaded with a database and can be edited)
 /// </summary>
 [CreateAssetMenu(menuName = "Data/Job")]
 public class JobData : UpdatableObject

@@ -17,26 +17,33 @@ using UnityEngine;
 public class CityData : UpdatableObject
 {
     /// <summary>
-    /// City name
+    /// City name.
     /// </summary>
     public string CityName;
     /// <summary>
-    /// List with all habitants living in the city
+    /// List with all habitants living in the city.
     /// </summary>
     public List<Citzen> CityHabitants;
     /// <summary>
-    /// Current season
+    /// List with all buildings constructed/in construction in the city.
+    /// </summary>
+    public List<Building> CityBuildings;
+    /// <summary>
+    /// Game Recources
+    /// </summary>
+    public GameResources CityResources;
+    /// <summary>
+    /// Current season.
     /// </summary>
     public Season CurrentSeason;
     /// <summary>
-    /// Current time in-game
+    /// Current time in-game.
     /// </summary>
     public DateTimeGame Time;
-
     /// <summary>
-    /// For sorting the citzen List
+    /// For sorting the citzen List.
     /// </summary>
-    /// <param name="comparsionType">Param used to determine how the List witch sort will be used</param>
+    /// <param name="comparsionType">Param used to determine how the List witch sort will be used.</param>
     public void SortArray(OrganizerFilter comparsionType)
     {
         switch (comparsionType)

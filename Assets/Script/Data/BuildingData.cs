@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Class storing all building data.
+/// Class storing all building data. (this will be loaded with a database and can be edited)
 /// </summary>
 [CreateAssetMenu(menuName = "Data/Building")]
 public class BuildingData : UpdatableObject
