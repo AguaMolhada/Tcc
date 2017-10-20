@@ -42,11 +42,11 @@ public class Citzen : MonoBehaviour
     /// <summary>
     /// NPC House
     /// </summary>
-    public Building House;
+    public GenericBuilding House;
     /// <summary>
     /// NPC job Location, children doesn't work and student will "work" on the chuch to learn more things. (you'll be able to "Graduate" the children)
     /// </summary>
-    public Building JobLocation;
+    public GenericBuilding JobLocation;
     
     /// <summary>
     /// Each year the age will increment (O RLY?!) and the death chance will adjust automaticaly.

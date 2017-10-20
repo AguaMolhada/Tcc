@@ -1,4 +1,10 @@
-﻿using System.Collections;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="GameController.cs" company="Dauler Palhares">
+//  © Copyright Dauler Palhares da Costa Viana 2017.
+//          http://github.com/DaulerPalhares
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,10 +12,6 @@ public class GameController : MonoBehaviour {
 
     public static GameController Instance { get; protected set; }
     public CityData City;
-
-    public Dictionary<string, Season> Seasons;
-    
-
 
 	// Use this for initialization
 	void Start () {
@@ -20,8 +22,4 @@ public class GameController : MonoBehaviour {
         Instance = this;
     }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

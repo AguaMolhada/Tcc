@@ -19,7 +19,7 @@ public class BuildingDataEditor : Editor
         
         if (GUILayout.Button("Add New Building"))
         {
-            data.Buildings.Add(new Building());
+            data.Buildings.Add(new GenericBuilding());
         }
         if (GUILayout.Button("Remove Buildin"))
         {

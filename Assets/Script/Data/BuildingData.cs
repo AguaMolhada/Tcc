@@ -17,7 +17,7 @@ public class BuildingData : UpdatableObject
     /// <summary>
     /// List with all buildings data
     /// </summary>
-    public List<Building> Buildings;
+    public List<GenericBuilding> Buildings;
 
     /// <summary>
     /// Sort by alphabetical order

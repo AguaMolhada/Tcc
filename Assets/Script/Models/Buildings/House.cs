@@ -12,12 +12,8 @@ using UnityEngine;
 /// <summary>
 /// Class used on all houses
 /// </summary>
-public class House : MonoBehaviour , IBuilding
+public class House : GenericBuilding , IBuilding
 {
-    /// <summary>
-    /// Base building data
-    /// </summary>
-    public Building BuildingData { get; protected set; }
     /// <summary>
     /// List with all habitants living in this house
     /// </summary>
@@ -50,16 +46,8 @@ public class House : MonoBehaviour , IBuilding
     /// <param name="bName">Name of desired building to create</param>
     /// <param name="familes">Number of families living in the house</param>
     /// <param name="t">Temperature of the House</param> TODO(Season and daytime will provide one or will be default)
-    public House(BuildingData baseData, string bName, int familes, float t)
+    public House(string bName, int familes, float t)
     {
-        foreach (var data in baseData.Buildings)
-        {
-            if (data.BuildingName == bName )
-            {
-                BuildingData = data;
-                break;
-            }
-        }
         MaxFamiles = familes;
         Temp = t;
     }
@@ -94,7 +82,7 @@ public class House : MonoBehaviour , IBuilding
         }
         else
         {
-            if (Habitants.Count < BuildingData.MaxCitzenInside)
+            if (Habitants.Count < MaxCitzenInside)
             {
                 Habitants.Add(people);
                 return HouseEventsHandler.Sucess;
@@ -107,6 +95,11 @@ public class House : MonoBehaviour , IBuilding
     }
 
     public BuildingEventsHandler OnConstruction()
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool CheckOverlap(int x, int y)
     {
         throw new NotImplementedException();
     }
