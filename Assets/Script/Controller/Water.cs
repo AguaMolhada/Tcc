@@ -5,7 +5,6 @@ public class Water : MonoBehaviour
 {
     public float scale = 7.0f;
     public float heightScale = 1.0f;
-    private Vector2 v2SampleStart = new Vector2(0f, 0f);
 
 	// Update is called once per frame
 	void Update () 

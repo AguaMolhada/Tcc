@@ -379,7 +379,7 @@ public static class MeshGenerator
         int meshSimplificationIncrement = (levelOfDetail == 0) ? 1 : levelOfDetail * 2;
         int verticesPerLine = (w - 1) / meshSimplificationIncrement + 1;
 
-        MeshData meshData = new MeshData(verticesPerLine, verticesPerLine,useFlatShading);
+        MeshData meshData = new MeshData(verticesPerLine, verticesPerLine);
         int vertexIndex = 0;
 
         for (int y = 0; y < h; y+= meshSimplificationIncrement )
@@ -415,7 +415,7 @@ public static class MeshGenerator
         int meshSimplificationIncrement = 1;
         int verticesPerLine = (w - 1) / meshSimplificationIncrement + 1;
 
-        MeshData meshData = new MeshData(verticesPerLine, verticesPerLine, false);
+        MeshData meshData = new MeshData(verticesPerLine, verticesPerLine);
         int vertexIndex = 0;
 
         for (int y = 0; y < h; y += meshSimplificationIncrement)

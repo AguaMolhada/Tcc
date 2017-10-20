@@ -10,14 +10,16 @@ using UnityEngine;
 public class WorldGeneratorController : MonoBehaviour
 {
     private static WorldGeneratorController _instance;
-    public static int MapChunkSize { get
+    public static int MapChunkSize
     {
-        if (_instance == null)
-        {
-            _instance = FindObjectOfType<WorldGeneratorController>();
+        get {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<WorldGeneratorController>();
+            }
+            return _instance.TerrainData.FlatShading ? 95 : 239;
         }
-        return _instance.TerrainData.FlatShading ? 95 : 239;
-    } }
+    }
 
     public TerrainData TerrainData;
     public Material TerrainMaterial;

@@ -4,6 +4,7 @@
 //          http://github.com/DaulerPalhares
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,7 +12,7 @@ using UnityEngine;
 /// <summary>
 /// Class used on all houses
 /// </summary>
-public class House : MonoBehaviour
+public class House : MonoBehaviour , IBuilding
 {
     /// <summary>
     /// Base building data
@@ -105,4 +106,8 @@ public class House : MonoBehaviour
         }
     }
 
+    public BuildingEventsHandler OnConstruction()
+    {
+        throw new NotImplementedException();
+    }
 }
