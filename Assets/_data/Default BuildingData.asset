@@ -13,171 +13,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AutoUpdate: 0
   Buildings:
-  - BuildingName: Blacksmith
-    Type: 0
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Cathedral
-    Type: 1
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Chicken Farm
-    Type: 8
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Cow Farm
-    Type: 8
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Curch
-    Type: 1
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Docks
-    Type: 3
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Graveyard
-    Type: 5
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Hospital
-    Type: 6
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: House
-    Type: 7
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 3
-  - BuildingName: Iron Mine
-    Type: 10
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Market
-    Type: 9
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Orchard
-    Type: 11
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Plantation
-    Type: 4
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Sheep Farm
-    Type: 8
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Stock Pile
-    Type: 13
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Stone Mine
-    Type: 10
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Tailor
-    Type: 14
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Tavern
-    Type: 15
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Town Hall
-    Type: 16
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Warehouse
-    Type: 13
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
-  - BuildingName: Woodcutter
-    Type: 17
-    BuildingGameObject: {fileID: 0}
-    LumberCost: 0
-    RockCost: 0
-    MetalCost: 0
-    TimeToBuild: 0
-    MaxCitzenInside: 0
+  - {fileID: 0}
+  - {fileID: 114211585680104166, guid: 8a54209885319af459b0ce4dd5131dab, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

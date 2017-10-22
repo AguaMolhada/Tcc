@@ -15,10 +15,6 @@ public class GenericBuilding : MonoBehaviour
     /// </summary>
     public TypeBuilding Type;
     /// <summary>
-    /// Game object that will spaw this building.
-    /// </summary>
-    public GameObject BuildingGameObject;
-    /// <summary>
     /// Lumber cost to build.
     /// </summary>
     public int LumberCost;

@@ -172,6 +172,21 @@ public class PlantationSeeds
     public int AmmountFood;
 }
 
+public class Animal
+{
+    public string AnimalName;
+    public int Age { get; private set; }
+    public Genere AnimalGenere;
+    public int TimeToProcreate { get; private set; }
+    public int Cooldown { get; private set; }
+    public int HaverstValue { get; private set; }
+
+    public bool Procreate(Animal a)
+    {
+        return a.AnimalGenere != AnimalGenere && a.Cooldown == 0 && Cooldown == 0;
+    }
+}
+
 /// <summary>
 /// Class used for in-game season.
 /// </summary>
@@ -297,7 +312,7 @@ public enum FarmEventsHandler
 /// <summary>
 /// Citzen genere.
 /// </summary>
-public enum CitzenGenere
+public enum Genere
 {
     Female,
     Male,

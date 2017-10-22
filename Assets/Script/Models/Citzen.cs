@@ -22,7 +22,7 @@ public class Citzen : MonoBehaviour
     /// <summary>
     /// NPC Genere
     /// </summary>
-    public CitzenGenere Genere { get; protected set; }
+    public Genere Genere { get; protected set; }
     /// <summary>
     /// NPC Death Change, more old more chance to die
     /// </summary>
