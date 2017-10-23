@@ -11,8 +11,7 @@ using UnityEngine;
 /// <summary>
 /// Class used for the mesh generation script.
 /// </summary>
-public class MeshData
-{
+public class MeshData {
     /// <summary>
     /// Array with all vertices.
     /// </summary>
@@ -29,18 +28,16 @@ public class MeshData
     /// I DONT FUCKING KNOW HOW TO EXPLAIN SEE MESHDATA.
     /// </summary>
     private int _triangleIndex;
+
     /// <summary>
     /// Bool to use activate the flat shading.
     /// </summary>
-
     /// <summary>
     /// MeshData constructor.
     /// </summary>
     /// <param name="meshWidth">Mesh width</param>
     /// <param name="meshHeight">Mesh Height</param>
-    /// <param name="flat">Will use flat shading?</param>
-    public MeshData(int meshWidth, int meshHeight)
-    {
+    public MeshData( int meshWidth , int meshHeight ) {
         Vertices = new Vector3[meshWidth * meshHeight];
         Uvs = new Vector2[meshWidth * meshHeight];
         Triangles = new int[(meshWidth - 1) * (meshHeight - 1) * 6];
@@ -52,8 +49,7 @@ public class MeshData
     /// <param name="a">Position a</param>
     /// <param name="b">Position b</param>
     /// <param name="c">Position c</param>
-    public void AddTriangle(int a, int b, int c)
-    {
+    public void AddTriangle( int a , int b , int c ) {
         Triangles[_triangleIndex] = a;
         Triangles[_triangleIndex + 1] = b;
         Triangles[_triangleIndex + 2] = c;
@@ -63,12 +59,10 @@ public class MeshData
     /// <summary>
     /// Flat shading function. This will put all triangles independent.
     /// </summary>
-    public void FlatShading()
-    {
+    public void FlatShading() {
         Vector3[] flatShadedVertices = new Vector3[Triangles.Length];
         Vector2[] flatShaderUv = new Vector2[Triangles.Length];
-        for (int i = 0; i < Triangles.Length; i++)
-        {
+        for ( int i = 0 ; i < Triangles.Length ; i++ ) {
             flatShadedVertices[i] = Vertices[Triangles[i]];
             flatShaderUv[i] = Uvs[Triangles[i]];
 
@@ -82,12 +76,10 @@ public class MeshData
     /// Function to mesh creation.
     /// </summary>
     /// <returns>New Mesh</returns>
-    public Mesh CreateMesh()
-    {
-        Mesh mesh = new Mesh
-        {
-            vertices = Vertices,
-            triangles = Triangles,
+    public Mesh CreateMesh() {
+        Mesh mesh = new Mesh {
+            vertices = Vertices ,
+            triangles = Triangles ,
             uv = Uvs
         };
         mesh.RecalculateNormals();
@@ -97,8 +89,7 @@ public class MeshData
 /// <summary>
 /// Class used to manager the resources in-game.
 /// </summary>
-public class GameResources
-{
+public class GameResources {
     /// <summary>
     /// Ammout of wood.
     /// </summary>
@@ -123,29 +114,58 @@ public class GameResources
 [System.Serializable]
 public class DateTimeGame
 {
+
+    public Season[] Seasons;
+    private int _seasonIndex;
+    public int CurrentDay { get; private set; }
+    private int _maxDay;
     /// <summary>
     /// In-game hour (0-23 format).
     /// </summary>
-    [Range(0,23)]
-    public int Hour;
+    public int Hour { get; private set; }
     /// <summary>
     /// In-game minutes (0-59 format).
     /// </summary>
-    [Range(0,59)]
-    public int Minutes;
+    public int Minutes { get; private set; }
     /// <summary>
     /// Speed that game will run (1 = 1min/second).
     /// </summary>
-    [Range(1,4)]
+    [Range(1 , 4)]
     public int Speed;
+
+    public void TimePass(int x)
+    {
+        Minutes += x;
+        if (Minutes <= 59)
+        {
+            return;
+        }
+        Hour++;
+        Minutes -= 59;
+        if (Hour <= 23)
+        {
+            return;
+        }
+        Hour = 0;
+        CurrentDay++;
+        if (CurrentDay <= _maxDay)
+        {
+            return;
+        }
+        _seasonIndex++;
+        if (_seasonIndex == Seasons.Length)
+        {
+            _seasonIndex = 0;
+        }
+        CurrentDay = 1;
+    }
 }
 
 /// <summary>
 /// Class used for seed plantation variables.
 /// </summary>
 [System.Serializable]
-public class PlantationSeeds
-{
+public class PlantationSeeds {
     /// <summary>
     /// Seed Name.
     /// </summary>
@@ -172,19 +192,27 @@ public class PlantationSeeds
     public int AmmountFood;
 }
 
-public class Animal
-{
-    public string AnimalName;
-    public int Age { get; private set; }
-    public Genere AnimalGenere;
-    public int TimeToProcreate { get; private set; }
-    public int Cooldown { get; private set; }
-    public int HaverstValue { get; private set; }
-
-    public bool Procreate(Animal a)
-    {
-        return a.AnimalGenere != AnimalGenere && a.Cooldown == 0 && Cooldown == 0;
-    }
+public class OrchardTrees {
+    /// <summary>
+    /// Tree Type Name.
+    /// </summary>
+    public string TreeName;
+    /// <summary>
+    /// Tree Age in years.
+    /// </summary>
+    public int Age;
+    /// <summary>
+    /// Age to start the production.
+    /// </summary>
+    public int AgeToProduce;
+    /// <summary>
+    /// Ammout Food Given.
+    /// </summary>
+    public int AmmoutFood;
+    /// <summary>
+    /// Time spend haversting.
+    /// </summary>
+    public int TimeHarvest;
 }
 
 /// <summary>
@@ -263,8 +291,7 @@ public enum TypeBuilding {
 /// <summary>
 /// Enum with filter organizers to sort some arrays in-game.
 /// </summary>
-public enum OrganizerFilter
-{
+public enum OrganizerFilter {
     Name,
     AgeAsc,
     AgeDesc,
@@ -278,8 +305,7 @@ public enum OrganizerFilter
 /// <summary>
 /// Enum that handle all general building events.
 /// </summary>
-public enum BuildingEventsHandler
-{
+public enum BuildingEventsHandler {
     Complete,
     NoLumber,
     NoStone,
@@ -290,8 +316,7 @@ public enum BuildingEventsHandler
 /// <summary>
 /// Enum that handle all house events.
 /// </summary>
-public enum HouseEventsHandler
-{
+public enum HouseEventsHandler {
     Sucess,
     HabitantesFull,
     EnoughtFamilies,
@@ -299,8 +324,7 @@ public enum HouseEventsHandler
     EmptyHouse,
 }
 
-public enum FarmEventsHandler
-{
+public enum FarmEventsHandler {
     Idle,
     Planting,
     Growing,
@@ -312,8 +336,7 @@ public enum FarmEventsHandler
 /// <summary>
 /// Citzen genere.
 /// </summary>
-public enum Genere
-{
+public enum Genere {
     Female,
     Male,
 }

@@ -33,10 +33,6 @@ public class CityData : UpdatableObject
     /// </summary>
     public GameResources CityResources;
     /// <summary>
-    /// Current season.
-    /// </summary>
-    public Season CurrentSeason;
-    /// <summary>
     /// Current time in-game.
     /// </summary>
     public DateTimeGame Time;
