@@ -172,42 +172,14 @@ public class PlantationSeeds
     public int AmmountFood;
 }
 
-public class OrchardTrees
-{
-    /// <summary>
-    /// Tree Type Name.
-    /// </summary>
-    public string TreeName;
-    /// <summary>
-    /// Tree Age in years.
-    /// </summary>
-    public int Age; 
-    /// <summary>
-    /// Age to start the production.
-    /// </summary>
-    public int AgeToProduce;
-    /// <summary>
-    /// Ammout Food Given.
-    /// </summary>
-    public int AmmoutFood;
-    /// <summary>
-    /// Time spend haversting.
-    /// </summary>
-    public int TimeHarvest;
-}
-
-/// <summary>
-/// Class used for animal variables.
-/// </summary>
-[System.Serializable]
 public class Animal
 {
     public string AnimalName;
     public int Age { get; private set; }
     public Genere AnimalGenere;
-    public int TimeToProcreate;
+    public int TimeToProcreate { get; private set; }
     public int Cooldown { get; private set; }
-    public int HaverstValue;
+    public int HaverstValue { get; private set; }
 
     public bool Procreate(Animal a)
     {

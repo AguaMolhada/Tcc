@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class LivingFarm : GenericBuilding , IBuilding , IJobBuilding
 {
-    public Animal[] AnimalsAllowed;
+    public string AnimalAllowed;
     public List<Animal> AnimalInside;
     public int[] FarmSize { get; private set; }
     public List<Citzen> Workers;
