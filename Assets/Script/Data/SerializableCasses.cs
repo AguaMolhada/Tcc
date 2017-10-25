@@ -89,6 +89,7 @@ public class MeshData {
 /// <summary>
 /// Class used to manager the resources in-game.
 /// </summary>
+[System.Serializable]
 public class GameResources {
     /// <summary>
     /// Ammout of wood.
@@ -197,6 +198,10 @@ public class PlantationSeeds {
     public int AmmountFood;
 }
 
+/// <summary>
+/// Class used for all trees used in the Orcherd
+/// </summary>
+[System.Serializable]
 public class OrchardTrees {
     /// <summary>
     /// Tree Type Name.

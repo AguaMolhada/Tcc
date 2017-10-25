@@ -15,6 +15,14 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Game/Game Data")]
 public class GameDataEditable : ScriptableObject
 {
+    #region Only Used in the custom Inspector DO NOT TOUCH
+    public bool ShowJobCustomInspector;
+    public bool ShowSeedsCustomInspector;
+    public bool ShowSeasonCustomInspector;
+    public bool ShowAnimalsCustomInspector;
+    public bool ShowOrchardCustomInspector;
+    public bool ShowBuildingsCustomInspector;
+    #endregion
 
     #region GameData
 
