@@ -114,7 +114,7 @@ public class GameResources {
 [System.Serializable]
 public class DateTimeGame
 {
-
+    public string CurrentSeason;
     public Season[] Seasons;
     private int _seasonIndex;
     public int CurrentDay { get; private set; }
@@ -132,7 +132,10 @@ public class DateTimeGame
     /// </summary>
     [Range(1 , 4)]
     public int Speed;
-
+    /// <summary>
+    /// Methodo to change the time.
+    /// </summary>
+    /// <param name="x">Time in minutes.</param>
     public void TimePass(int x)
     {
         Minutes += x;
@@ -157,7 +160,9 @@ public class DateTimeGame
         {
             _seasonIndex = 0;
         }
+        CurrentSeason = Seasons[_seasonIndex].SeasonName;
         CurrentDay = 1;
+        _maxDay = Seasons[_seasonIndex].Days;
     }
 }
 

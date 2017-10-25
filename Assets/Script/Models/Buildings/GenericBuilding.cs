@@ -68,4 +68,34 @@ public class GenericBuilding : MonoBehaviour
     /// Rotation on Z axis.
     /// </summary>
     public int Zrot { get; protected set; }
+    /// <summary>
+    /// On click to construck will check if have something worng. If the building is clear to build will return Completed
+    /// </summary>
+    /// <returns>Return the Event related to the building</returns>
+    public BuildingEventsHandler OnConstruction() {
+        var x = 0; //TODO need to implement something to pick the desired location to build
+        var y = 0;
+
+        if ( GameController.Instance.City.CityResources.Wood < LumberCost ) {
+            return BuildingEventsHandler.NoLumber;
+        }
+        if ( GameController.Instance.City.CityResources.Stone < RockCost ) {
+            return BuildingEventsHandler.NoStone;
+        }
+        if ( GameController.Instance.City.CityResources.Iron < MetalCost ) {
+            return BuildingEventsHandler.NoIron;
+        }
+        if ( CheckOverlap(x , y) ) {
+            Xpos = x;
+            Ypos = y;
+            return BuildingEventsHandler.InvalidPos;
+        }
+        //TODO need to implement check if overlap buildings
+        return BuildingEventsHandler.Complete;
+    }
+    //TODO
+    public bool CheckOverlap( int x , int y ) {
+        throw new System.NotImplementedException();
+    }
+
 }

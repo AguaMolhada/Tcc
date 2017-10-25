@@ -6,50 +6,40 @@
 // --------------------------------------------------------------------------------------------------------------------
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class LivingFarm : GenericBuilding , IBuilding , IJobBuilding
+/// <summary>
+/// Script used for living farm
+/// </summary>
+public class LivingFarm : GenericBuilding, IJobBuilding
 {
-    public string AnimalAllowed;
-    public List<Animal> AnimalInside;
-    public int[] FarmSize { get; private set; }
-    public List<Citzen> Workers;
-
-    public int MaxWorkers => (int)(1.25f * (FarmSize[0] + FarmSize[1] / 2f));
-
-    public int MaxAnimals;
-    private Animal _oldestAnimal;
-
     /// <summary>
-    /// On click to construck will check if have something worng. If the building is clear to build will return Completed
+    /// Name of the animal Allowed inside.
     /// </summary>
-    /// <returns>Return the Event related to the building</returns>
-    public BuildingEventsHandler OnConstruction() {
-        var x = 0; //TODO need to implement something to pick the desired location to build
-        var y = 0;
-
-        if ( GameController.Instance.City.CityResources.Wood < LumberCost ) {
-            return BuildingEventsHandler.NoLumber;
-        }
-        if ( GameController.Instance.City.CityResources.Stone < RockCost ) {
-            return BuildingEventsHandler.NoStone;
-        }
-        if ( GameController.Instance.City.CityResources.Iron < MetalCost ) {
-            return BuildingEventsHandler.NoIron;
-        }
-        if ( CheckOverlap(x , y) ) {
-            Xpos = x;
-            Ypos = y;
-            return BuildingEventsHandler.InvalidPos;
-        }
-        //TODO need to implement check if overlap buildings
-        return BuildingEventsHandler.Complete;
-    }
-    //TODO
-    public bool CheckOverlap(int x, int y)
-    {
-        throw new System.NotImplementedException();
-    }
+    public string AnimalAllowed;
+    /// <summary>
+    /// List of all animals inside.
+    /// </summary>
+    public List<Animal> AnimalInside;
+    /// <summary>
+    /// Farm size in X,Y
+    /// </summary>
+    public int[] FarmSize { get; private set; }
+    /// <summary>
+    /// List of workers
+    /// </summary>
+    public List<Citzen> Workers;
+    /// <summary>
+    /// Max number of workers allowed on the farm (1.25 worker for each sqr²).
+    /// </summary>
+    public int MaxWorkers => (int) (1.25f * (FarmSize[0] + FarmSize[1] / 2f));
+    /// <summary>
+    /// Max animals allowed on the farm.
+    /// </summary>
+    public int MaxAnimals;
+    /// <summary>
+    /// Oldest animal on the farm.
+    /// </summary>
+    private Animal _oldestAnimal;
 
     public int ShowProgress()
     {
@@ -68,7 +58,7 @@ public class LivingFarm : GenericBuilding , IBuilding , IJobBuilding
             AnimalInside.Remove(_oldestAnimal);
             _oldestAnimal = null;
         }
-        return (int)Ultility.PercentValue(MaxAnimals, AnimalInside.Count);
+        return (int) Ultility.PercentValue(MaxAnimals, AnimalInside.Count);
     }
 
     public void AddResources(GameResources x)

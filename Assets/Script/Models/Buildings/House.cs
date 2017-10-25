@@ -12,7 +12,7 @@ using UnityEngine;
 /// <summary>
 /// Class used on all houses
 /// </summary>
-public class House : GenericBuilding , IBuilding
+public class House : GenericBuilding
 {
     /// <summary>
     /// List with all habitants living in this house
@@ -92,15 +92,5 @@ public class House : GenericBuilding , IBuilding
                 return HouseEventsHandler.HabitantesFull;
             }
         }
-    }
-
-    public BuildingEventsHandler OnConstruction()
-    {
-        throw new NotImplementedException();
-    }
-
-    public bool CheckOverlap(int x, int y)
-    {
-        throw new NotImplementedException();
     }
 }

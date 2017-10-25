@@ -14,7 +14,6 @@ public class BuildingDataEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        GUILayoutOption[] options = new GUILayoutOption[] { GUILayout.MaxWidth(120f) , GUILayout.MinWidth(100f) };
         data = (BuildingData) target;
         
         if (GUILayout.Button("Add New Building"))

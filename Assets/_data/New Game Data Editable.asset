@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18f02ffac61b7884b9a8204efcc13ea9, type: 3}
+  m_Name: New Game Data Editable
+  m_EditorClassIdentifier: 
+  Seasons:
+  - SeasonName: Summer
+    Days: 31
+    MinTemp: 21.7
+    MaxTemp: 34.2
+  - SeasonName: Autumn
+    Days: 28
+    MinTemp: 11.4
+    MaxTemp: 25.8
+  - SeasonName: Winter
+    Days: 31
+    MinTemp: -8.3
+    MaxTemp: 12.2
+  - SeasonName: Spring
+    Days: 28
+    MinTemp: 13.7
+    MaxTemp: 23.9
+  Buildings: []
+  Jobs: []
+  Seeds: []
+  Animals: []
