@@ -19,13 +19,6 @@ public class MouseController : MonoBehaviour
     [SerializeField]
     private GameObject _circleCursor;
 
-    #region Construction Param
-    public bool BuildObjects { get; private set; }
-    private TileType _buildType = TileType.Grass;
-    private string _buildModeObjectType;
-
-    #endregion
-
 
     private Vector3 _lastFramePosition;
     private Vector3 _currFramePosition;
@@ -88,46 +81,11 @@ public class MouseController : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            Debug.Log("Start:" + xStart + "/" + yStart + "||| End:" + xEnd + "/" + yEnd);
-            for (var x = xStart; x <= xEnd; x++)
-            {
-                for (var y = yStart; y <= yEnd; y++)
-                {
-                    var tempTile = WorldController.Instance.World.GeTileAt(x, y);
-                    if (tempTile != null)
-                    {
-                        var go = SimplePool.Spawn(this._circleCursor, new Vector3(x, y, 0), Quaternion.identity);
-                        go.transform.parent = this.transform;
-                        this._dragCircles.Add(go);
-                    }
-                }
-            }
-            Debug.Log("Dragging");
+
         }
 
         if (Input.GetMouseButtonUp(0)) {
-            for (var x = xStart; x <= xEnd; x++)
-            {
-                for (var y = yStart; y <= yEnd; y++)
-                {
-                    var tempTile = WorldController.Instance.World.GeTileAt(x, y);
 
-                    if (tempTile != null)
-                    {
-                        if (BuildObjects == true)
-                        {
-                            WorldController.Instance.World.PlaceFurniture(_buildModeObjectType, tempTile);
-                        }
-
-                        else
-                        {
-                            tempTile.Type = _buildType;
-                        }
-                    }
-                }
-
-            }
-            Debug.Log("DragEnded");
         }
     }
 
@@ -150,14 +108,12 @@ public class MouseController : MonoBehaviour
 
     public void SetMode_ConstructRoadTiles(string objecType)
     {
-        BuildObjects = true;
-        _buildModeObjectType = objecType;
 
     }
 
     public void SetMode_Bulldozer()
     {
-        _buildType = TileType.Grass;
+
     }
 
 

@@ -16,8 +16,19 @@ public class WorldController : MonoBehaviour
 {
 
     public static WorldController Instance { get; protected set; }
+    public static int MapChunkSize
+    {
+        get
+        {
+            if (Instance == null)
+            {
+                Instance = FindObjectOfType<WorldController>();
+            }
+            return Instance.TerrainData.FlatShading ? 95 : 239;
+        }
+    }
 
-    public World World { get; protected set; }
+    public static int[,] MapBuildingGrid;
 
     public MeshFilter WorldMeshFilter;
     public MeshRenderer WorldMeshRender;
@@ -26,12 +37,18 @@ public class WorldController : MonoBehaviour
     public MeshRenderer WaterMeshRender;
 
     public MeshCollider MeshColiderWorld;
+    
+    public TerrainData TerrainData;
+    public Material TerrainMaterial;
+    public NoiseData NoiseData;
+    public TextureData TextureData;
 
-    //Dictionary with all tile sprites used in the game.
-    private Dictionary<string, Sprite> _spritesTilesDictionary;
+    public int LevelOfDetail;
 
-    private Dictionary<Tile, GameObject> _tileToGameObjectMap;
-    private Dictionary<Furniture , GameObject> _furnitureToGameObjectMap;
+    public GameObject Teste;
+
+    private float[,] _falloutMap;
+    private float[,] _noiseMap;
 
     private void Start()
     {
@@ -40,25 +57,61 @@ public class WorldController : MonoBehaviour
             Debug.LogError("You can't have 2 World Controllers");
         }
         Instance = this;
+        GenerateMap();
+        GenerateBuildingGridMap();
+    }
 
-        //Loading all Sprites to make the road and add to the dictionary
-        _spritesTilesDictionary = new Dictionary<string, Sprite>();
-        var temp = Resources.LoadAll<Sprite>("Tiles");
-
-        foreach (var s in temp)
+    public void GenerateMap()
+    {
+        if (TerrainData.UseFallout)
         {
-            _spritesTilesDictionary[s.name] = s;
+            _falloutMap = FalloffGenerator.GenerateFalloffMap(MapChunkSize);
+        }
+        _noiseMap = Noise.GenerateNoiseMap(MapChunkSize, MapChunkSize, NoiseData.Seed, NoiseData.NoiseScale, NoiseData.Octaves, NoiseData.Persistence, NoiseData.Lacunarity, NoiseData.Offset);
+
+        for (var y = 0; y < MapChunkSize; y++)
+        {
+            for (var x = 0; x < MapChunkSize; x++)
+            {
+                if (TerrainData.UseFallout)
+                {
+                    _noiseMap[x, y] = _noiseMap[x, y] - _falloutMap[x, y];
+                }
+            }
         }
 
-        // Create the world with the size in parentheses
-        this.World = new World(100, 100);
-        
-        World.RegisterFurniture(OnFurnitureCreated);
+        TextureData.UpdateMeshHeights(TerrainMaterial, TerrainData.MinHeight, TerrainData.MaxHeight);
+        TextureData.ApplyToMaterial(TerrainMaterial);
+        DrawWorldMesh(MeshGenerator.GenerateTerrainMesh(_noiseMap, TerrainData.MeshHeightMultiplier, TerrainData.MeshHeightCurve, LevelOfDetail, TerrainData.FlatShading));
+        DrawWaterMesh(MeshGenerator.GenerateTerrainMesh(_noiseMap, LevelOfDetail));
 
-        _tileToGameObjectMap = new Dictionary<Tile, GameObject>();
-        _furnitureToGameObjectMap = new Dictionary<Furniture, GameObject>();
+    }
 
-        OnTileTypeCreated();
+    public void GenerateBuildingGridMap()
+    {
+        var count = 0;
+        MapBuildingGrid = new int[MapChunkSize * 10, MapChunkSize * 10];
+        _noiseMap = Noise.GenerateNoiseMap(MapChunkSize * 10, MapChunkSize * 10, NoiseData.Seed, NoiseData.NoiseScale, NoiseData.Octaves, NoiseData.Persistence, NoiseData.Lacunarity, NoiseData.Offset);
+
+        for (int y = 0; y < MapChunkSize*4; y++)
+        {
+            for (int x = 0; x < MapChunkSize*4; x++)
+            {
+                if (_noiseMap[x, y] > 0.46f)
+                {
+                    MapBuildingGrid[x, y] = 0;
+                    count++;
+                    if (count < 100)
+                    {
+                      // TODO WORK MORE   Instantiate(Teste, new Vector3(x/10f, y/10f), Quaternion.identity);
+                    }
+                }
+                else
+                {
+                    MapBuildingGrid[x, y] = -1;
+                }
+            }
+        }
 
     }
 
@@ -67,128 +120,10 @@ public class WorldController : MonoBehaviour
         WorldMeshFilter.sharedMesh = meshdata.CreateMesh();
         MeshColiderWorld.sharedMesh = meshdata.CreateMesh();
     }
+
     public void DrawWaterMesh(MeshData meshdata)
     {
         WaterMeshFilter.sharedMesh = meshdata.CreateMesh();
     }
 
-    #region TileController
-    private void OnTileTypeCreated()
-    {
-        for ( var x = 0 ; x < this.World.Width ; x++ ) {
-            for ( var y = 0 ; y < this.World.Height ; y++ ) {
-                // Instanciate all tiles in the respective position
-                Tile tileData = this.World.GeTileAt(x , y);
-                var newTileObj = new GameObject { name = "Tile_" + x + "_" + y };
-                //Add both data and GameObject to the dictionary
-                _tileToGameObjectMap.Add(tileData , newTileObj);
-
-
-                newTileObj.transform.position = new Vector3(tileData.X , tileData.Y);
-                newTileObj.transform.SetParent(this.transform , true);
-
-                newTileObj.AddComponent<SpriteRenderer>();
-
-                tileData.RegisterTileTypeChangedCb(OnTileTypeChanged);
-            }
-        }
-    }
-    
-    private void OnTileTypeChanged(Tile tileData)
-    {
-        if (_tileToGameObjectMap.ContainsKey(tileData) == false) {
-            return;
-        }
-
-        GameObject tileGo = _tileToGameObjectMap[tileData];
-
-        if (tileGo == null)
-        {
-            return;
-        }
-
-        switch (tileData.Type)
-        {
-            case TileType.Grass:
-                tileGo.GetComponent<SpriteRenderer>().sprite = _spritesTilesDictionary["Grass"];
-                break;
-            case TileType.Dirt:
-                tileGo.GetComponent<SpriteRenderer>().sprite = _spritesTilesDictionary["Dirt"];
-                break;
-            case TileType.Rock:
-                tileGo.GetComponent<SpriteRenderer>().sprite = _spritesTilesDictionary["Rock"];
-                break;
-            case TileType.Water:
-                tileGo.GetComponent<SpriteRenderer>().sprite = _spritesTilesDictionary["Water"];
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
-    #endregion
-
-    #region FurnitureController
-    public void OnFurnitureCreated(Furniture furn)
-    {
-        // Instanciate all tiles in the respective position
-        var furnGameObject = new GameObject {name = furn.ObjectType + "_" + furn.Tile.X + "_" + furn.Tile.Y};
-
-        //Add both data and GameObject to the dictionary
-        _furnitureToGameObjectMap.Add(furn , furnGameObject);
-
-
-        furnGameObject.transform.position = new Vector3(furn.Tile.X , furn.Tile.Y);
-        furnGameObject.transform.SetParent(this.transform , true);
-
-        furnGameObject.AddComponent<SpriteRenderer>().sprite = GetSpriteForFurniture(furn);
-        furnGameObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
-
-        furn.RegisterOnChangedCallback(OnFurnitureChanged);
-    }
-
-    private void OnFurnitureChanged( Furniture furn ) {
-        if ( _furnitureToGameObjectMap.ContainsKey(furn) == false ) {
-            Debug.LogError("Furniture does't exist KEY: " + furn.ObjectType);
-        }
-        var furnGameObject = _furnitureToGameObjectMap[furn];
-        furnGameObject.GetComponent<SpriteRenderer>().sprite = GetSpriteForFurniture(furn);
-    }
-
-    private Sprite GetSpriteForFurniture(Furniture furn)
-    {
-        if (furn.LinksToNeighbour == false)
-        {
-            return _spritesTilesDictionary[furn.ObjectType];
-        }
-//TODO
-        else
-        {
-            string spriteName = furn.ObjectType + "_";
-            #region Tile Facing Check
-            //Checking Neighbours
-            //Order N E S W
-            var temp = World.GeTileAt(furn.Tile.X, furn.Tile.Y + 1);
-            if (temp?.Furniture != null && temp.Furniture.ObjectType == furn.ObjectType)
-            {
-                spriteName += "N";
-            }
-            temp = World.GeTileAt(furn.Tile.X +1 , furn.Tile.Y);
-            if ( temp?.Furniture != null && temp.Furniture.ObjectType == furn.ObjectType ) {
-                spriteName += "E";
-            }
-            temp = World.GeTileAt(furn.Tile.X , furn.Tile.Y - 1);
-            if ( temp?.Furniture != null && temp.Furniture.ObjectType == furn.ObjectType ) {
-                spriteName += "S";
-            }
-            temp = World.GeTileAt(furn.Tile.X - 1 , furn.Tile.Y);
-            if ( temp?.Furniture != null && temp.Furniture.ObjectType == furn.ObjectType ) {
-                spriteName += "W";
-            }
-            #endregion
-
-            return _spritesTilesDictionary[spriteName];
-        }
-    }
-
-    #endregion
 }
