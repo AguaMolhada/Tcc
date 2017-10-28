@@ -168,6 +168,11 @@ public class GameDataEditor : Editor {
         {
             data.SortList();
         }
+        if (GUILayout.Button("Save Things"))
+        {
+            serializedObject.Update();
+        }
+
     }
 
 

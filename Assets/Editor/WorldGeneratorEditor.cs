@@ -9,10 +9,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
 
-[CustomEditor(typeof(WorldGeneratorController))]
+[CustomEditor(typeof(WorldController))]
 public class WorldGeneratorEditor : Editor {
 
-    private WorldGeneratorController _mapController;
+    private WorldController _mapController;
     private bool _custom;
     private bool _autoUpdate;
     private bool _regions;
@@ -22,7 +22,7 @@ public class WorldGeneratorEditor : Editor {
 
     public override void OnInspectorGUI() {
         GUILayoutOption[] options = new GUILayoutOption[] { GUILayout.MaxWidth(120f) , GUILayout.MinWidth(100f) };
-        _mapController = (WorldGeneratorController)target;
+        _mapController = (WorldController)target;
         _autoUpdate = EditorGUILayout.Toggle("Auto Update Mesh" , _autoUpdate);
         if ( GUILayout.Button("Change Inspector") ) {
             _custom = !_custom;

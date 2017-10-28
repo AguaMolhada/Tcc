@@ -9,8 +9,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18f02ffac61b7884b9a8204efcc13ea9, type: 3}
-  m_Name: New Game Data Editable
+  m_Name: Editable GameData
   m_EditorClassIdentifier: 
+  ShowJobCustomInspector: 0
+  ShowSeedsCustomInspector: 0
+  ShowSeasonCustomInspector: 0
+  ShowAnimalsCustomInspector: 0
+  ShowOrchardCustomInspector: 0
+  ShowBuildingsCustomInspector: 0
   Seasons:
   - SeasonName: Summer
     Days: 31
@@ -18,17 +24,18 @@ MonoBehaviour:
     MaxTemp: 34.2
   - SeasonName: Autumn
     Days: 28
-    MinTemp: 11.4
-    MaxTemp: 25.8
+    MinTemp: 6.3
+    MaxTemp: 20.7
   - SeasonName: Winter
     Days: 31
-    MinTemp: -8.3
-    MaxTemp: 12.2
+    MinTemp: -11.7
+    MaxTemp: 8.7
   - SeasonName: Spring
     Days: 28
-    MinTemp: 13.7
-    MaxTemp: 23.9
+    MinTemp: 13.2
+    MaxTemp: 23.4
   Buildings: []
   Jobs: []
   Seeds: []
+  TreeTypes: []
   Animals: []

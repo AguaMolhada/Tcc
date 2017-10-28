@@ -58,7 +58,7 @@ public class WorldController : MonoBehaviour
         }
         Instance = this;
         GenerateMap();
-        GenerateBuildingGridMap();
+        BuildingGrid.GenerateBuildingGrid(MapChunkSize * 10, _noiseMap);
     }
 
     public void GenerateMap()
@@ -84,34 +84,6 @@ public class WorldController : MonoBehaviour
         TextureData.ApplyToMaterial(TerrainMaterial);
         DrawWorldMesh(MeshGenerator.GenerateTerrainMesh(_noiseMap, TerrainData.MeshHeightMultiplier, TerrainData.MeshHeightCurve, LevelOfDetail, TerrainData.FlatShading));
         DrawWaterMesh(MeshGenerator.GenerateTerrainMesh(_noiseMap, LevelOfDetail));
-
-    }
-
-    public void GenerateBuildingGridMap()
-    {
-        var count = 0;
-        MapBuildingGrid = new int[MapChunkSize * 10, MapChunkSize * 10];
-        _noiseMap = Noise.GenerateNoiseMap(MapChunkSize * 10, MapChunkSize * 10, NoiseData.Seed, NoiseData.NoiseScale, NoiseData.Octaves, NoiseData.Persistence, NoiseData.Lacunarity, NoiseData.Offset);
-
-        for (int y = 0; y < MapChunkSize*4; y++)
-        {
-            for (int x = 0; x < MapChunkSize*4; x++)
-            {
-                if (_noiseMap[x, y] > 0.46f)
-                {
-                    MapBuildingGrid[x, y] = 0;
-                    count++;
-                    if (count < 100)
-                    {
-                      // TODO WORK MORE   Instantiate(Teste, new Vector3(x/10f, y/10f), Quaternion.identity);
-                    }
-                }
-                else
-                {
-                    MapBuildingGrid[x, y] = -1;
-                }
-            }
-        }
 
     }
 
