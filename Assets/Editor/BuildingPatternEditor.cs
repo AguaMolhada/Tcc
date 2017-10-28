@@ -9,7 +9,6 @@ public class BuildingPatternEditor : PropertyDrawer
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         SerializedProperty data = property.FindPropertyRelative("Rows");
-;
 
         EditorGUI.PrefixLabel(position, label);
         Rect newPosition = position;
@@ -19,7 +18,7 @@ public class BuildingPatternEditor : PropertyDrawer
         {
             SerializedProperty row = data.GetArrayElementAtIndex(i).FindPropertyRelative("Collums");
             row.arraySize = data.arraySize;
-            newPosition.height = 18f;
+            newPosition.height = 15f;
             newPosition.width = position.width / data.arraySize;
             for (int j = 0; j < row.arraySize; j++)
             {
@@ -28,7 +27,7 @@ public class BuildingPatternEditor : PropertyDrawer
             }
 
             newPosition.x = position.x;
-            newPosition.y += 18f;
+            newPosition.y += 15f;
         }
     }
 

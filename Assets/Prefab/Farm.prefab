@@ -53,7 +53,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingName: Farm
   Type: 4
-  BuildingGameObject: {fileID: 0}
+  Pattern:
+    Rows:
+    - Collums: 
+    - Collums: 
+    - Collums: 
+    - Collums: 
   LumberCost: 15
   RockCost: 0
   MetalCost: 0

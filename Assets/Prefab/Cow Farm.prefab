@@ -53,11 +53,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingName: Cow Farm
   Type: 8
+  Pattern:
+    Rows:
+    - Collums: 00000000000000000000
+    - Collums: 00000000000000000000
+    - Collums: 00000000000000000000
+    - Collums: 00000000000000000000
+    - Collums: 00000000000000000000
+    - Collums: 00000000000000000000
+    - Collums: 00000000000000000000
+    - Collums: 00000000000000000000
+    - Collums: 00000000000000000000
+    - Collums: 00000000000000000000
   LumberCost: 15
   RockCost: 0
   MetalCost: 0
   TimeToBuild: 0
   MaxCitzenInside: 0
   AnimalAllowed: Cow
+  AnimalInside: []
   Workers: []
   MaxAnimals: 5
