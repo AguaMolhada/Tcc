@@ -334,6 +334,9 @@ public enum HouseEventsHandler {
     EmptyHouse,
 }
 
+/// <summary>
+/// Enum that handle all farm events.
+/// </summary>
 public enum FarmEventsHandler {
     Idle,
     Planting,
@@ -344,9 +347,20 @@ public enum FarmEventsHandler {
 }
 
 /// <summary>
-/// Citzen genere.
+/// Genere for all living creatures.
 /// </summary>
 public enum Genere {
     Female,
     Male,
+}
+
+[System.Serializable]
+public class BuildingPattern
+{
+    [System.Serializable]
+    public struct RowData
+    {
+        public bool[] Collums;
+    }
+    public RowData[] Rows;
 }
