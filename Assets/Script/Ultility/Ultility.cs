@@ -153,7 +153,7 @@ public static class Ultility {
     }
     static string CityNameEnd() {
         int a;
-        var nameEnd = new string[] { "ville" , "polis" , " City" , " Village" , "town" , "port" , "boro" , "burg" , "burgh" , "carden" , "field" , "ness" };
+        var nameEnd = new string[] { "ville" , "polis" , " City" , " Village" , "town" , "port" , "boro" , "burg" , "burgh" , "garden" , "field" , "ness" };
         a = Random.Range(0 , nameEnd.Length);
         return nameEnd[a];
     }
@@ -400,9 +400,20 @@ public static class TextureGenerator
     }
 
 }
-
+/// <summary>
+/// Class used to generate the mesh in real time
+/// </summary>
 public static class MeshGenerator
 {
+    /// <summary>
+    /// Generate a mesh
+    /// </summary>
+    /// <param name="heightMap">Map used to pass the terrain height</param>
+    /// <param name="heightMultiplier">Float used to Multiplier the height map value and make things more hight</param>
+    /// <param name="heightInfluenceCurve">Ammount of influence that the height will have in the end</param>
+    /// <param name="levelOfDetail">Level of detail of the mesh</param>
+    /// <param name="useFlatShading">Will use flat shadding</param>
+    /// <returns>A mesh created with all value</returns>
     public static MeshData GenerateTerrainMesh(float[,] heightMap,float heightMultiplier,AnimationCurve heightInfluenceCurve,int levelOfDetail,bool useFlatShading)
     {
         var w = heightMap.GetLength(0);
@@ -438,7 +449,12 @@ public static class MeshGenerator
         }
         return meshData;
     }
-
+    /// <summary>
+    /// Generate a mesh
+    /// </summary>
+    /// <param name="heightMap">Map used to pass the terrain height</param>
+    /// <param name="levelOfDetail">Level of detail of the mesh</param>
+    /// <returns>A mesh created with all value</returns>
     public static MeshData GenerateTerrainMesh(float[,] heightMap,int levelOfDetail)
     {
         var w = heightMap.GetLength(0);
@@ -490,7 +506,7 @@ public static class BuildingGrid
     /// </summary>
     /// <param name="gridSize">Size of the building grid.</param>
     /// <param name="noiseMap">Noise map used to generate the map. Used to check the grid space</param>
-    /// <returns></returns>
+    /// <returns>2D int array with 0 or -1</returns>
     public static int[,] GenerateBuildingGrid(int gridSize, float[,] noiseMap)
     {
         var mapBuildingGrid = new int[gridSize, gridSize];
@@ -502,10 +518,18 @@ public static class BuildingGrid
             {
                 noiseMapY++;
             }
+            if(y == 0)
+            {
+                noiseMapY = 0;
+            }
             for ( var x = 0 ; x < gridSize ; x++ ) {
                 if (x % 10 == 0)
                 {
                     noiseMapX++;
+                }
+                if(x == 0)
+                {
+                    noiseMapX = 0;
                 }
                 if (noiseMap[noiseMapX, noiseMapY] >= 0.46)
                 {
@@ -516,11 +540,18 @@ public static class BuildingGrid
                     mapBuildingGrid[x, y] = -1;
                 }
             }
+
         }
 
         return mapBuildingGrid;
     }
-
+    /// <summary>
+    /// Get the relative position in the grid related to the world.
+    /// </summary>
+    /// <param name="grid">Grid to check the position</param>
+    /// <param name="x">Grid position in X</param>
+    /// <param name="y">Grid position in Y</param>
+    /// <returns>World position (XWorld,0,YWorld)</returns>
     public static Vector3 GridPositionRelatedToWorld(int[,] grid,int x, int y)
     {
         var topLeftX = (grid.GetLength(0) - 1) / -2f;
