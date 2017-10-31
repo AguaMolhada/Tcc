@@ -540,11 +540,7 @@ public static class BuildingGrid
                     mapBuildingGrid[x, y] = -1;
                 }
             }
-<<<<<<< HEAD
             noiseMapX = 0;
-=======
-
->>>>>>> 65e823832908cb786686a0e7a2fa8eec047c19b7
         }
 
         return mapBuildingGrid;
