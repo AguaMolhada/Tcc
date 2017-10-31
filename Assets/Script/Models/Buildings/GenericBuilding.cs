@@ -10,7 +10,10 @@ public class GenericBuilding : MonoBehaviour
     /// Building Name.
     /// </summary>
     public string BuildingName;
-
+    /// <summary>
+    /// Unique building id to assign to the building grid
+    /// </summary>
+    public int BuildingID;
     /// <summary>
     /// Building type (used for diferent scripts to work).
     /// </summary>
@@ -61,42 +64,39 @@ public class GenericBuilding : MonoBehaviour
     /// <summary>
     /// Position x on the world.
     /// </summary>
-    public int Xpos { get; protected set; }
+    public float Xpos { get; protected set; }
 
     /// <summary>
     /// Position y on the world.
     /// </summary>
-    public int Ypos { get; protected set; }
+    public float Ypos { get; protected set; }
 
     /// <summary>
     /// Position z on the world.
     /// </summary>
-    public int Zpos { get; protected set; }
+    public float Zpos { get; protected set; }
 
     /// <summary>
     /// Rotation on X axis.
     /// </summary>
-    public int Xrot { get; protected set; }
+    public float Xrot { get; protected set; }
 
     /// <summary>
     /// Rotation on Y axis.
     /// </summary>
-    public int Yrot { get; protected set; }
+    public float Yrot { get; protected set; }
 
     /// <summary>
     /// Rotation on Z axis.
     /// </summary>
-    public int Zrot { get; protected set; }
+    public float Zrot { get; protected set; }
 
     /// <summary>
     /// On click to construck will check if have something worng. If the building is clear to build will return Completed
     /// </summary>
     /// <returns>Return the Event related to the building</returns>
-    public BuildingEventsHandler OnConstruction()
+    public BuildingEventsHandler OnConstruction(int x, int y)
     {
-        var x = 0; //TODO need to implement something to pick the desired location to build
-        var y = 0;
-
         if (GameController.Instance.City.CityResources.Wood < LumberCost)
         {
             return BuildingEventsHandler.NoLumber;
@@ -109,19 +109,17 @@ public class GenericBuilding : MonoBehaviour
         {
             return BuildingEventsHandler.NoIron;
         }
-        if (CheckOverlap(x, y))
+        if (!BuildingController.Instance.CheckOverlap(x, y, Pattern))
         {
-            Xpos = x;
-            Ypos = y;
-            return BuildingEventsHandler.InvalidPos;
+            Vector3 worldPos = BuildingGrid.GridPositionRelatedToWorld(WorldController.MapBuildingGrid, x, y);
+            Xpos = worldPos.x;
+            Zpos = worldPos.z;
+            BuildingController.Instance.AssignBuildingToGrid(x, y, Pattern, BuildingID);
+            GameController.Instance.City.CityResources.UpdateResources(LumberCost, RockCost, MetalCost);
+            GameController.Instance.City.CityBuildings.Add(this);
+            return BuildingEventsHandler.Complete;
         }
-        //TODO need to implement check if overlap buildings
-        return BuildingEventsHandler.Complete;
-    }
+        return BuildingEventsHandler.InvalidPos;
 
-    //TODO
-    public bool CheckOverlap(int x, int y)
-    {
-        throw new System.NotImplementedException();
     }
 }

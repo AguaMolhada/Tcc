@@ -107,6 +107,14 @@ public class GameResources {
     /// Ammout of food.
     /// </summary>
     public int Food;
+
+    public void UpdateResources(int w,int s, int i)
+    {
+        Wood += w;
+        Stone += s;
+        Iron += i;
+    }
+
 }
 
 /// <summary>

@@ -16,14 +16,20 @@ public class GameController : MonoBehaviour {
     public CityData City;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         if (Instance != null)
         {
             Debug.LogError("You can't have 2 Game Controllers");
         }
         Instance = this;
 
+<<<<<<< HEAD
         NewCity("Test City","Easy");
+=======
+        City.CityName = Ultility.CityNameGenerator();
+
+
+>>>>>>> 65e823832908cb786686a0e7a2fa8eec047c19b7
     }
 
     private void NewCity(string CName,string DifMode)

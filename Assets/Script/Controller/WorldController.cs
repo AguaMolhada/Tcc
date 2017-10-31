@@ -50,13 +50,17 @@ public class WorldController : MonoBehaviour
     private float[,] _falloutMap;
     private float[,] _noiseMap;
 
-    private void Start()
+    private void Awake()
     {
         if (Instance != null)
         {
             Debug.LogError("You can't have 2 World Controllers");
         }
         Instance = this;
+    }
+
+    private void Start()
+    {
         GenerateMap();
         BuildingGrid.GenerateBuildingGrid(MapChunkSize * 10, _noiseMap);
     }
