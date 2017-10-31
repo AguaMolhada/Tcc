@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class Townhall : GenericBuilding
     public CityData CityData => GameController.Instance.City;
     public Text InfoText;
 
-    void Start()
+    private void Start()
     {
         Showinfo("Citzens");
     }
@@ -18,11 +19,9 @@ public class Townhall : GenericBuilding
         var infoToShow ="";
         if( infoType == "Citzens")
         {
-            foreach (var citzen in CityData.CityHabitants)
-            {
-                infoToShow += citzen.name + " \t Age:"+citzen.Age+"\n\r";
-            }
+            infoToShow = CityData.CityHabitants.Aggregate(infoToShow, (current, citzen) => current + (citzen.name + " \t Age:" + citzen.Age + "\n\r"));
         }
+        InfoText.text = infoToShow;
     }
 
 }
