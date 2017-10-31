@@ -1,28 +1,26 @@
 fileFormatVersion: 2
 guid: 10825047efce31b40b5fc067147f8936
-timeCreated: 1508789737
+timeCreated: 1509311223
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: Porta
     100002: //RootNode
-    100004: Prefeitura
     400000: Porta
     400002: //RootNode
-    400004: Prefeitura
     2300000: Porta
-    2300002: Prefeitura
+    2300002: //RootNode
     3300000: Porta
-    3300002: Prefeitura
-    4300000: Porta
-    4300002: Prefeitura
+    3300002: //RootNode
+    4300000: Prefeitura
+    4300002: Porta
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material.001
-    second: {fileID: 2100000, guid: 5699719d5029b1941a711e604e2cc582, type: 2}
+      name: Iron
+    second: {fileID: 2100000, guid: 054f762d74691cd4c97eb0d816bfd2f1, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -95,7 +93,7 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2

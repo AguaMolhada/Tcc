@@ -47,7 +47,17 @@ public class Citzen : MonoBehaviour
     /// NPC job Location, children doesn't work and student will "work" on the chuch to learn more things. (you'll be able to "Graduate" the children)
     /// </summary>
     public GenericBuilding JobLocation;
-    
+
+    public void Init()
+    {
+        name = Ultility.NameGenerator();
+        Age = Random.Range(15, 25);
+        Genere = (global::Genere) Random.Range(0, 1);
+        Saturation = 100;
+        Happiness = 60;
+        HappyBirthday();
+    }
+
     /// <summary>
     /// Each year the age will increment (O RLY?!) and the death chance will adjust automaticaly.
     /// </summary>

@@ -498,12 +498,12 @@ public static class BuildingGrid
         var noiseMapY = 0;
 
         for ( var y = 0 ; y < gridSize ; y++ ) {
-            if (y % 10 == 0)
+            if (y> 0 && y % 10 == 0)
             {
                 noiseMapY++;
             }
             for ( var x = 0 ; x < gridSize ; x++ ) {
-                if (x % 10 == 0)
+                if (x >0 && x % 10 == 0)
                 {
                     noiseMapX++;
                 }
@@ -516,6 +516,7 @@ public static class BuildingGrid
                     mapBuildingGrid[x, y] = -1;
                 }
             }
+            noiseMapX = 0;
         }
 
         return mapBuildingGrid;
