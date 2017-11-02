@@ -73,8 +73,7 @@ public class House : GenericBuilding
     /// <param name="people">Citzen that will be added</param>
     /// <returns>If the house dont have the number max</returns>
     public HouseEventsHandler RegisterPeopleInHouse(Citzen people)
-    {
-        
+    {   
         var count = Habitants.Count(habitant => habitant.Age >= 20);
         if (count > MaxFamiles*2)
         {

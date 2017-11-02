@@ -4,7 +4,12 @@
 //          http://github.com/DaulerPalhares
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Linq;
+using RandomNameGeneratorLibrary;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// Class for all NPC's
@@ -48,14 +53,29 @@ public class Citzen : MonoBehaviour
     /// </summary>
     public GenericBuilding JobLocation;
 
+    /// <summary>
+    /// Method to initialize a random NPC;
+    /// </summary>
     public void Init()
     {
-        name = Ultility.NameGenerator();
-        Age = Random.Range(15, 25);
-        Genere = (global::Genere) Random.Range(0, 1);
+        var namegen = new PersonNameGenerator(new System.Random());
+        Age = Random.Range(20, 25);
+        Genere = (Genere) Random.Range(0, 2);
+        switch (Genere)
+        {
+            case Genere.Male:
+                Name = namegen.GenerateRandomMaleFirstAndLastName();
+                break;
+            case Genere.Female:
+                Name = namegen.GenerateRandomFemaleFirstAndLastName();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
         Saturation = 100;
         Happiness = 60;
         HappyBirthday();
+        SearchHouse();
     }
 
     /// <summary>
@@ -78,6 +98,48 @@ public class Citzen : MonoBehaviour
             x = 0.8f;
         }
         DeathChance = (float) (0.01f * Mathf.Pow(1, 2) + Age * x);
+        if(Age == 25)
+        {
+            House = null;
+            SearchHouse();
+        }
+    }
+
+    /// <summary>
+    /// Search if have an avaliable house to live.
+    /// </summary>
+    protected void SearchHouse()
+    {
+        while (House == null)
+        {
+            var avaliableBuildings = GameController.Instance.City.CityBuildings.OfType<House>();
+            if (avaliableBuildings.Any())
+            {
+                foreach (var building in avaliableBuildings)
+                {
+                    if (building.Type == TypeBuilding.House)
+                    {
+                        if (building.Habitants.Count < building.MaxCitzenInside)
+                        {
+                            var test = building.RegisterPeopleInHouse(this);
+                            if (test == HouseEventsHandler.Sucess)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Debug.Log(Name+" homeless");
+            }
+        }
+    }
+
+    private void Update()
+    {
+        
     }
 
 }
