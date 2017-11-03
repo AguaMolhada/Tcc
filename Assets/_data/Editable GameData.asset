@@ -15,7 +15,7 @@ MonoBehaviour:
   ShowSeedsCustomInspector: 0
   ShowSeasonCustomInspector: 0
   ShowAnimalsCustomInspector: 0
-  ShowOrchardCustomInspector: 0
+  ShowOrchardCustomInspector: 1
   ShowBuildingsCustomInspector: 0
   Seasons:
   - SeasonName: Summer
@@ -88,6 +88,94 @@ MonoBehaviour:
     Speed: 0
     Female: 0
     Male: 1
-  Seeds: []
-  TreeTypes: []
-  Animals: []
+  Seeds:
+  - SeedName: Beans
+    DaysToPlant: 3
+    DaysToGrow: 50
+    DaysToHarvest: 17
+    MinTemperatureResistence: 5
+    AmmountFood: 0
+  - SeedName: Beets
+    DaysToPlant: 6
+    DaysToGrow: 52
+    DaysToHarvest: 12
+    MinTemperatureResistence: -3
+    AmmountFood: 0
+  - SeedName: Broccoli
+    DaysToPlant: 5
+    DaysToGrow: 56
+    DaysToHarvest: 9
+    MinTemperatureResistence: 9
+    AmmountFood: 0
+  - SeedName: Cabbage
+    DaysToPlant: 2
+    DaysToGrow: 52
+    DaysToHarvest: 18
+    MinTemperatureResistence: 6
+    AmmountFood: 0
+  - SeedName: Carrots
+    DaysToPlant: 5
+    DaysToGrow: 50
+    DaysToHarvest: 15
+    MinTemperatureResistence: -4
+    AmmountFood: 0
+  - SeedName: Corn
+    DaysToPlant: 3
+    DaysToGrow: 50
+    DaysToHarvest: 17
+    MinTemperatureResistence: 10
+    AmmountFood: 0
+  - SeedName: Melons
+    DaysToPlant: 2
+    DaysToGrow: 44
+    DaysToHarvest: 24
+    MinTemperatureResistence: 1
+    AmmountFood: 0
+  - SeedName: Potato
+    DaysToPlant: 3
+    DaysToGrow: 52
+    DaysToHarvest: 15
+    MinTemperatureResistence: 9
+    AmmountFood: 10
+  - SeedName: Pumpkins
+    DaysToPlant: 5
+    DaysToGrow: 54
+    DaysToHarvest: 11
+    MinTemperatureResistence: 3
+    AmmountFood: 0
+  - SeedName: Tomatoes
+    DaysToPlant: 3
+    DaysToGrow: 50
+    DaysToHarvest: 17
+    MinTemperatureResistence: 8
+    AmmountFood: 0
+  TreeTypes:
+  - TreeName: Apple
+    Age: 0
+    AgeToProduce: 2
+    AmmoutFood: 25
+    TimeHarvest: 15
+  - TreeName: Cherries
+    Age: 0
+    AgeToProduce: 3
+    AmmoutFood: 42
+    TimeHarvest: 18
+  - TreeName: Peaches
+    Age: 0
+    AgeToProduce: 3
+    AmmoutFood: 40
+    TimeHarvest: 16
+  - TreeName: Pears
+    Age: 0
+    AgeToProduce: 2
+    AmmoutFood: 22
+    TimeHarvest: 17
+  - TreeName: Plums
+    Age: 0
+    AgeToProduce: 3
+    AmmoutFood: 38
+    TimeHarvest: 13
+  Animals:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

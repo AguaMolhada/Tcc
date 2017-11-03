@@ -51,7 +51,6 @@ public class GameController : MonoBehaviour {
         if (cName == "")
         {
             var rndName = new PlaceNameGenerator();
-
             City.CityName = rndName.GenerateRandomPlaceName();
         }
         else

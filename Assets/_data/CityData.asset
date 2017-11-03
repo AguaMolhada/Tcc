@@ -12,8 +12,23 @@ MonoBehaviour:
   m_Name: CityData
   m_EditorClassIdentifier: 
   AutoUpdate: 0
-  CityName: Ferrelview
-  CityHabitants: []
+  CityName: West Ocean City
+  CityHabitants:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   CityBuildings: []
   CityResources:
     Wood: 400

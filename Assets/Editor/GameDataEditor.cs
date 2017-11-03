@@ -142,7 +142,7 @@ public class GameDataEditor : Editor {
             }
             if (data.Seeds.Count >= 1)
             {
-                if (GUILayout.Button("Remove Seed"))
+                if (GUILayout.Button("Remove last Seed"))
                 {
                     data.Seeds.RemoveAt(data.Seeds.Count - 1);
                 }
@@ -151,17 +151,15 @@ public class GameDataEditor : Editor {
             {
                 EditorGUILayout.Space();
                 seed.SeedName = EditorGUILayout.TextField("Seed Name", seed.SeedName);
-                seed.DaysToPlant = EditorGUILayout.IntField("Days spent on planting", seed.DaysToPlant);
-                seed.DaysToGrow = EditorGUILayout.IntField("Days to grow adult form", seed.DaysToGrow);
-                seed.DaysToHarvest = EditorGUILayout.IntField("Days spent harversting", seed.DaysToHarvest);
+                seed.DaysToPlant = EditorGUILayout.IntSlider("Days spent on planting", seed.DaysToPlant,2,6);
+                seed.DaysToGrow = EditorGUILayout.IntSlider("Days to grow adult form", seed.DaysToGrow,40,60);
+                seed.DaysToHarvest = EditorGUILayout.IntSlider("Days spent harversting", seed.DaysToHarvest,8,24);
                 seed.AmmountFood = EditorGUILayout.IntField("Ammout food given", seed.AmmountFood);
-                seed.MinTemperatureResistence = EditorGUILayout.IntField("Min temp", seed.MinTemperatureResistence);
+                seed.MinTemperatureResistence = EditorGUILayout.IntSlider("Min temp", seed.MinTemperatureResistence,-10,10);
 
                 EditorGUILayout.Space();
             }
         }
-
-
         EditorGUILayout.Space(); EditorGUILayout.Space(); EditorGUILayout.Space(); EditorGUILayout.Space(); EditorGUILayout.Space();
         #endregion
         if (GUILayout.Button("Reoder All things"))
@@ -171,9 +169,6 @@ public class GameDataEditor : Editor {
         if (GUILayout.Button("Save Things"))
         {
             EditorUtility.SetDirty(data);
-        }
-
+        }   
     }
-
-
 }
