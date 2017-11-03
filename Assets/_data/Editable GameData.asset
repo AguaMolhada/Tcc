@@ -35,7 +35,59 @@ MonoBehaviour:
     MinTemp: 13.2
     MaxTemp: 23.4
   Buildings: []
-  Jobs: []
+  Jobs:
+  - JobName: Barmen
+    Speed: 0
+    Female: 0
+    Male: 1
+  - JobName: Blacksmith
+    Speed: 0
+    Female: 0
+    Male: 1
+  - JobName: Builder
+    Speed: 0
+    Female: 1
+    Male: 1
+  - JobName: Child
+    Speed: 0
+    Female: 1
+    Male: 1
+  - JobName: Cook
+    Speed: 0
+    Female: 1
+    Male: 1
+  - JobName: Farmer
+    Speed: 0
+    Female: 1
+    Male: 1
+  - JobName: Fisherman
+    Speed: 0
+    Female: 1
+    Male: 1
+  - JobName: Fisherwoman
+    Speed: 0
+    Female: 1
+    Male: 0
+  - JobName: Lumberjack
+    Speed: 0
+    Female: 0
+    Male: 1
+  - JobName: Medic
+    Speed: 0
+    Female: 0
+    Male: 1
+  - JobName: Nomad
+    Speed: 0
+    Female: 1
+    Male: 1
+  - JobName: Nurse
+    Speed: 0
+    Female: 1
+    Male: 0
+  - JobName: Priest
+    Speed: 0
+    Female: 0
+    Male: 1
   Seeds: []
   TreeTypes: []
   Animals: []

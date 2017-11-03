@@ -170,7 +170,7 @@ public class GameDataEditor : Editor {
         }
         if (GUILayout.Button("Save Things"))
         {
-            serializedObject.Update();
+            EditorUtility.SetDirty(data);
         }
 
     }
