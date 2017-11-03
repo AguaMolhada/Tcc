@@ -24,10 +24,10 @@ public class BuildingController : MonoBehaviour {
     //TODO Test this
     public bool CheckOverlap(int x, int y,BuildingPattern pattern)
     {
-        int[,] grid = WorldController.MapBuildingGrid;
-        for (int xGrid = x; xGrid < x+pattern.Rows.Length; xGrid++)
+        var grid = WorldController.MapBuildingGrid;
+        for (var xGrid = x; xGrid < x+pattern.Rows.Length; xGrid++)
         {
-            for (int yGrid = y; yGrid < y+pattern.Rows[xGrid].Collums.Length; yGrid++)
+            for (var yGrid = y; yGrid < y+pattern.Rows[xGrid].Collums.Length; yGrid++)
             {
                 if(grid[xGrid,yGrid] != 0)
                 {
@@ -40,10 +40,10 @@ public class BuildingController : MonoBehaviour {
 
     public void AssignBuildingToGrid(int x,int y, BuildingPattern pattern, int id)
     {
-        int[,] grid = WorldController.MapBuildingGrid;
-        for (int xGrid = x; xGrid < x + pattern.Rows.Length; xGrid++)
+        var grid = WorldController.MapBuildingGrid;
+        for (var xGrid = x; xGrid < x + pattern.Rows.Length; xGrid++)
         {
-            for (int yGrid = y; yGrid < y + pattern.Rows[xGrid].Collums.Length; yGrid++)
+            for (var yGrid = y; yGrid < y + pattern.Rows[xGrid].Collums.Length; yGrid++)
             {
                 grid[xGrid, yGrid] = id;
             }

@@ -86,6 +86,7 @@ public class MeshData {
         return mesh;
     }
 }
+
 /// <summary>
 /// Class used to manager the resources in-game.
 /// </summary>
@@ -128,38 +129,68 @@ public class DateTimeGame
     private int _seasonIndex;
     public int CurrentDay { get; private set; }
     private int _maxDay;
+
     /// <summary>
     /// In-game hour (0-23 format).
     /// </summary>
     public int Hour { get; private set; }
+
     /// <summary>
     /// In-game minutes (0-59 format).
     /// </summary>
     public int Minutes { get; private set; }
+
+    public int Year { get; private set; }
+
+    public DateTimeGame(List<Season> s)
+    {
+        Seasons = new Season[s.Count];
+        for (int i = 0; i < s.Count; i++)
+        {
+            Seasons[i] = s[i];
+            _seasonIndex = i;
+        }
+        CurrentSeason = Seasons[_seasonIndex].SeasonName;
+        Debug.Log("Seasons Loaded in DateTimeGame");
+        _maxDay = Seasons[_seasonIndex].Days;
+        CurrentDay = 1;
+        Hour = 12;
+        Minutes = 1;
+        Year = 1;
+    }
+
     /// <summary>
     /// Speed that game will run (1 = 1min/second).
     /// </summary>
-    [Range(1 , 4)]
-    public int Speed;
+    [Range(1, 4)] public int Speed=1;
+
     /// <summary>
     /// Methodo to change the time.
     /// </summary>
     /// <param name="x">Time in minutes.</param>
     public void TimePass(int x)
     {
-        Minutes += x;
-        if (Minutes <= 59)
+        if (x < 59)
         {
-            return;
+            Minutes += x;
+            if (Minutes >= 59)
+            {
+                Minutes -= 59;
+                Hour++;
+            }
         }
-        Hour++;
-        Minutes -= 59;
-        if (Hour <= 23)
+        else if(x >= 60)
         {
-            return;
+            Hour += (int) (x / 60);
+            Minutes -= (int) (x % 60);
         }
-        Hour = 0;
-        CurrentDay++;
+
+        if (Hour >= 23)
+        {
+            CurrentDay += (int) (Hour/24);
+            Hour = (int) (Hour % 24);
+        }
+
         if (CurrentDay <= _maxDay)
         {
             return;
@@ -168,6 +199,7 @@ public class DateTimeGame
         if (_seasonIndex == Seasons.Length)
         {
             _seasonIndex = 0;
+            Year++;
         }
         CurrentSeason = Seasons[_seasonIndex].SeasonName;
         CurrentDay = 1;

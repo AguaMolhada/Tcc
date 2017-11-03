@@ -23,7 +23,7 @@ public class CityData : UpdatableObject
     /// <summary>
     /// List with all habitants living in the city.
     /// </summary>
-    public List<Citzen> CityHabitants;
+    public List<GameObject> CityHabitants;
     /// <summary>
     /// List with all buildings constructed/in construction in the city.
     /// </summary>
@@ -45,22 +45,22 @@ public class CityData : UpdatableObject
         switch (comparsionType)
         {
             case OrganizerFilter.Name:
-                CityHabitants.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+                CityHabitants.Sort((a, b) => string.Compare(a.GetComponent<Citzen>().Name, b.GetComponent<Citzen>().Name, StringComparison.Ordinal));
                 break;
             case OrganizerFilter.AgeAsc:
-                CityHabitants.OrderBy(a => a.Age);
+                CityHabitants.OrderBy(a => a.GetComponent<Citzen>().Age);
                 break;
             case OrganizerFilter.AgeDesc:
-                CityHabitants.OrderByDescending(a => a.Age);
+                CityHabitants.OrderByDescending(a => a.GetComponent<Citzen>().Age);
                 break;
             case OrganizerFilter.HappyAsc:
-                CityHabitants.OrderBy(a => a.Happiness);
+                CityHabitants.OrderBy(a => a.GetComponent<Citzen>().Happiness);
                 break;
             case OrganizerFilter.HappyDesc:
-                CityHabitants.OrderByDescending(a => a.Happiness);
+                CityHabitants.OrderByDescending(a => a.GetComponent<Citzen>().Happiness);
                 break;
             case OrganizerFilter.Job:
-                CityHabitants.Sort((a, b) => string.Compare(a.Profession.JobName, b.Profession.JobName, StringComparison.Ordinal));
+                CityHabitants.Sort((a, b) => string.Compare(a.GetComponent<Citzen>().Profession.JobName, b.GetComponent<Citzen>().Profession.JobName, StringComparison.Ordinal));
                 break;
             case OrganizerFilter.GenereFm:
                 break;

@@ -4,8 +4,8 @@
 //          http://github.com/DaulerPalhares
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 using System;
+using System.Collections;
 using System.Linq;
 using RandomNameGeneratorLibrary;
 using UnityEngine;
@@ -17,48 +17,52 @@ using Random = UnityEngine.Random;
 public class Citzen : MonoBehaviour
 {
     /// <summary>
-    /// NPC name
+    /// NPC name.
     /// </summary>
     public string Name { get; protected set; }
     /// <summary>
-    /// NPC Age
+    /// NPC Age.
     /// </summary>
     public int Age { get; protected set; }
     /// <summary>
-    /// NPC Genere
+    /// NPC Genere.
     /// </summary>
     public Genere Genere { get; protected set; }
     /// <summary>
-    /// NPC Death Change, more old more chance to die
+    /// NPC Death Change, more old more chance to die.
     /// </summary>
     public float DeathChance { get; protected set; }
     /// <summary>
-    /// NPC Hunger value. If stay 0 for 1 day he will die doesn't matter the death chance
+    /// NPC Hunger value. If stay 0 for 1 day he will die doesn't matter the death chance.
     /// </summary>
     public float Saturation { get; protected set; }
     /// <summary>
-    /// NPC Happiness, more happier more efficient on the job
+    /// NPC Happiness, more happier more efficient on the job.
     /// </summary>
     public float Happiness { get; protected set; }
     /// <summary>
-    /// NPC Job, children will transform in studendt if a chuch is avaliable and have 1 professor
+    /// NPC Job, children will transform in studendt if a chuch is avaliable and have 1 professor.
     /// </summary>
     public Job Profession;
     /// <summary>
-    /// NPC House
+    /// NPC House.
     /// </summary>
     public GenericBuilding House;
     /// <summary>
-    /// NPC job Location, children doesn't work and student will "work" on the chuch to learn more things. (you'll be able to "Graduate" the children)
+    /// NPC job Location, children doesn't work and student will "work" on the chuch to learn more things. (you'll be able to "Graduate" the children).
     /// </summary>
     public GenericBuilding JobLocation;
+    /// <summary>
+    /// Corroutine is running.
+    /// </summary>
+    private bool cbRunning = false;
 
     /// <summary>
     /// Method to initialize a random NPC;
     /// </summary>
-    public void Init()
+    public void Init(System.Random rnd)
     {
-        var namegen = new PersonNameGenerator(new System.Random());
+        var namegen = new PersonNameGenerator(rnd);
         Age = Random.Range(20, 25);
         Genere = (Genere) Random.Range(0, 2);
         switch (Genere)
@@ -74,8 +78,8 @@ public class Citzen : MonoBehaviour
         }
         Saturation = 100;
         Happiness = 60;
+        StartCoroutine("SearchHouse");
         HappyBirthday();
-        SearchHouse();
     }
 
     /// <summary>
@@ -101,45 +105,54 @@ public class Citzen : MonoBehaviour
         if(Age == 25)
         {
             House = null;
-            SearchHouse();
+            StartCoroutine("SearchHouse");
         }
     }
 
     /// <summary>
     /// Search if have an avaliable house to live.
     /// </summary>
-    protected void SearchHouse()
+    private IEnumerator SearchHouse()
     {
+        if (cbRunning)
+        {
+            yield break;
+        }
+        cbRunning = true;
         while (House == null)
         {
-            var avaliableBuildings = GameController.Instance.City.CityBuildings.OfType<House>();
-            if (avaliableBuildings.Any())
+            if (GameController.Instance.City.CityBuildings.OfType<House>().Any())
             {
-                foreach (var building in avaliableBuildings)
+                var avaliableBuildings = GameController.Instance.City.CityBuildings.OfType<House>();
+                if (avaliableBuildings.Any())
                 {
-                    if (building.Type == TypeBuilding.House)
+                    foreach (var building in avaliableBuildings)
                     {
-                        if (building.Habitants.Count < building.MaxCitzenInside)
+                        if (building.Type == TypeBuilding.House)
                         {
-                            var test = building.RegisterPeopleInHouse(this);
-                            if (test == HouseEventsHandler.Sucess)
+                            if (building.Habitants.Count < building.MaxCitzenInside)
                             {
-                                return;
+                                var test = building.RegisterPeopleInHouse(this);
+                                if (test == HouseEventsHandler.Sucess)
+                                {
+                                    yield break;
+                                }
                             }
                         }
                     }
                 }
+                else
+                {
+                    Debug.Log(Name + " homeless trying again in 5 seconds.");
+                    yield return new WaitForSeconds(5);
+                }
             }
             else
             {
-                Debug.Log(Name+" homeless");
+                Debug.Log("Dont have any houses constructed");
+                yield return new WaitForSeconds(10);
             }
         }
-    }
-
-    private void Update()
-    {
-        
     }
 
 }

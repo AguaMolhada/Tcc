@@ -17,9 +17,12 @@ public class Townhall : GenericBuilding
     public void Showinfo(string infoType)
     {
         var infoToShow ="";
-        if( infoType == "Citzens")
+        if (infoType == "Citzens")
         {
-            infoToShow = CityData.CityHabitants.Aggregate(infoToShow, (current, citzen) => current + (citzen.name + " \t Age:" + citzen.Age + "\n\r"));
+            if (CityData.CityHabitants.Any())
+            {
+                infoToShow = CityData.CityHabitants.Aggregate(infoToShow,(current, citzen) => current + (citzen.GetComponent<Citzen>().Name + " \t Age:" + citzen.GetComponent<Citzen>().Age + "\n\r"));
+            }
         }
         InfoText.text = infoToShow;
     }
