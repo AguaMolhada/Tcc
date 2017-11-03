@@ -665,7 +665,7 @@ public static class BuildingGrid
     }
 
     /// <summary>
-    /// Get the relative position in the grid related to the world.
+    /// Get the relative position in the world related to the grid
     /// </summary>
     /// <param name="grid">Grid to check the position</param>
     /// <param name="x">Grid position in X</param>
@@ -677,5 +677,23 @@ public static class BuildingGrid
         var topleftZ = (grid.GetLength(1) - 1) / 2f;
 
         return new Vector3(topLeftX + (x / 10f) + 0.05f, 0, topleftZ - (y / 10f) - 0.05f);
+    }
+
+    /// <summary>
+    /// Get the relative position in te the grid related to the world
+    /// </summary>
+    /// <param name="grid">Grid to check the position</param>
+    /// <param name="world">World Position</param>
+    /// <returns>Grid position [0]x [1]y</returns>
+    public static int[] WorldPositionRelatedToGrid(int[,] grid, Vector3 world)
+    {
+        var topLeftX = (grid.GetLength(0) - 1) / -2f;
+        var topleftZ = (grid.GetLength(1) - 1) / 2f;
+
+        int[] gridPos = new int[2];
+        gridPos[0] = (int) (10 * (-topLeftX - 0.05f + world.x));
+        gridPos[1] = (int) (10 * (-topleftZ - 0.05f + world.z));
+
+        return gridPos;
     }
 }

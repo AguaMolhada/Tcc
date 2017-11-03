@@ -15,7 +15,7 @@ MonoBehaviour:
   ShowSeedsCustomInspector: 0
   ShowSeasonCustomInspector: 0
   ShowAnimalsCustomInspector: 0
-  ShowOrchardCustomInspector: 1
+  ShowOrchardCustomInspector: 0
   ShowBuildingsCustomInspector: 0
   Seasons:
   - SeasonName: Summer

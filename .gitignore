@@ -33,3 +33,9 @@ sysinfo.txt
 .vs/Tcc/v15/Server/sqlite3/storage.ide
 .vs/Tcc/v15/Server/sqlite3/storage.ide-shm
 .vs/Tcc/v15/Server/sqlite3/storage.ide-wal
+packages/Doxygen.1.8.13/Doxygen.1.8.13.nupkg
+packages/Doxygen.1.8.13/tools/doxygen.exe
+packages/Doxygen.1.8.13/tools/libclang.dll
+packages/RandomNameGeneratorLibrary.1.2.2.0/lib/net40/RandomNameGeneratorLibrary.dll
+packages/RandomNameGeneratorLibrary.1.2.2.0/lib/netstandard1.6/RandomNameGeneratorLibrary.dll
+packages/RandomNameGeneratorLibrary.1.2.2.0/RandomNameGeneratorLibrary.1.2.2.0.nupkg
