@@ -649,7 +649,7 @@ public static class BuildingGrid
                 {
                     noiseMapX = 0;
                 }
-                if (noiseMap[noiseMapX, noiseMapY] >= 0.46)
+                if (noiseMap[noiseMapX, noiseMapY] >= 0.44)
                 {
                     mapBuildingGrid[x, y] = 0;
                 }
@@ -667,14 +667,14 @@ public static class BuildingGrid
     /// <summary>
     /// Get the relative position in the world related to the grid
     /// </summary>
-    /// <param name="grid">Grid to check the position</param>
+    /// <param name="mapChunkSize">Map size to check the positionn</param>
     /// <param name="x">Grid position in X</param>
     /// <param name="y">Grid position in Y</param>
     /// <returns>World position (XWorld,0,YWorld)</returns>
-    public static Vector3 GridPositionRelatedToWorld(int[,] grid, int x, int y)
+    public static Vector3 GridPositionRelatedToWorld(int mapChunkSize, int x, int y)
     {
-        var topLeftX = (grid.GetLength(0) - 1) / -2f;
-        var topleftZ = (grid.GetLength(1) - 1) / 2f;
+        var topLeftX = (mapChunkSize - 1) / -2f;
+        var topleftZ = (mapChunkSize - 1) / 2f;
 
         return new Vector3(topLeftX + (x / 10f) + 0.05f, 0, topleftZ - (y / 10f) - 0.05f);
     }
@@ -682,17 +682,17 @@ public static class BuildingGrid
     /// <summary>
     /// Get the relative position in te the grid related to the world
     /// </summary>
-    /// <param name="grid">Grid to check the position</param>
+    /// <param name="mapChunkSize">Map size to check the positionn</param>
     /// <param name="world">World Position</param>
     /// <returns>Grid position [0]x [1]y</returns>
-    public static int[] WorldPositionRelatedToGrid(int[,] grid, Vector3 world)
+    public static int[] WorldPositionRelatedToGrid(int mapChunkSize, Vector3 world)
     {
-        var topLeftX = (grid.GetLength(0) - 1) / -2f;
-        var topleftZ = (grid.GetLength(1) - 1) / 2f;
+        var topLeftX = (mapChunkSize - 1) / -2f;
+        var topleftZ = (mapChunkSize - 1) / 2f;
 
         int[] gridPos = new int[2];
-        gridPos[0] = (int) (10 * (-topLeftX - 0.05f + world.x));
-        gridPos[1] = (int) (10 * (-topleftZ - 0.05f + world.z));
+        gridPos[0] = (int)(10 * (-topLeftX - 0.05f + world.x));
+        gridPos[1] = (int) (10 * (topleftZ - 0.05f - world.z));
 
         return gridPos;
     }

@@ -117,7 +117,7 @@ public class GenericBuilding : MonoBehaviour
         }
         if (!BuildingController.Instance.CheckOverlap(x, y, Pattern))
         {
-            Vector3 worldPos = BuildingGrid.GridPositionRelatedToWorld(WorldController.MapBuildingGrid, x, y);
+            Vector3 worldPos = BuildingGrid.GridPositionRelatedToWorld(WorldController.MapChunkSize, x, y);
             Xpos = worldPos.x;
             Zpos = worldPos.z;
             BuildingController.Instance.AssignBuildingToGrid(x, y, Pattern, BuildingID);

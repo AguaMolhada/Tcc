@@ -62,7 +62,7 @@ public class WorldController : MonoBehaviour
     private void Start()
     {
         GenerateMap();
-        BuildingGrid.GenerateBuildingGrid(MapChunkSize * 10, _noiseMap);
+        MapBuildingGrid = BuildingGrid.GenerateBuildingGrid(MapChunkSize * 10, _noiseMap);
     }
 
     public void GenerateMap()
