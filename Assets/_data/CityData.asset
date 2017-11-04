@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AutoUpdate: 0
-  CityName: Burlington
+  CityName: Mountain View
   CityHabitants:
   - {fileID: 0}
   - {fileID: 0}
