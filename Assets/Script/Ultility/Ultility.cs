@@ -622,10 +622,10 @@ public static class BuildingGrid
     /// </summary>
     /// <param name="gridSize">Size of the building grid.</param>
     /// <param name="noiseMap">Noise map used to generate the map. Used to check the grid space</param>
-    /// <returns>2D int array with 0 or -1</returns>
-    public static int[,] GenerateBuildingGrid(int gridSize, float[,] noiseMap)
+    /// <returns>2D Float array with 0 or -1</returns>
+    public static float[,] GenerateBuildingGrid(int gridSize, float[,] noiseMap)
     {
-        var mapBuildingGrid = new int[gridSize, gridSize];
+        var mapBuildingGrid = new float[gridSize, gridSize];
         var noiseMapX = 0;
         var noiseMapY = 0;
 

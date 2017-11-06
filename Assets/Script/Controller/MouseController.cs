@@ -16,6 +16,8 @@ using UnityEditor.Events;
 /// </summary>
 public class MouseController : MonoBehaviour
 {
+
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -24,19 +26,26 @@ public class MouseController : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 100f))
             {
-                //draw invisible ray cast/vector
-                Debug.DrawLine(ray.origin, hit.point);
-                int[] x = BuildingGrid.WorldPositionRelatedToGrid(WorldController.MapChunkSize, hit.point);
-                //log hit area to the console
-
-                Debug.Log(WorldController.MapBuildingGrid[x[0],x[1]]);
+                var x = BuildingGrid.WorldPositionRelatedToGrid(WorldController.MapChunkSize, hit.point);
+                GenericBuilding buildTemp = null;
+                foreach (var building in GameController.Instance.GameData.Buildings)
+                {
+                    if (building.Type == GameController.Instance.SelectedTypeToBuild)
+                    {
+                        if (building.BuildingName == GameController.Instance.SelectedBuildingName)
+                        {
+                            buildTemp = building;
+                        }
+                    }
+                }
+                if (buildTemp != null)
+                {
+                    if (buildTemp.OnConstruction(x[0], x[1]) == BuildingEventsHandler.Complete)
+                    {
+                        return;
+                    }
+                }
             }
         }
     }
-
-    public void SetBuildingMode(string buildigType)
-    {
-        
-    }
-
 }

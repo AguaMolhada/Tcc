@@ -28,7 +28,7 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    public static int[,] MapBuildingGrid;
+    public static float[,] MapBuildingGrid;
 
     public MeshFilter WorldMeshFilter;
     public MeshRenderer WorldMeshRender;

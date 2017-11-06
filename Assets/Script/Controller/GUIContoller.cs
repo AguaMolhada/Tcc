@@ -7,9 +7,6 @@ public class GUIContoller : MonoBehaviour
 {
     public static GUIContoller Instance;
 
-    public string BuildingType;
-    public int SelectedBuilding = -1;
-
     private void Awake()
     {
         if (Instance == null)
@@ -22,9 +19,14 @@ public class GUIContoller : MonoBehaviour
         }
     }
 
-    public void SelectBuilding(int x)
+    public void SelectBuildingType(int x)
     {
-        SelectedBuilding = x;
+        GameController.Instance.SelectedTypeToBuild = (TypeBuilding) x;
+    }
+
+    public void SelectBuilding(string x)
+    {
+        GameController.Instance.SelectedBuildingName = x;
     }
 
 }

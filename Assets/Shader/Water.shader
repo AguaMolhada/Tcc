@@ -1,349 +1,115 @@
-Shader "DaulerPalhares/" 
-{
-	Properties
-	{
-		_Color("Color", Color) = (1,0,0,1)
-		_SpecColor("Specular Material Color", Color) = (1,1,1,1)
-		_Shininess("Shininess", Float) = 1.0
-		_WaveLength("Wave length", Float) = 0.5
-		_WaveHeight("Wave height", Float) = 0.5
-		_WaveSpeed("Wave speed", Float) = 1.0
-		_RandomHeight("Random height", Float) = 0.5
-		_RandomSpeed("Random Speed", Float) = 0.5
-		_CollisionWaveLength("Collision wave length", Float) = 2.0
+﻿Shader "Custom/Water" {
+	Properties {
+        _MainTex ("Base (RGB)", 2D) = "white" {}
+        _DispTex ("Disp Texture", 2D) = "gray" {}
+        _NormalMap ("Normalmap", 2D) = "bump" {}
 
-		[HideInInspector] _AlphaFactor("Alpha factor", Range(0, 1.0)) = 1.0
+        _Tess ("Tessellation", Range(1,100)) = 4
+        _Displacement ("Displacement", Range(0, 1.0)) = 0.3
+        _Color ("Color", color) = (1,1,1,0)
+        _SpecColor ("Spec color", color) = (0.5,0.5,0.5,0.5)
+        
+        _Alpha ("Alpha Intensidade", Range(0,1)) = 0.5
+        
+       	_Speed      ("Wave Speed", Range(0.1, 80)) = 2
+	    _Length     ("Wave Length", Range(0,3)) = 2.6
+	    _Amplitude  ("Wave Amplitude", Range(0,1)) = 0.3
+        
+       	_ScrollXSpeed ("X Scroll Speed", Range(-10, 10)) = 0
+		_ScrollYSpeed ("Y Scroll Speed", Range(-10, 10)) = 0
+		
+		_Cubemap ("Cubemap", CUBE) = "" {}
+		_EmissionAmount("Emission Amount", Range(0,1)) = 1
+		_FresnelFalloff ("Fresnel Falloff", Range(0.1, 8.0)) = 2
+		_SpecNS ("Specular Concentration", Range(0.01,1)) = 0.5
+		_Gloss ("Gloss", Range(0,2)) = 1
 	}
-
 	CGINCLUDE
-		#define UNITY_SETUP_BRDF_INPUT SpecularSetup
+			#define UNITY_SETUP_BRDF_INPUT SpecularSetup
 	ENDCG
+	SubShader {
+		Tags {"Queue"="AlphaTest" "RenderType"="TransparentCutout"}
+		LOD 200
+		ZWrite Off 
+		
+		CGPROGRAM
+		// Physically based Standard lighting model, and enable shadows on all light types
+ 		#pragma surface surf BlinnPhong vertex:disp tessellate:tessFixed nolightmap alpha
+ 		#pragma target 5.0
+ 		
+		sampler2D _MainTex;
+		sampler2D _DispTex;
+		sampler2D _NormalMap;
+	    fixed _TintAmount,_Amplitude,_ScrollXSpeed,_ScrollYSpeed,_Alpha,_EmissionAmount,_SpecNS,_Gloss;
+		float _Tess,_Displacement,_ColisionX,ColisionY;
+	    half _Speed,_Length,_FresnelFalloff;
+        fixed4 _Color;
+        samplerCUBE _Cubemap;
 
-	SubShader
-	{
-		Tags { "Queue" = "Geometry" "RenderType" = "Opaque" } //"Geometry" "RenderType" = "Opaque" } 
-		Blend SrcAlpha OneMinusSrcAlpha
 
-		Pass
-		{
-			Tags{ "LightMode" = "ForwardBase" }
+		struct appdata{
+            float4 vertex : POSITION;
+            float4 tangent : TANGENT;
+            float3 normal : NORMAL;
+            float2 texcoord : TEXCOORD0;
+		};
+		
 
-			CGPROGRAM
-				#pragma target 3.0
-				#pragma exclude_renderers gles
-				#pragma vertex vert
-				#pragma geometry geom
-				#pragma fragment frag
-				#pragma fragmentoption ARB_precision_hint_fastest
+        float4 tessFixed()
+        {
+            return _Tess;
+        }
+		
+		struct Input {
+			float2 uv_MainTex;
+			float2 uv_NormalMap;
+			float3 viewDir;
+			float3 worldRefl;			
+			INTERNAL_DATA // habilita World Reflection
+		};
+		
+		void disp (inout appdata v)
+        {
+        	float waveHeight = v.vertex.y;
+			
+			waveHeight = sin( (_Time.y * _Speed) + v.vertex.x * _Length ) * _Amplitude;			  
+			v.vertex.xyz = float3( v.vertex.x, v.vertex.y + waveHeight, v.vertex.z + waveHeight );
+			
+			//   Faz com que a textura do Disp mexa os vertices   //
+			fixed2 scrolledDisp = v.texcoord;
+			fixed xScrollValue = _ScrollXSpeed * _Time;
+			fixed yScrollValue = _ScrollYSpeed * _Time;
+			scrolledDisp += fixed2(xScrollValue, yScrollValue + _Time.x);
+			//====================================================//
+			
+            float d = tex2Dlod(_DispTex, float4(v.texcoord.xy+scrolledDisp,0,0)).r * _Displacement;
+            v.vertex.xyz += v.normal * d;
+            v.normal = v.vertex;
+        }
 
-				#pragma multi_compile_fwdbase
-				#pragma multi_compile_fog
-				#include "UnityCG.cginc"
-				#include "HLSLSupport.cginc"
-				#include "UnityStandardCore.cginc"
-
-				float rand(float3 co)
-				{
-					return frac(sin(dot(co.xyz ,float3(12.9898,78.233,45.5432))) * 43758.5453);
-				}
-
-				float rand2(float3 co)
-				{
-					return frac(sin(dot(co.xyz ,float3(19.9128,75.2,34.5122))) * 12765.5213);
-				}
-
-				float _WaveLength;
-				float _WaveHeight;
-				float _WaveSpeed;
-				float _RandomHeight;
-				float _RandomSpeed;
-				float _CollisionWaveLength;
-				vector _CollisionVectors[20];
-				
-				uniform float _Shininess;
-				uniform float _AlphaFactor;
-
-				sampler2D _CameraDepthTexture; 
-
-				struct vFwdBase
-				{
-					float4 pos                     : SV_POSITION;
-					float4 tex                     : TEXCOORD0;
-					half3 eyeVec                   : TEXCOORD1;
-					half4 tangentToWorldAndParallax[3]   : TEXCOORD2;   // [3x3:tangentToWorld | 1x3:viewDirForParallax]
-					half4 ambientOrLightmapUV         : TEXCOORD5;   // SH or Lightmap UV
-					SHADOW_COORDS(6)
-					UNITY_FOG_COORDS(7)
-					float4 posWorld                  : TEXCOORD8;
-					float3 diffuseColor : TEXCOORD9;
-					float3 specularColor : TEXCOORD10;
-				};
-
-				vFwdBase vert(VertexInput v)
-				{
-					vFwdBase o;
-					UNITY_INITIALIZE_OUTPUT(vFwdBase, o);
-
-					float3 v0 = mul((float3x3)unity_ObjectToWorld, v.vertex).xyz;
-
-					float collPhase = 0.0;
-
-					for (int i = 0; i < 20; i++)
-					{
-						float distanceToCenter = length(v0.xz - _CollisionVectors[i].xy);
-						float waveHeight = _CollisionVectors[i].z;
-						float waveState = _CollisionVectors[i].w;
-
-						if (distanceToCenter < _CollisionWaveLength * 10 * waveState)
-						{
-							collPhase += (waveHeight * ((1.0 - waveState) * distanceToCenter) / (_CollisionWaveLength * 10 * waveState)) * sin(distanceToCenter - (_CollisionWaveLength * 10 * waveState));
-						}
-					}
-
-					float phase0 = (_WaveHeight)* sin((_Time[1] * _WaveSpeed) + (v0.x * _WaveLength) + (v0.z * _WaveLength) + rand2(v0.xzz));
-					float phase0_1 = (_RandomHeight)* sin(cos(rand(v0.xzz) * _RandomHeight * cos(_Time[1] * _RandomSpeed * sin(rand(v0.xxz)))));
-					float phase0_2 = (_WaveHeight / 5.0) * sin((_Time[1] * _WaveSpeed * 3.0) + (v0.x * -_WaveLength * 4.0) + (v0.z * _WaveLength * 4.0) + rand2(v0.xzz));
-
-					v0.y += collPhase + phase0 + phase0_1 + phase0_2;
-
-					v.vertex.xyz = mul((float3x3)unity_WorldToObject, v0);
-
-					float4 posWorld = mul(unity_ObjectToWorld, v.vertex);
-					#if UNITY_SPECCUBE_BOX_PROJECTION
-						o.posWorld = posWorld;
-					#endif
-					o.pos = v.vertex;
-					o.tex = TexCoords(v);
-					o.eyeVec = NormalizePerVertexNormal(posWorld.xyz - _WorldSpaceCameraPos);
-					float3 normalWorld = UnityObjectToWorldNormal(v.normal);
-					#ifdef _TANGENT_TO_WORLD
-						float4 tangentWorld = float4(UnityObjectToWorldDir(v.tangent.xyz), v.tangent.w);
-
-						float3x3 tangentToWorld = CreateTangentToWorldPerVertex(normalWorld, tangentWorld.xyz, tangentWorld.w);
-						o.tangentToWorldAndParallax[0].xyz = tangentToWorld[0];
-						o.tangentToWorldAndParallax[1].xyz = tangentToWorld[1];
-						o.tangentToWorldAndParallax[2].xyz = tangentToWorld[2];
-					#else
-						o.tangentToWorldAndParallax[0].xyz = 0;
-						o.tangentToWorldAndParallax[1].xyz = 0;
-						o.tangentToWorldAndParallax[2].xyz = normalWorld;
-					#endif
-					//We need this for shadow receving
-					TRANSFER_SHADOW(o);
-
-					// Static lightmaps
-					#ifndef LIGHTMAP_OFF
-						o.ambientOrLightmapUV.xy = v.uv1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
-						o.ambientOrLightmapUV.zw = 0;
-						// Sample light probe for Dynamic objects only (no static or dynamic lightmaps)
-					#elif UNITY_SHOULD_SAMPLE_SH
-						#if UNITY_SAMPLE_FULL_SH_PER_PIXEL
-							o.ambientOrLightmapUV.rgb = 0;
-						#elif (SHADER_TARGET < 30)
-							o.ambientOrLightmapUV.rgb = ShadeSH9(half4(normalWorld, 1.0));
-						#else
-							// Optimization: L2 per-vertex, L0..L1 per-pixel
-							o.ambientOrLightmapUV.rgb = ShadeSH3Order(half4(normalWorld, 1.0));
-						#endif
-							// Add approximated illumination from non-important point lights
-						#ifdef VERTEXLIGHT_ON
-							o.ambientOrLightmapUV.rgb += Shade4PointLights(
-								unity_4LightPosX0, unity_4LightPosY0, unity_4LightPosZ0,
-								unity_LightColor[0].rgb, unity_LightColor[1].rgb, unity_LightColor[2].rgb, unity_LightColor[3].rgb,
-								unity_4LightAtten0, posWorld, normalWorld);
-						#endif
-					#endif
-
-					#ifdef DYNAMICLIGHTMAP_ON
-						o.ambientOrLightmapUV.zw = v.uv2.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
-					#endif
-
-					#ifdef _PARALLAXMAP
-						TANGENT_SPACE_ROTATION;
-						half3 viewDirForParallax = mul(rotation, ObjSpaceViewDir(v.vertex));
-						o.tangentToWorldAndParallax[0].w = viewDirForParallax.x;
-						o.tangentToWorldAndParallax[1].w = viewDirForParallax.y;
-						o.tangentToWorldAndParallax[2].w = viewDirForParallax.z;
-					#endif
-
-					UNITY_TRANSFER_FOG(o, o.pos);
-					o.diffuseColor = float3(0.0, 0.0, 0.0);
-					o.specularColor = float3(0.0, 0.0, 0.0);
-					return o;
-				}
-
-				[maxvertexcount(3)]
-				void geom(triangle vFwdBase IN[3], inout TriangleStream<vFwdBase> triStream)
-				{
-					vFwdBase o;
-					UNITY_INITIALIZE_OUTPUT(vFwdBase, o);
-
-					float3 v0 = IN[0].pos.xyz;
-					float3 v1 = IN[1].pos.xyz;
-					float3 v2 = IN[2].pos.xyz;
-
-					float3 centerPos = (v0 + v1 + v2) / 3.0;
-
-					float3 vn = normalize(cross(v1 - v0, v2 - v0));
-
-					float4x4 modelMatrix = unity_ObjectToWorld;
-					float4x4 modelMatrixInverse = unity_WorldToObject;
-
-					float3 normalDirection = normalize(
-						mul(float4(vn, 0.0), modelMatrixInverse).xyz);
-					float3 viewDirection = normalize(_WorldSpaceCameraPos
-						- mul(modelMatrix, float4(centerPos, 0.0)).xyz);
-					float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
-					float attenuation = 1.0;
-
-					float3 ambientLighting =
-						UNITY_LIGHTMODEL_AMBIENT.rgb * _Color.rgb;
-
-					float3 diffuseReflection =
-						attenuation * _LightColor0.rgb * _Color.rgb
-						* max(0.0, dot(normalDirection, lightDirection));
-
-					float3 specularReflection;
-					if (dot(normalDirection, lightDirection) < 0.0)
-					{
-						specularReflection = float3(0.0, 0.0, 0.0);
-					}
-					else
-					{
-						specularReflection = attenuation * _LightColor0.rgb
-							* _SpecColor.rgb * pow(max(0.0, dot(
-								reflect(-lightDirection, normalDirection),
-								viewDirection)), _Shininess);
-					}
-
-					o.pos = IN[0].pos;
-					o.pos = UnityObjectToClipPos(IN[0].pos);
-					o.tex = IN[0].tex;
-					o.eyeVec = IN[0].eyeVec;
-					o.tangentToWorldAndParallax = IN[0].tangentToWorldAndParallax;
-					o.ambientOrLightmapUV = IN[0].ambientOrLightmapUV;
-					TRANSFER_SHADOW(o);
-					UNITY_TRANSFER_FOG(o, o.pos);
-					o.diffuseColor = ambientLighting + diffuseReflection / 4;
-					o.specularColor = specularReflection + diffuseReflection * 3 / 4;
-					triStream.Append(o);
-
-					o.pos = IN[1].pos;
-					o.pos = UnityObjectToClipPos(IN[1].pos);
-					o.tex = IN[1].tex;
-					o.eyeVec = IN[1].eyeVec;
-					o.tangentToWorldAndParallax = IN[1].tangentToWorldAndParallax;
-					o.ambientOrLightmapUV = IN[1].ambientOrLightmapUV;
-					TRANSFER_SHADOW(o);
-					UNITY_TRANSFER_FOG(o, o.pos);
-					o.diffuseColor = ambientLighting + diffuseReflection / 4;
-					o.specularColor = specularReflection + diffuseReflection * 3 / 4;
-					triStream.Append(o);
-
-					o.pos = IN[2].pos;
-					o.pos = UnityObjectToClipPos(IN[2].pos);
-					o.tex = IN[2].tex;
-					o.eyeVec = IN[2].eyeVec;
-					o.tangentToWorldAndParallax = IN[2].tangentToWorldAndParallax;
-					o.ambientOrLightmapUV = IN[2].ambientOrLightmapUV;
-					TRANSFER_SHADOW(o);
-					UNITY_TRANSFER_FOG(o, o.pos);
-					o.diffuseColor = ambientLighting + diffuseReflection / 4;
-					o.specularColor = specularReflection + diffuseReflection * 3 / 4;
-					triStream.Append(o);
-
-				}
-
-				half4 frag(vFwdBase IN) : COLOR
-				{
-					float z1 = tex2Dproj(_CameraDepthTexture, IN.pos); 
-					z1 = LinearEyeDepth(z1);
-					float z2 = (IN.pos.z);
-					z1 = saturate(0.125 * (abs(z2 - z1)));
-					half shadowAtten = SHADOW_ATTENUATION(IN);
-
-					return float4((IN.specularColor * shadowAtten) +
-					IN.diffuseColor , saturate(z1*0.1) + _AlphaFactor);
-				}
-			ENDCG
-		}
-
-		Pass
-		{
-            Name "ShadowCaster"
-			Tags{ "LightMode" = "ShadowCaster" }
-
-			Fog{ Mode Off }
-			ZWrite On ZTest Less Cull Off
-            Offset [_ShadowBias],[_ShadowBiasSlope]
-
-			CGPROGRAM
-				#pragma vertex vert
-				#pragma fragment frag
-				#pragma multi_compile_shadowcaster
-				#pragma fragmentoption ARB_precision_hint_fastest
-				#include "UnityCG.cginc"
-
-				float rand(float3 co)
-				{
-					return frac(sin(dot(co.xyz ,float3(12.9898,78.233,45.5432))) * 43758.5453);
-				}
-
-				float rand2(float3 co)
-				{
-					return frac(sin(dot(co.xyz ,float3(19.9128,75.2,34.5122))) * 12765.5213);
-				}
-
-				float _WaveLength;
-				float _WaveHeight;
-				float _WaveSpeed;
-				float _RandomHeight;
-				float _RandomSpeed;
-				float _CollisionWaveLength;
-				vector _CollisionVectors[20];
-
-				struct v2f
-				{
-					V2F_SHADOW_CASTER;
-				};
-				
-				v2f vert(appdata_base v)
-				{
-					float3 v0 = mul((float3x3)unity_ObjectToWorld, v.vertex).xyz;
-
-					float collPhase = 0.0;
-
-					for (int i = 0; i < 20; i++)
-					{
-						float distanceToCenter = length(v0.xz - _CollisionVectors[i].xy);
-						float waveHeight = _CollisionVectors[i].z;
-						float waveState = _CollisionVectors[i].w;
-
-						if (distanceToCenter < _CollisionWaveLength * 10 * waveState)
-						{
-							collPhase += (waveHeight * ((1.0 - waveState) * distanceToCenter) / (_CollisionWaveLength * 10 * waveState)) * sin(distanceToCenter - (_CollisionWaveLength * 10 * waveState));
-						}
-					}
-
-					float phase0 = (_WaveHeight)* sin((_Time[1] * _WaveSpeed) + (v0.x * _WaveLength) + (v0.z * _WaveLength) + rand2(v0.xzz));
-					float phase0_1 = (_RandomHeight)* sin(cos(rand(v0.xzz) * _RandomHeight * cos(_Time[1] * _RandomSpeed * sin(rand(v0.xxz)))));
-					float phase0_2 = (_WaveHeight / 5.0) * sin((_Time[1] * _WaveSpeed * 3.0) + (v0.x * -_WaveLength * 4.0) + (v0.z * _WaveLength * 4.0) + rand2(v0.xzz));
-
-					v0.y += collPhase + phase0 + phase0_1 + phase0_2;
-
-					v.vertex.xyz = mul((float3x3)unity_WorldToObject, v0);
-
-					v2f o;
-					o.pos = UnityObjectToClipPos(v.vertex);
-					return o;
-				}
-				
-				float4 frag(v2f i) : COLOR
-				{
-					SHADOW_CASTER_FRAGMENT(i)
-				}
-			ENDCG
-		}
-	}
-	Fallback "Diffuse"
+        void surf (Input IN, inout SurfaceOutput o) {
+        
+        	fixed2 scrolledUV = IN.uv_MainTex;
+        	fixed2 scrolledNM = IN.uv_NormalMap;
+			fixed xScrollValue = _ScrollXSpeed * _Time;
+			fixed yScrollValue = _ScrollYSpeed * _Time;
+			scrolledNM += fixed2(xScrollValue, yScrollValue);
+			scrolledUV += fixed2(xScrollValue, yScrollValue);
+			
+			float InvNdotView = 1 - saturate(dot(o.Normal, normalize(IN.viewDir)));
+			float rimEffect = pow( InvNdotView, _FresnelFalloff);		
+			
+            half4 c = tex2D (_MainTex, scrolledUV ) * _Color;
+            
+            
+            o.Albedo = c.rgb;
+			o.Emission = _EmissionAmount * (texCUBE(_Cubemap, -WorldReflectionVector(IN, o.Normal)).rgb * rimEffect);
+			o.Specular = _SpecNS;
+			o.Gloss = _Gloss;
+            o.Alpha = _Alpha;
+            o.Normal = UnpackNormal(tex2D(_NormalMap, scrolledNM));
+        }
+		ENDCG
+	} 
+	FallBack "Diffuse"
 }

@@ -5,8 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Cursors
-  - mmCamera
   - manager
+  - Building
   layers:
   - Default
   - TransparentFX
@@ -16,19 +16,19 @@ TagManager:
   - UI
   - 
   - 
-  - Friend
+  - 
   - Enemy
-  - PathBlock
+  - 
   - Terrain
-  - fBuilding
-  - eBuilding
-  - airFriend
-  - airEnemy
-  - CamPlane
-  - Shroud
-  - Bridge
-  - Tunnel
-  - TunnelEntrance
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
@@ -44,6 +44,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: TileUI
+  - name: 
     uniqueID: 3159365829
     locked: 0

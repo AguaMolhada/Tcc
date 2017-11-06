@@ -19,7 +19,7 @@ public class GenericBuilding : MonoBehaviour
     /// <summary>
     /// Unique building id to assign to the building grid
     /// </summary>
-    public int BuildingID;
+    public float BuildingID;
     /// <summary>
     /// Building type (used for diferent scripts to work).
     /// </summary>
@@ -120,7 +120,7 @@ public class GenericBuilding : MonoBehaviour
             Vector3 worldPos = BuildingGrid.GridPositionRelatedToWorld(WorldController.MapChunkSize, x, y);
             Xpos = worldPos.x;
             Zpos = worldPos.z;
-            BuildingController.Instance.AssignBuildingToGrid(x, y, Pattern, BuildingID);
+            BuildingController.Instance.AssignBuildingToGrid(x, y, Pattern, BuildingID,this.gameObject);
             GameController.Instance.City.CityResources.UpdateResources(LumberCost, RockCost, MetalCost);
             GameController.Instance.City.CityBuildings.Add(this);
             return BuildingEventsHandler.Complete;

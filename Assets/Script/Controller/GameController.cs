@@ -31,7 +31,10 @@ public class GameController : MonoBehaviour {
     /// </summary>
     public GameDataEditable GameData;
 
-	void Awake () {
+    public TypeBuilding SelectedTypeToBuild;
+    public string SelectedBuildingName;
+
+    void Awake () {
         if (Instance != null)
         {
             Debug.LogError("You can't have 2 Game Controllers");

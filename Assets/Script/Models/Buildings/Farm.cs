@@ -8,6 +8,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// Farm Script
+/// </summary>
 public class Farm : GenericBuilding, IJobBuilding
 {
     /// <summary>
@@ -38,6 +41,10 @@ public class Farm : GenericBuilding, IJobBuilding
     /// Current Farm State;
     /// </summary>
     public FarmEventsHandler FarmState;
+    /// <summary>
+    /// Current day stored.
+    /// </summary>
+    private int currentDay;
 
     /// <summary>
     /// Show Progress of the current season.
@@ -57,7 +64,10 @@ public class Farm : GenericBuilding, IJobBuilding
                 return 0;
         }
     }
-
+    /// <summary>
+    /// Method to add resources to the city.
+    /// </summary>
+    /// <param name="resources">GameController instance</param>
     public void AddResources(GameResources resources)
     {
         resources.Food += (int) (SelectedSeed.AmmountFood * (FarmSize[0] + FarmSize[1] / 2f));
@@ -73,9 +83,15 @@ public class Farm : GenericBuilding, IJobBuilding
     /// </summary>
     private void CheckFarmState()
     {
+        if (GameController.Instance.City.Time.CurrentDay != currentDay)
+        {
+            currentDay = GameController.Instance.City.Time.CurrentDay;
+            DaysSinceStart++;
+        }
         switch (FarmState)
         {
             case FarmEventsHandler.Planting:
+
                 if (ShowProgress() >= 100)
                 {
                     FarmState = FarmEventsHandler.Growing;
@@ -106,7 +122,7 @@ public class Farm : GenericBuilding, IJobBuilding
             case FarmEventsHandler.Plage:
                 break;
             case FarmEventsHandler.Idle:
-                if (GameController.Instance.City.Time.CurrentSeason == "Summer")
+                if (GameController.Instance.City.Time.CurrentSeason == "Spring")
                 {
                     DaysSinceStart = 0;
                     FarmState = FarmEventsHandler.Planting;
