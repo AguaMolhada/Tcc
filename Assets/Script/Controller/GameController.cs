@@ -25,7 +25,10 @@ public class GameController : MonoBehaviour {
     /// Current city data.
     /// </summary>
     public CityData City;
-
+    /// <summary>
+    /// List with all buildings constructed/in construction in the city.
+    /// </summary>
+    public List<GameObject> CityBuildings;
     /// <summary>
     /// GameData.
     /// </summary>
@@ -61,6 +64,7 @@ public class GameController : MonoBehaviour {
             City.CityName = cName;
         }
         City.CityHabitants = new List<GameObject>();
+        CityBuildings = new List<GameObject>();
         City.name = cName;
         switch (difMode)
         {

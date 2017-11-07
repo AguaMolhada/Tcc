@@ -17,10 +17,6 @@ public class GenericBuilding : MonoBehaviour
     /// </summary>
     public string BuildingName;
     /// <summary>
-    /// Unique building id to assign to the building grid
-    /// </summary>
-    public float BuildingID;
-    /// <summary>
     /// Building type (used for diferent scripts to work).
     /// </summary>
     public TypeBuilding Type;
@@ -97,35 +93,11 @@ public class GenericBuilding : MonoBehaviour
     /// </summary>
     public float Zrot { get; protected set; }
 
-    /// <summary>
-    /// On click to construck will check if have something worng. If the building is clear to build will return Completed
-    /// </summary>
-    /// <returns>Return the Event related to the building</returns>
-    public BuildingEventsHandler OnConstruction(int x, int y)
+    public void SetPositionOnWorld(Vector3 pos)
     {
-        if (GameController.Instance.City.CityResources.Wood < LumberCost)
-        {
-            return BuildingEventsHandler.NoLumber;
-        }
-        if (GameController.Instance.City.CityResources.Stone < RockCost)
-        {
-            return BuildingEventsHandler.NoStone;
-        }
-        if (GameController.Instance.City.CityResources.Iron < MetalCost)
-        {
-            return BuildingEventsHandler.NoIron;
-        }
-        if (!BuildingController.Instance.CheckOverlap(x, y, Pattern))
-        {
-            Vector3 worldPos = BuildingGrid.GridPositionRelatedToWorld(WorldController.MapChunkSize, x, y);
-            Xpos = worldPos.x;
-            Zpos = worldPos.z;
-            BuildingController.Instance.AssignBuildingToGrid(x, y, Pattern, BuildingID,this.gameObject);
-            GameController.Instance.City.CityResources.UpdateResources(LumberCost, RockCost, MetalCost);
-            GameController.Instance.City.CityBuildings.Add(this);
-            return BuildingEventsHandler.Complete;
-        }
-        return BuildingEventsHandler.InvalidPos;
-
+        Xpos = pos.x;
+        Ypos = pos.y;
+        Zpos = pos.z;
     }
+
 }

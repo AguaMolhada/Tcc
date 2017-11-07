@@ -7,11 +7,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Class that handle all things related to buildings
+/// </summary>
 public class BuildingController : MonoBehaviour
 {
-
+    /// <summary>
+    /// Singleton
+    /// </summary>
     public static BuildingController Instance { get; protected set; }
 
     void Awake()
@@ -23,23 +29,40 @@ public class BuildingController : MonoBehaviour
         Instance = this;
     }
 
-    //TODO Test this
+    /// <summary>
+    /// Check if the building is overlaping another one or is trying to construct on water
+    /// </summary>
+    /// <param name="x">Position X to check </param>
+    /// <param name="y">POsition Y to check</param>
+    /// <param name="pattern">Building Pattern grid</param>
+    /// <returns></returns>
     public bool CheckOverlap(int x, int y, BuildingPattern pattern)
     {
         var grid = WorldController.MapBuildingGrid;
-        for (var xGrid = x; xGrid < x + pattern.Rows.Length; xGrid++)
+        if (CheckIfInsideMapGrid(x, y))
         {
-            for (var yGrid = y; yGrid < y + pattern.Rows[xGrid].Collums.Length; yGrid++)
+            for (int gridX = x; gridX < x+pattern.Rows.Length; gridX++)
             {
-                if (grid[xGrid, yGrid] != 0)
+                for (int gridY = y; gridY < y+pattern.Rows[0].Collums.Length; gridY++)
                 {
-                    return true;
+                    if (grid[gridX, gridY] != 0)
+                    {
+                        return false;
+                    }
                 }
             }
+
+            return true;
         }
+
         return false;
     }
-
+    /// <summary>
+    /// Check if the position is inside of building grid
+    /// </summary>
+    /// <param name="x">Position X to check </param>
+    /// <param name="y">POsition Y to check</param>
+    /// <returns></returns>
     private bool CheckIfInsideMapGrid(int x, int y)
     {
         var grid = WorldController.MapBuildingGrid;
@@ -67,11 +90,9 @@ public class BuildingController : MonoBehaviour
 
         for (var xGrid = x; xGrid < x + pattern.Rows.Length; xGrid++)
         {
-            for (var yGrid = y; yGrid < y + pattern.Rows[xGrid].Collums.Length; yGrid++)
+            for (var yGrid = y; yGrid < y + pattern.Rows[0].Collums.Length; yGrid++)
             {
                 grid[xGrid, yGrid] = id;
-                var instanciate = Instantiate(building, BuildingGrid.GridPositionRelatedToWorld(WorldController.MapChunkSize, x, y), Quaternion.identity);
-                instanciate.tag ="Building";
             }
         }
         WorldController.MapBuildingGrid = grid;
@@ -86,24 +107,49 @@ public class BuildingController : MonoBehaviour
     /// <param name="id">Building type ID</param>
     /// <param name="rotate">Is Rotate?</param>
     /// <param name="building">Building prefab to instanciate</param>
-    public void AssignBuildingToGrid(int x, int y, BuildingPattern pattern, float id, bool rotate, GameObject building)
+    public void AssignBuildingToGrid(int x, int y, BuildingPattern pattern, float id, bool rotate)
     {
         var grid = WorldController.MapBuildingGrid;
-        if (CheckIfInsideMapGrid(x, y))
+
+        for (var xGrid = x; xGrid < x + pattern.Rows.Length; xGrid++)
         {
-            for (var xGrid = x; xGrid < x + pattern.Rows.Length; xGrid++)
+            for (var yGrid = y; yGrid < y + pattern.Rows[xGrid].Collums.Length; yGrid++)
             {
-                for (var yGrid = y; yGrid < y + pattern.Rows[xGrid].Collums.Length; yGrid++)
-                {
-                    grid[xGrid, yGrid] = id;
-                }
+                grid[xGrid, yGrid] = id;
             }
-            WorldController.MapBuildingGrid = grid;
         }
-        else
-        {
-            Debug.Log("NotValid");
-        }
+        WorldController.MapBuildingGrid = grid;
     }
 
+    /// <summary>
+    /// On click to construck will check if have something worng. If the building is clear to build will return Completed
+    /// </summary>
+    /// <returns>Return the Event related to the building</returns>
+    public BuildingEventsHandler OnConstruction(int x, int y, GameObject buildingGameObject)
+    {
+        var building = buildingGameObject.GetComponent<GenericBuilding>();
+        if (GameController.Instance.City.CityResources.Wood < building.LumberCost)
+        {
+            return BuildingEventsHandler.NoLumber;
+        }
+        if (GameController.Instance.City.CityResources.Stone < building.RockCost)
+        {
+            return BuildingEventsHandler.NoStone;
+        }
+        if (GameController.Instance.City.CityResources.Iron < building.MetalCost)
+        {
+            return BuildingEventsHandler.NoIron;
+        }
+        if (CheckOverlap(x, y, building.Pattern))
+        {
+            Vector3 worldPos = BuildingGrid.GridPositionRelatedToWorld(WorldController.MapChunkSize, x, y);
+            building.SetPositionOnWorld(worldPos);
+            AssignBuildingToGrid(x, y, building.Pattern, (int)building.Type, buildingGameObject);
+            Instantiate(buildingGameObject, worldPos, Quaternion.identity);
+            GameController.Instance.City.CityResources.UpdateResources(building.LumberCost, building.RockCost, building.MetalCost);
+            GameController.Instance.CityBuildings.Add(buildingGameObject);
+            return BuildingEventsHandler.Complete;
+        }
+        return BuildingEventsHandler.InvalidPos;
+    }
 }

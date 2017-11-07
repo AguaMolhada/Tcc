@@ -35,9 +35,11 @@ MonoBehaviour:
     MinTemp: 13.2
     MaxTemp: 23.4
   Buildings:
-  - {fileID: 114137748114130032, guid: 88bb0fa65d4eb644dba4c8ab09819273, type: 2}
-  - {fileID: 114215632182890300, guid: cb0bedadb27e9524fa23a49ec50e669a, type: 2}
-  - {fileID: 114211585680104166, guid: 8a54209885319af459b0ce4dd5131dab, type: 2}
+  - {fileID: 1166537926108146, guid: 88bb0fa65d4eb644dba4c8ab09819273, type: 2}
+  - {fileID: 1319965574017102, guid: cb0bedadb27e9524fa23a49ec50e669a, type: 2}
+  - {fileID: 1797061719218000, guid: 8a54209885319af459b0ce4dd5131dab, type: 2}
+  - {fileID: 1760633061164202, guid: 0616632f95b6e6149b19f8c13ba1060b, type: 2}
+  - {fileID: 1609041947634068, guid: a6c2f08cac61922489c7be7d84de35ec, type: 2}
   Jobs:
   - JobName: Barmen
     Speed: 0

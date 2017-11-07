@@ -47,15 +47,17 @@ public class Citzen : MonoBehaviour
     /// <summary>
     /// NPC House.
     /// </summary>
-    public GenericBuilding House;
+    public GameObject NpcHouse;
     /// <summary>
     /// NPC job Location, children doesn't work and student will "work" on the chuch to learn more things. (you'll be able to "Graduate" the children).
     /// </summary>
-    public GenericBuilding JobLocation;
+    public GameObject JobLocation;
     /// <summary>
     /// Corroutine is running.
     /// </summary>
-    private bool cbRunning = false;
+    private bool _cbRunning = false;
+
+    private GameObject _mySelf;
 
     /// <summary>
     /// Method to initialize a random NPC;
@@ -78,6 +80,7 @@ public class Citzen : MonoBehaviour
         }
         Saturation = 100;
         Happiness = 60;
+        _mySelf = this.gameObject;
         StartCoroutine("SearchHouse");
         HappyBirthday();
     }
@@ -104,7 +107,7 @@ public class Citzen : MonoBehaviour
         DeathChance = (float) (0.01f * Mathf.Pow(1, 2) + Age * x);
         if(Age == 25)
         {
-            House = null;
+            NpcHouse = null;
             StartCoroutine("SearchHouse");
         }
     }
@@ -114,32 +117,34 @@ public class Citzen : MonoBehaviour
     /// </summary>
     private IEnumerator SearchHouse()
     {
-        if (cbRunning)
+        if (_cbRunning)
         {
             yield break;
         }
-        cbRunning = true;
-        while (House == null)
+        _cbRunning = true;
+        while (NpcHouse == null)
         {
-            if (GameController.Instance.City.CityBuildings.OfType<House>().Any())
+            if (GameController.Instance.CityBuildings.Any())
             {
-                var avaliableBuildings = GameController.Instance.City.CityBuildings.OfType<House>();
+                var avaliableBuildings = GameObject.FindGameObjectsWithTag("Building");
                 if (avaliableBuildings.Any())
                 {
                     foreach (var building in avaliableBuildings)
                     {
-                        if (building.Type == TypeBuilding.House)
+                        if (building.GetComponent<GenericBuilding>().Type == TypeBuilding.House)
                         {
-                            if (building.Habitants.Count < building.MaxCitzenInside)
+                            if (building.GetComponent<House>().Habitants.Count < building.GetComponent<GenericBuilding>().MaxCitzenInside)
                             {
-                                var test = building.RegisterPeopleInHouse(this);
+                                var test = building.GetComponent<House>().RegisterPeopleInHouse(_mySelf);
                                 if (test == HouseEventsHandler.Sucess)
                                 {
-                                    yield break;
+                                    NpcHouse = building;
+                                    break;
                                 }
                             }
                         }
                     }
+                    yield return new WaitForSeconds(5);
                 }
                 else
                 {

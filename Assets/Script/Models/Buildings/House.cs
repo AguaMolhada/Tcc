@@ -17,11 +17,12 @@ public class House : GenericBuilding
     /// <summary>
     /// List with all habitants living in this house
     /// </summary>
-    public List<Citzen> Habitants;
+    public List<GameObject> Habitants;
+
     /// <summary>
     /// Max families allowed on the house
     /// </summary>
-    public int MaxFamiles { get; protected set; }
+    public int MaxFamiles;
     /// <summary>
     /// House temperature
     /// </summary>
@@ -38,19 +39,6 @@ public class House : GenericBuilding
     /// Ammout charcoal inside the house
     /// </summary>
     public float AmoutCharcoal { get; protected set; }
-
-    /// <summary>
-    /// Constructor for the House Class
-    /// </summary>
-    /// <param name="baseData">Data will be acquired via database</param>
-    /// <param name="bName">Name of desired building to create</param>
-    /// <param name="familes">Number of families living in the house</param>
-    /// <param name="t">Temperature of the House</param> TODO(Season and daytime will provide one or will be default)
-    public House(string bName, int familes, float t)
-    {
-        MaxFamiles = familes;
-        Temp = t;
-    }
 
     /// <summary>
     /// Method to add food to the house storage
@@ -72,24 +60,39 @@ public class House : GenericBuilding
     /// </summary>
     /// <param name="people">Citzen that will be added</param>
     /// <returns>If the house dont have the number max</returns>
-    public HouseEventsHandler RegisterPeopleInHouse(Citzen people)
-    {   
-        var count = Habitants.Count(habitant => habitant.Age >= 20);
-        if (count > MaxFamiles*2)
+    public HouseEventsHandler RegisterPeopleInHouse(GameObject people)
+    {
+        var count = 0;
+        if (Habitants.Count != 0)
         {
-            return HouseEventsHandler.EnoughtFamilies;
-        }
-        else
-        {
-            if (Habitants.Count < MaxCitzenInside)
+            foreach (var habitant in Habitants)
             {
-                Habitants.Add(people);
-                return HouseEventsHandler.Sucess;
+                if (habitant != null)
+                {
+                    if (habitant.GetComponent<Citzen>().Age >= 20)
+                    {
+                        count++;
+                    }
+                }
+            }
+            if (count > MaxFamiles * 2)
+            {
+                return HouseEventsHandler.EnoughtFamilies;
             }
             else
             {
-                return HouseEventsHandler.HabitantesFull;
+                if (Habitants.Count < MaxCitzenInside)
+                {
+                    this.Habitants.Add(people);
+                    return HouseEventsHandler.Sucess;
+                }
+                else
+                {
+                    return HouseEventsHandler.HabitantesFull;
+                }
             }
         }
+        this.Habitants.Add(people);
+        return HouseEventsHandler.Sucess;
     }
 }

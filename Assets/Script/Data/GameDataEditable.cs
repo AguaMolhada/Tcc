@@ -34,7 +34,7 @@ public class GameDataEditable : ScriptableObject
     /// <summary>
     /// All in-game buildings.
     /// </summary>
-    public List<GenericBuilding> Buildings;
+    public List<GameObject> Buildings;
 
     /// <summary>
     /// All in-game jobs.
@@ -64,7 +64,7 @@ public class GameDataEditable : ScriptableObject
 
     public void SortList()
     {
-        Buildings.Sort((a, b) => string.Compare(a.BuildingName, b.BuildingName, StringComparison.Ordinal));
+        Buildings.Sort((a, b) => string.Compare(a.GetComponent<GenericBuilding>().BuildingName, b.GetComponent<GenericBuilding>().BuildingName, StringComparison.Ordinal));
         Jobs.Sort((a, b) => string.Compare(a.JobName, b.JobName, StringComparison.Ordinal));
         Seeds.Sort((a, b) => string.Compare(a.SeedName, b.SeedName, StringComparison.Ordinal));
         TreeTypes.Sort((a, b) => string.Compare(a.TreeName, b.TreeName, StringComparison.Ordinal));

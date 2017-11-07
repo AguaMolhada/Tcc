@@ -25,10 +25,6 @@ public class CityData : UpdatableObject
     /// </summary>
     public List<GameObject> CityHabitants;
     /// <summary>
-    /// List with all buildings constructed/in construction in the city.
-    /// </summary>
-    public List<GenericBuilding> CityBuildings;
-    /// <summary>
     /// Game Recources
     /// </summary>
     public GameResources CityResources;

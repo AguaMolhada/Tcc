@@ -27,12 +27,12 @@ public class MouseController : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100f))
             {
                 var x = BuildingGrid.WorldPositionRelatedToGrid(WorldController.MapChunkSize, hit.point);
-                GenericBuilding buildTemp = null;
+                GameObject buildTemp = null;
                 foreach (var building in GameController.Instance.GameData.Buildings)
                 {
-                    if (building.Type == GameController.Instance.SelectedTypeToBuild)
+                    if (building.GetComponent<GenericBuilding>().Type == GameController.Instance.SelectedTypeToBuild)
                     {
-                        if (building.BuildingName == GameController.Instance.SelectedBuildingName)
+                        if (building.GetComponent<GenericBuilding>().BuildingName == GameController.Instance.SelectedBuildingName)
                         {
                             buildTemp = building;
                         }
@@ -40,10 +40,8 @@ public class MouseController : MonoBehaviour
                 }
                 if (buildTemp != null)
                 {
-                    if (buildTemp.OnConstruction(x[0], x[1]) == BuildingEventsHandler.Complete)
-                    {
-                        return;
-                    }
+                    Debug.Log(buildTemp);
+                    BuildingController.Instance.OnConstruction(x[0], x[1], buildTemp);
                 }
             }
         }
