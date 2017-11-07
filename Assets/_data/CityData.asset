@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AutoUpdate: 0
-  CityName: Mooreland
+  CityName: Trinity
   CityHabitants:
   - {fileID: 0}
   - {fileID: 0}
