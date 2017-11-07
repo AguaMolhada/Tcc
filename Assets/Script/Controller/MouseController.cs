@@ -11,7 +11,7 @@ using UnityEngine;
 /// </summary>
 public class MouseController : MonoBehaviour
 {
-
+    public MouseMode SelectedMouseMode = MouseMode.Normal;
 
     private void Update()
     {
@@ -22,23 +22,42 @@ public class MouseController : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100f))
             {
                 var x = BuildingGrid.WorldPositionRelatedToGrid(WorldController.MapChunkSize, hit.point);
-                GameObject buildTemp = null;
-                foreach (var building in GameController.Instance.GameData.Buildings)
+                if (SelectedMouseMode == MouseMode.Building)
                 {
-                    if (building.GetComponent<GenericBuilding>().Type == GameController.Instance.SelectedTypeToBuild)
+                    BuildThing(x);
+                }
+                if (SelectedMouseMode == MouseMode.Demolish)
+                {
+                    //DO Things
+                }
+                if (SelectedMouseMode == MouseMode.Normal)
+                {
+                    if (!GameController.Instance.GameStarted)
                     {
-                        if (building.GetComponent<GenericBuilding>().BuildingName == GameController.Instance.SelectedBuildingName)
-                        {
-                            buildTemp = building;
-                        }
+                        GameController.Instance.NewCity("","Normal",hit.point);
                     }
                 }
-                if (buildTemp != null)
+            }
+        }
+    }
+
+    private void BuildThing(int[] x) 
+    {
+        GameObject buildTemp = null;
+        foreach (var building in GameController.Instance.GameData.Buildings)
+        {
+            if (building.GetComponent<GenericBuilding>().Type == GameController.Instance.SelectedTypeToBuild)
+            {
+                if (building.GetComponent<GenericBuilding>().BuildingName == GameController.Instance.SelectedBuildingName)
                 {
-                    Debug.Log(buildTemp);
-                    BuildingController.Instance.OnConstruction(x[0], x[1], buildTemp);
+                    buildTemp = building;
                 }
             }
+        }
+        if (buildTemp != null)
+        {
+            Debug.Log(buildTemp);
+            BuildingController.Instance.OnConstruction(x[0], x[1], buildTemp);
         }
     }
 }

@@ -393,6 +393,13 @@ public enum Genere {
     Male,
 }
 
+public enum MouseMode
+{
+    Normal,
+    Building,
+    Demolish
+}
+
 [System.Serializable]
 public class BuildingPattern
 {

@@ -33,7 +33,10 @@ public class GameController : MonoBehaviour {
     /// GameData.
     /// </summary>
     public GameDataEditable GameData;
-
+    /// <summary>
+    /// Game Started?.
+    /// </summary>
+    public bool GameStarted;
     public TypeBuilding SelectedTypeToBuild;
     public string SelectedBuildingName;
 
@@ -43,16 +46,18 @@ public class GameController : MonoBehaviour {
             Debug.LogError("You can't have 2 Game Controllers");
         }
         Instance = this;
-        NewCity("","Easy");
-	    StartCoroutine("TimeController");
+
 	}
     /// <summary>
     /// Create a new City
     /// </summary>
     /// <param name="cName">City Name if empty will generate a random one</param>
     /// <param name="difMode">Difficulty of the game</param>
-    private void NewCity(string cName,string difMode)
+    public void NewCity(string cName,string difMode, Vector3 startPosition)
     {
+        GameStarted = true;
+        startPosition.y += 1f;
+        StartCoroutine("TimeController");
         City.Time = new DateTimeGame(GameData.Seasons);
         if (cName == "")
         {
@@ -71,7 +76,7 @@ public class GameController : MonoBehaviour {
             case "Easy":
                 for (var i = 0; i < 15; i++)
                 {
-                    var cityTemp = Instantiate(PeoplePrefab, transform.position, Quaternion.identity);
+                    var cityTemp = Instantiate(PeoplePrefab, startPosition, Quaternion.identity);
                     cityTemp.GetComponent<Citzen>().Init(new System.Random(i + (int)(Time.deltaTime * 100)));
                     cityTemp.name = cityTemp.GetComponent<Citzen>().Name;
                     City.CityHabitants.Add(cityTemp);
@@ -83,7 +88,7 @@ public class GameController : MonoBehaviour {
                 break;
             case "Normal":
                 for ( var i = 0 ; i < 10 ; i++ ) {
-                    var cityTemp = Instantiate(PeoplePrefab, transform.position, Quaternion.identity);
+                    var cityTemp = Instantiate(PeoplePrefab, startPosition, Quaternion.identity);
                     cityTemp.GetComponent<Citzen>().Init(new System.Random(i + (int)(Time.deltaTime * 100)));
                     cityTemp.name = cityTemp.GetComponent<Citzen>().Name;
                     City.CityHabitants.Add(cityTemp);
@@ -95,7 +100,7 @@ public class GameController : MonoBehaviour {
                 break;
             case "Hard":
                 for ( var i = 0 ; i < 8 ; i++ ) {
-                    var cityTemp = Instantiate(PeoplePrefab, transform.position, Quaternion.identity);
+                    var cityTemp = Instantiate(PeoplePrefab, startPosition, Quaternion.identity);
                     cityTemp.GetComponent<Citzen>().Init(new System.Random(i+(int)(Time.deltaTime*100)));
                     cityTemp.name = cityTemp.GetComponent<Citzen>().Name;
                     City.CityHabitants.Add(cityTemp);

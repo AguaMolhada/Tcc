@@ -68,7 +68,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Alpha: 0.4
-    - _AlphaFactor: 0.563
+    - _AlphaFactor: 0.12
     - _Amplitude: 0.3
     - _BumpScale: 1
     - _CollisionWaveLength: 2
@@ -86,22 +86,22 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RandomHeight: 0.01
-    - _RandomSpeed: 0.1
+    - _RandomHeight: 0.7
+    - _RandomSpeed: 3
     - _ScrollXSpeed: 0.1
     - _ScrollYSpeed: 0.1
-    - _Shininess: 1
+    - _Shininess: 1.2
     - _SpecNS: 0.15
     - _Speed: 0.5
     - _SrcBlend: 1
     - _Tess: 5
     - _UVSec: 0
-    - _WaveHeight: 0.05
-    - _WaveLength: 0.1
-    - _WaveSpeed: 1
+    - _WaveHeight: 0.09
+    - _WaveLength: 0.08
+    - _WaveSpeed: 2
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.003921569, g: 0.21960784, b: 0.503, a: 1}
+    - _Color: {r: 0, g: 0.28037515, b: 0.41911763, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}

@@ -147,7 +147,7 @@ public class WorldGeneratorEditor : Editor {
             base.OnInspectorGUI();
         }
 
-        if ( _autoUpdate ) {
+        if ( _autoUpdate && GUI.changed) {
             _mapController.GenerateMap();
         }
 

@@ -575,8 +575,9 @@ public static class MeshGenerator
     /// </summary>
     /// <param name="heightMap">Map used to pass the terrain height</param>
     /// <param name="levelOfDetail">Level of detail of the mesh</param>
+    /// <param name="waterHeight">Water Height</param>
     /// <returns>A mesh created with all value</returns>
-    public static MeshData GenerateTerrainMesh(float[,] heightMap, int levelOfDetail)
+    public static MeshData GenerateTerrainMesh(float[,] heightMap, int levelOfDetail, float waterHeight)
     {
         var w = heightMap.GetLength(0);
         var h = heightMap.GetLength(1);
@@ -593,7 +594,7 @@ public static class MeshGenerator
         {
             for (var x = 0; x < w; x += meshSimplificationIncrement)
             {
-                if (heightMap[x, y] < 0.46f)
+                if (heightMap[x, y] < waterHeight)
                 {
                     meshData.Vertices[vertexIndex] = new Vector3(topLeftX + x, 0, topleftZ - y);
                     meshData.Uvs[vertexIndex] = new Vector2(x / (float) w, y / (float) h);

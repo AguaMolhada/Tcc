@@ -37,6 +37,8 @@ public class WorldController : MonoBehaviour
     public NoiseData NoiseData;
     public TextureData TextureData;
 
+    [Range(0,.6f)]
+    public float WaterHeight;
     public int LevelOfDetail;
 
     public GameObject Teste;
@@ -81,7 +83,7 @@ public class WorldController : MonoBehaviour
         TextureData.UpdateMeshHeights(TerrainMaterial, TerrainData.MinHeight, TerrainData.MaxHeight);
         TextureData.ApplyToMaterial(TerrainMaterial);
         DrawWorldMesh(MeshGenerator.GenerateTerrainMesh(_noiseMap, TerrainData.MeshHeightMultiplier, TerrainData.MeshHeightCurve, LevelOfDetail, TerrainData.FlatShading));
-        DrawWaterMesh(MeshGenerator.GenerateTerrainMesh(_noiseMap, LevelOfDetail));
+        DrawWaterMesh(MeshGenerator.GenerateTerrainMesh(_noiseMap, LevelOfDetail,WaterHeight));
 
     }
 

@@ -112,6 +112,14 @@ public class Citzen : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (NpcHouse != null)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, NpcHouse.transform.position, .5f * Time.deltaTime);
+        }
+    }
+
     /// <summary>
     /// Search if have an avaliable house to live.
     /// </summary>
