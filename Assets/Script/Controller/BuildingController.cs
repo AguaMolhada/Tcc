@@ -4,10 +4,6 @@
 //          http://github.com/DaulerPalhares                                                                           //
 // </copyright>                                                                                                        //
 // --------------------------------------------------------------------------------------------------------------------//
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -45,6 +41,7 @@ public class BuildingController : MonoBehaviour
             {
                 for (int gridY = y; gridY < y+pattern.Rows[0].Collums.Length; gridY++)
                 {
+                    // ReSharper disable once CompareOfFloatsByEqualityOperator
                     if (grid[gridX, gridY] != 0)
                     {
                         return false;
@@ -106,7 +103,6 @@ public class BuildingController : MonoBehaviour
     /// <param name="pattern">Building Pattern</param>
     /// <param name="id">Building type ID</param>
     /// <param name="rotate">Is Rotate?</param>
-    /// <param name="building">Building prefab to instanciate</param>
     public void AssignBuildingToGrid(int x, int y, BuildingPattern pattern, float id, bool rotate)
     {
         var grid = WorldController.MapBuildingGrid;

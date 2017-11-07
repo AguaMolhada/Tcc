@@ -55,7 +55,7 @@ public class Citzen : MonoBehaviour
     /// <summary>
     /// Corroutine is running.
     /// </summary>
-    private bool _cbRunning = false;
+    private bool _cbRunning;
 
     private GameObject _mySelf;
 
@@ -80,7 +80,7 @@ public class Citzen : MonoBehaviour
         }
         Saturation = 100;
         Happiness = 60;
-        _mySelf = this.gameObject;
+        _mySelf = gameObject;
         StartCoroutine("SearchHouse");
         HappyBirthday();
     }
@@ -104,7 +104,7 @@ public class Citzen : MonoBehaviour
         {
             x = 0.8f;
         }
-        DeathChance = (float) (0.01f * Mathf.Pow(1, 2) + Age * x);
+        DeathChance = 0.01f * Mathf.Pow(1, 2) + Age * x;
         if(Age == 25)
         {
             NpcHouse = null;

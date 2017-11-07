@@ -6,7 +6,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = System.Random;
 
 [CustomEditor(typeof(WorldController))]

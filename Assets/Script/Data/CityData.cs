@@ -5,10 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+// ReSharper disable ReturnValueOfPureMethodIsNotUsed
 
 /// <summary>
 /// City data used to save things in the game
@@ -61,8 +61,6 @@ public class CityData : UpdatableObject
             case OrganizerFilter.GenereFm:
                 break;
             case OrganizerFilter.GenereMf:
-                break;
-            default:
                 break;
         }
     }
