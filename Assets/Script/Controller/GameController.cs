@@ -48,11 +48,13 @@ public class GameController : MonoBehaviour {
         Instance = this;
 
 	}
+
     /// <summary>
     /// Create a new City
     /// </summary>
     /// <param name="cName">City Name if empty will generate a random one</param>
     /// <param name="difMode">Difficulty of the game</param>
+    /// <param name="startPosition">Start position to spawn all npcs</param>
     public void NewCity(string cName,string difMode, Vector3 startPosition)
     {
         GameStarted = true;
@@ -76,6 +78,7 @@ public class GameController : MonoBehaviour {
             case "Easy":
                 for (var i = 0; i < 15; i++)
                 {
+                    startPosition.x += (i / 100f);
                     var cityTemp = Instantiate(PeoplePrefab, startPosition, Quaternion.identity);
                     cityTemp.GetComponent<Citzen>().Init(new System.Random(i + (int)(Time.deltaTime * 100)));
                     cityTemp.name = cityTemp.GetComponent<Citzen>().Name;
@@ -88,6 +91,7 @@ public class GameController : MonoBehaviour {
                 break;
             case "Normal":
                 for ( var i = 0 ; i < 10 ; i++ ) {
+                    startPosition.x += (i / 100f);
                     var cityTemp = Instantiate(PeoplePrefab, startPosition, Quaternion.identity);
                     cityTemp.GetComponent<Citzen>().Init(new System.Random(i + (int)(Time.deltaTime * 100)));
                     cityTemp.name = cityTemp.GetComponent<Citzen>().Name;
@@ -99,7 +103,9 @@ public class GameController : MonoBehaviour {
                 City.CityResources.Food = 300;
                 break;
             case "Hard":
-                for ( var i = 0 ; i < 8 ; i++ ) {
+                for ( var i = 0 ; i < 8 ; i++ )
+                {
+                    startPosition.x += (i / 100f);
                     var cityTemp = Instantiate(PeoplePrefab, startPosition, Quaternion.identity);
                     cityTemp.GetComponent<Citzen>().Init(new System.Random(i+(int)(Time.deltaTime*100)));
                     cityTemp.name = cityTemp.GetComponent<Citzen>().Name;
