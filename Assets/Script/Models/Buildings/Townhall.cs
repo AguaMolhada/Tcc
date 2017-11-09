@@ -7,7 +7,7 @@
 using System.Linq;
 using UnityEngine.UI;
 
-public class Townhall : GenericBuilding
+public class Townhall : GenericJobBuilding
 {
     public CityData CityData => GameController.Instance.City;
     public Text InfoText;

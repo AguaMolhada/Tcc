@@ -310,6 +310,21 @@ public class Job {
     public bool Male;
 }
 
+/// <summary>
+/// Base class for citzen skills.
+/// </summary>
+[System.Serializable]
+public class Skill
+{
+    /// <summary>
+    /// Skill Name is the same of JobName.
+    /// </summary>
+    public string SkillName;
+    /// <summary>
+    /// More efficiency more things the citzen will do.
+    /// </summary>
+    public float Efficiency;
+}
 //--------------------Ignorar isso-------------------//
 //A-B-C-D-E-F-G-H-I-J-K-L-M-N-O-P-Q-R-S-T-U-V-W-X-Y-Z//
 //---------------------------------------------------//
@@ -386,7 +401,7 @@ public enum FarmEventsHandler {
 }
 
 /// <summary>
-/// Genere for all living creatures.
+/// NpcGenere for all living creatures.
 /// </summary>
 public enum Genere {
     Female,

@@ -180,7 +180,4 @@ MonoBehaviour:
     AgeToProduce: 3
     AmmoutFood: 38
     TimeHarvest: 13
-  Animals:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  Animals: []

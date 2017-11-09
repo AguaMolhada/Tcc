@@ -9,7 +9,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Class used on the mining.
 /// </summary>
-public class Mine : GenericBuilding , IJobBuilding
+public class Mine : GenericJobBuilding
 {
     /// <summary>
     /// Total Resources that the player will gather. When depleted the mine will "Recharge" itself.
@@ -20,27 +20,11 @@ public class Mine : GenericBuilding , IJobBuilding
     /// </summary>
     public int Cooldown;
     /// <summary>
-    /// List of Workers.
+    /// Max workers allowed on the building
     /// </summary>
-    public List<Citzen> Workers;
+    public new int MaxWorkers;
     /// <summary>
     /// Ammout resources collected each day.
     /// </summary>
     public int Ammout => Workers.Count * 4;
-
-
-    public int ShowProgress()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void AddResources(GameResources x)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public bool AssignWorker()
-    {
-        throw new System.NotImplementedException();
-    }
 }

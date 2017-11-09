@@ -10,7 +10,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Farm Script
 /// </summary>
-public class Farm : GenericBuilding, IJobBuilding
+public class Farm : GenericJobBuilding
 {
     /// <summary>
     /// Seed that will be planted next Spring.
@@ -29,13 +29,9 @@ public class Farm : GenericBuilding, IJobBuilding
     /// </summary>
     public float DecayingStatus { get; private set; }
     /// <summary>
-    /// List of workers working on the farm.
+    /// Max workers allowed on the building
     /// </summary>
-    public List<Citzen> Workers;
-    /// <summary>
-    /// Max workers allowed on the farm.
-    /// </summary>
-    public int MaxWorkers => (int) (1.25f * (FarmSize[0] + FarmSize[1] / 2f));
+    public new int MaxWorkers => (int) (1.25f * (FarmSize[0] + FarmSize[1] / 2f));
     /// <summary>
     /// Current Farm State;
     /// </summary>
@@ -43,13 +39,10 @@ public class Farm : GenericBuilding, IJobBuilding
     /// <summary>
     /// Current day stored.
     /// </summary>
-    private int currentDay;
+    private int _currentDay;
 
-    /// <summary>
-    /// Show Progress of the current season.
-    /// </summary>
-    /// <returns>A number bteween 0 and 100</returns>
-    public int ShowProgress()
+    /// <inheritdoc />
+    public override int ShowProgress()
     {
         switch (FarmState)
         {
@@ -63,18 +56,10 @@ public class Farm : GenericBuilding, IJobBuilding
                 return 0;
         }
     }
-    /// <summary>
-    /// Method to add resources to the city.
-    /// </summary>
-    /// <param name="resources">GameController instance</param>
-    public void AddResources(GameResources resources)
+    /// <inheritdoc />
+    public override void AddResources(GameResources resources)
     {
         resources.Food += (int) (SelectedSeed.AmmountFood * (FarmSize[0] + FarmSize[1] / 2f));
-    }
-
-    public bool AssignWorker()
-    {
-        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -82,9 +67,9 @@ public class Farm : GenericBuilding, IJobBuilding
     /// </summary>
     private void CheckFarmState()
     {
-        if (GameController.Instance.City.Time.CurrentDay != currentDay)
+        if (GameController.Instance.City.Time.CurrentDay != _currentDay)
         {
-            currentDay = GameController.Instance.City.Time.CurrentDay;
+            _currentDay = GameController.Instance.City.Time.CurrentDay;
             DaysSinceStart++;
         }
         switch (FarmState)

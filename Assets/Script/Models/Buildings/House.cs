@@ -81,7 +81,7 @@ public class House : GenericBuilding
             {
                 if (Habitants.Count < MaxCitzenInside)
                 {
-                    this.Habitants.Add(people);
+                    Habitants.Add(people);
                     return HouseEventsHandler.Sucess;
                 }
                 else
@@ -90,7 +90,7 @@ public class House : GenericBuilding
                 }
             }
         }
-        this.Habitants.Add(people);
+        Habitants.Add(people);
         return HouseEventsHandler.Sucess;
     }
 }

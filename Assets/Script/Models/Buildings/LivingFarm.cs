@@ -9,7 +9,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Script used for living farm
 /// </summary>
-public class LivingFarm : GenericBuilding, IJobBuilding
+public class LivingFarm : GenericJobBuilding
 {
     /// <summary>
     /// Name of the animal Allowed inside.
@@ -24,13 +24,9 @@ public class LivingFarm : GenericBuilding, IJobBuilding
     /// </summary>
     public int[] FarmSize { get; private set; }
     /// <summary>
-    /// List of workers
+    /// Max workers allowed on the building
     /// </summary>
-    public List<Citzen> Workers;
-    /// <summary>
-    /// Max number of workers allowed on the farm (1.25 worker for each sqr²).
-    /// </summary>
-    public int MaxWorkers => (int) (1.25f * (FarmSize[0] + FarmSize[1] / 2f));
+    public new int MaxWorkers => (int)(1.25f * (FarmSize[0] + FarmSize[1] / 2f));
     /// <summary>
     /// Max animals allowed on the farm.
     /// </summary>
@@ -40,7 +36,8 @@ public class LivingFarm : GenericBuilding, IJobBuilding
     /// </summary>
     private Animal _oldestAnimal;
 
-    public int ShowProgress()
+    /// <inheritdoc />
+    public override int ShowProgress()
     {
         if (AnimalInside.Count > MaxAnimals)
         {
@@ -60,13 +57,10 @@ public class LivingFarm : GenericBuilding, IJobBuilding
         return (int) Ultility.PercentValue(MaxAnimals, AnimalInside.Count);
     }
 
-    public void AddResources(GameResources x)
+    /// <inheritdoc />
+    public override void AddResources(GameResources x)
     {
         x.Food = _oldestAnimal.HaverstValue;
     }
 
-    public bool AssignWorker()
-    {
-        throw new System.NotImplementedException();
-    }
 }

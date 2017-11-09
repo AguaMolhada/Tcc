@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using RandomNameGeneratorLibrary;
 using UnityEngine;
@@ -25,9 +26,9 @@ public class Citzen : MonoBehaviour
     /// </summary>
     public int Age { get; protected set; }
     /// <summary>
-    /// NPC Genere.
+    /// NPC NpcGenere.
     /// </summary>
-    public Genere Genere { get; protected set; }
+    public Genere NpcGenere { get; protected set; }
     /// <summary>
     /// NPC Death Change, more old more chance to die.
     /// </summary>
@@ -45,6 +46,10 @@ public class Citzen : MonoBehaviour
     /// </summary>
     public Job Profession;
     /// <summary>
+    /// Citzen Skills;
+    /// </summary>
+    public List<Skill> Skills;
+    /// <summary>
     /// NPC House.
     /// </summary>
     public GameObject NpcHouse;
@@ -56,18 +61,29 @@ public class Citzen : MonoBehaviour
     /// Corroutine is running.
     /// </summary>
     private bool _cbRunning;
-
+    /// <summary>
+    /// Reference to this game object.
+    /// </summary>
     private GameObject _mySelf;
-
+    /// <summary>
+    /// If the citzen is working.
+    /// </summary>
+    private bool _isWorking;
+    /// <summary>
+    /// If is time to work.
+    /// </summary>
+    private bool _workingTime;
     /// <summary>
     /// Method to initialize a random NPC;
     /// </summary>
     public void Init(System.Random rnd)
     {
-        var namegen = new PersonNameGenerator(rnd);
+        NpcGenere = (Genere) Random.Range(0, 2);
         Age = Random.Range(20, 25);
-        Genere = (Genere) Random.Range(0, 2);
-        switch (Genere)
+        InitializeSkills();
+        UpdateJob("");
+        var namegen = new PersonNameGenerator(rnd);
+        switch (NpcGenere)
         {
             case Genere.Male:
                 Name = namegen.GenerateRandomMaleFirstAndLastName();
@@ -85,6 +101,55 @@ public class Citzen : MonoBehaviour
         HappyBirthday();
     }
 
+    /// <summary>
+    /// Initialize citzen skills.
+    /// </summary>
+    private void InitializeSkills()
+    {
+        foreach (var dataJob in GameController.Instance.GameData.Jobs)
+        {
+            var temp = new Skill();
+            if (dataJob.Female && NpcGenere == Genere.Female)
+            {
+                temp.SkillName = dataJob.JobName;
+                temp.Efficiency = Random.Range(1, 100)/1000f;
+                Skills.Add(temp);
+            }
+            if (dataJob.Male && NpcGenere == Genere.Male)
+            {
+                temp.SkillName = dataJob.JobName;
+                temp.Efficiency = Random.Range(1, 100)/1000f;
+                Skills.Add(temp);
+            }
+        }
+        var sortedList = Skills.OrderByDescending(a => a.Efficiency).ToList();
+        Skill tempToRemove;
+        if (Age > 18)
+        {
+            tempToRemove = sortedList.Find(a => a.SkillName.Contains("Child"));
+            sortedList.Remove(tempToRemove);
+        }
+        tempToRemove = sortedList.Find(a => a.SkillName.Contains("Nomad"));
+        sortedList.Remove(tempToRemove);
+
+        Skills = sortedList;
+    }
+
+    public void UpdateJob(string jobName)
+    {
+        if (Age < 18)
+        {
+            Profession = GameController.Instance.GameData.Jobs.Find(a => a.JobName.Contains("Child"));
+        }
+        else if( jobName == "")
+        {
+            Profession = GameController.Instance.GameData.Jobs.Find(a => a.JobName.Contains(Skills[0].SkillName));
+        }
+        else
+        {
+            Profession = GameController.Instance.GameData.Jobs.Find(a => a.JobName.Contains(jobName));
+        }
+    }
     /// <summary>
     /// Each year the age will increment (O RLY?!) and the death chance will adjust automaticaly.
     /// </summary>
@@ -105,7 +170,16 @@ public class Citzen : MonoBehaviour
             x = 0.8f;
         }
         DeathChance = 0.01f * Mathf.Pow(1, 2) + Age * x;
-        if(Age == 25)
+        if (Age > 18)
+        {
+            var tempChildToRemove = Skills.Find(a => a.SkillName.Contains("Child"));
+            if (tempChildToRemove != null)
+            {
+                Skills.Remove(tempChildToRemove);
+            }
+            UpdateJob("");
+        }
+        if (Age == 25)
         {
             NpcHouse = null;
             StartCoroutine("SearchHouse");
@@ -114,9 +188,13 @@ public class Citzen : MonoBehaviour
 
     private void Update()
     {
-        if (NpcHouse != null)
+        if (JobLocation != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, NpcHouse.transform.position, .5f * Time.deltaTime);
+            _workingTime = Ultility.Btween(GameController.Instance.City.Time.Hour, JobLocation.GetComponent<GenericJobBuilding>().HoursToWork[0], JobLocation.GetComponent<GenericJobBuilding>().HoursToWork[1], true);
+        }
+        if (!_isWorking && _workingTime)
+        {
+            StartCoroutine("SimpleStateMachine");
         }
     }
 
@@ -164,6 +242,46 @@ public class Citzen : MonoBehaviour
             {
                 Debug.Log("Dont have any houses constructed");
                 yield return new WaitForSeconds(10);
+            }
+        }
+    }
+    /// <summary>
+    /// Simple state machine to move the citzen to the job location or to the house.
+    /// </summary>
+    private IEnumerator SimpleStateMachine()
+    {
+        bool going;
+        if (JobLocation != null)
+        {
+            going = true;
+            _isWorking = true;
+            while (_workingTime)
+            {
+                if (going)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, JobLocation.transform.position, Profession.Speed * Time.deltaTime);
+                    if (Vector3.Distance(transform.position, JobLocation.transform.position) < 1)
+                    {
+                        going = false;
+                        yield return new WaitForSeconds(5);
+                    }
+                }
+                yield return new WaitForSeconds(1);
+            }
+            _isWorking = false;
+        }
+        yield return new WaitForSeconds(1);
+        if (NpcHouse != null)
+        {
+            going = true;
+            while (going)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, NpcHouse.transform.position, Profession.Speed * Time.deltaTime);
+                if (Vector3.Distance(transform.position, NpcHouse.transform.position) < 1)
+                {
+                    going = false;
+                    yield return new WaitForSeconds(1);
+                }
             }
         }
     }

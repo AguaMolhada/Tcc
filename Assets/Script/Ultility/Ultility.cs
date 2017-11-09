@@ -1,10 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Ultility.cs" company="Dauler Palhares">
-//  © Copyright Dauler Palhares da Costa Viana 2017.
-//          http://github.com/DaulerPalhares
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-// This Class have all the static classes used on the project
+﻿//--------------------------------------------------------------------------------------------------------------------||
+//<copyright file="Ultility.cs" company="Dauler Palhares">                                                            ||
+// © Copyright Dauler Palhares da Costa Viana 2017.                                                                   ||
+//         http://github.com/DaulerPalhares                                                                           ||
+//</copyright>                                                                                                        ||
+//--------------------------------------------------------------------------------------------------------------------||
 
 using System.Text;
 using UnityEngine;
@@ -12,10 +11,23 @@ using Random = UnityEngine.Random;
 
 public static class Ultility
 {
+    public static bool Btween(int value, int min, int max,bool inclusive)
+    {
+        if (inclusive)
+        {
+            return value >= min && value <= max;
+        }
+        else
+        {
+            return value > min && value < max;
+        }
+    }
+
     public static Vector3 ClampVector3(Vector3 value,Vector3 min, Vector3 max)
     {
         return new Vector3(Mathf.Clamp(value.x, min.x, max.x), Mathf.Clamp(value.y, min.y, max.y), Mathf.Clamp(value.z, min.z, max.z));
     }
+
     public static Vector3 DivVector3(Vector3 first, Vector3 second)
     {
         return new Vector3((first.x / second.x), (first.y / second.y), (first.z / second.z));

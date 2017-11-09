@@ -20,7 +20,7 @@ public class Animal : MonoBehaviour {
     /// </summary>
     public int Age { get; private set; }
     /// <summary>
-    /// Animal Genere.
+    /// Animal NpcGenere.
     /// </summary>
     public Genere AnimalGenere;
     /// <summary>
