@@ -55,4 +55,9 @@ public abstract class GenericJobBuilding : GenericBuilding
        
     }
 
+    public virtual void RemoveWoerker(GameObject citzen)
+    {
+        Workers.Remove(citzen);
+
+    }
 }

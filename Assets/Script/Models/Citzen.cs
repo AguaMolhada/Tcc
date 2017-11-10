@@ -98,6 +98,7 @@ public class Citzen : MonoBehaviour
         Happiness = 60;
         _mySelf = gameObject;
         StartCoroutine("SearchHouse");
+        StartCoroutine("SaturationController");
         HappyBirthday();
     }
 
@@ -156,20 +157,7 @@ public class Citzen : MonoBehaviour
     public void HappyBirthday()
     {
         Age++;
-        var x = 0f;
-        if (Age > 20)
-        {
-            x = 0.4f;
-        }
-        else if(Age >= 20 && Age <60)
-        {
-            x = 0.5f;
-        }
-        else if (Age >=60)
-        {
-            x = 0.8f;
-        }
-        DeathChance = 0.01f * Mathf.Pow(1, 2) + Age * x;
+        CalculateDeathChance();
         if (Age > 18)
         {
             var tempChildToRemove = Skills.Find(a => a.SkillName.Contains("Child"));
@@ -186,6 +174,24 @@ public class Citzen : MonoBehaviour
         }
     }
 
+    private void CalculateDeathChance()
+    {
+        var x = 0f;
+        if (Age > 20)
+        {
+            x = 0.4f;
+        }
+        else if (Age >= 20 && Age < 60)
+        {
+            x = 0.5f;
+        }
+        else if (Age >= 60)
+        {
+            x = 0.8f;
+        }
+        DeathChance = 0.01f * Mathf.Pow(1, 2) + Age * x;
+    }
+
     private void Update()
     {
         if (JobLocation != null)
@@ -194,7 +200,47 @@ public class Citzen : MonoBehaviour
         }
         if (!_isWorking && _workingTime)
         {
-            StartCoroutine("SimpleStateMachine");
+            StartCoroutine("WorkMachine");
+        }
+    }
+    /// <summary>
+    /// Controls the saturation decreasing and increasing.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator SaturationController()
+    {
+        var going = false;
+        while (true)
+        {
+            Saturation -= _isWorking ? 15 * GameController.Instance.City.Time.Speed : 5 * GameController.Instance.City.Time.Speed;
+
+            if (Saturation <= 25)
+            {
+                Debug.Log("Fome indo comer");
+                yield return new WaitForSeconds(1);
+                if (NpcHouse != null)
+                {
+                    if (Vector3.Distance(transform.position, NpcHouse.transform.position) < 1)
+                    {
+                        if (GameController.Instance.City.CityResources.Food > 1)
+                        {
+                            GameController.Instance.City.CityResources.Food -= 1;
+                            Saturation = 100;
+                        }
+                        yield return new WaitForSeconds(1);
+                    }
+                }
+                else if( Saturation <= 0)
+                {
+                    Saturation = 0;
+                    DeathChance += DeathChance/2+5;
+                    if (DeathChance >= 100)
+                    {
+                        Destroy(gameObject);
+                    }
+                }
+            }
+            yield return new WaitForSeconds(5);
         }
     }
 
@@ -248,7 +294,7 @@ public class Citzen : MonoBehaviour
     /// <summary>
     /// Simple state machine to move the citzen to the job location or to the house.
     /// </summary>
-    private IEnumerator SimpleStateMachine()
+    private IEnumerator WorkMachine()
     {
         bool going;
         if (JobLocation != null)
@@ -257,17 +303,28 @@ public class Citzen : MonoBehaviour
             _isWorking = true;
             while (_workingTime)
             {
-                if (going)
+                if (going && Saturation > 20)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, JobLocation.transform.position, Profession.Speed * Time.deltaTime);
+                    transform.position = Vector3.MoveTowards(transform.position, JobLocation.transform.position,
+                        Profession.Speed * Time.deltaTime);
                     if (Vector3.Distance(transform.position, JobLocation.transform.position) < 1)
                     {
+                        JobLocation.GetComponent<GenericJobBuilding>().AssignWorker(_mySelf);
                         going = false;
                         yield return new WaitForSeconds(5);
                     }
                 }
+                else
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, NpcHouse.transform.position, Profession.Speed * Time.deltaTime);
+                    if (Vector3.Distance(transform.position, NpcHouse.transform.position) < 1)
+                    {
+                        yield return new WaitForSeconds(1);
+                    }
+                }
                 yield return new WaitForSeconds(1);
             }
+            JobLocation.GetComponent<GenericJobBuilding>().AssignWorker(_mySelf);
             _isWorking = false;
         }
         yield return new WaitForSeconds(1);

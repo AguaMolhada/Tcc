@@ -106,7 +106,7 @@ public class GameResources {
     /// <summary>
     /// Ammout of food.
     /// </summary>
-    public int Food;
+    public float Food;
 
     public void UpdateResources(int w,int s, int i)
     {

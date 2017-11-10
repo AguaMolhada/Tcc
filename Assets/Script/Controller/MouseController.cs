@@ -13,6 +13,7 @@ public class MouseController : MonoBehaviour
 {
     public MouseMode SelectedMouseMode = MouseMode.Normal;
 
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))

@@ -9,10 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed5726e62c8a7e64290497d042e1e529, type: 3}
-  m_Name: 
+  m_Name: CityData
   m_EditorClassIdentifier: 
   AutoUpdate: 0
-  CityName: Fairchild
+  CityName: Monte Grande comunidad
   CityHabitants:
   - {fileID: 0}
   - {fileID: 0}
@@ -48,4 +48,4 @@ MonoBehaviour:
       Days: 28
       MinTemp: 13.2
       MaxTemp: 23.4
-    Speed: 1
+    Speed: 78
