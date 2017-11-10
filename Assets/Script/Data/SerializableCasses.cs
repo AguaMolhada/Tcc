@@ -125,7 +125,8 @@ public class DateTimeGame
 {
     public string CurrentSeason;
     public Season[] Seasons;
-    private int _seasonIndex;
+    [HideInInspector]
+    public int SeasonIndex;
     public int CurrentDay { get; private set; }
     private int _maxDay;
 
@@ -147,11 +148,11 @@ public class DateTimeGame
         for (int i = 0; i < s.Count; i++)
         {
             Seasons[i] = s[i];
-            _seasonIndex = i;
+            SeasonIndex = i;
         }
-        CurrentSeason = Seasons[_seasonIndex].SeasonName;
+        CurrentSeason = Seasons[SeasonIndex].SeasonName;
         Debug.Log("Seasons Loaded in DateTimeGame");
-        _maxDay = Seasons[_seasonIndex].Days;
+        _maxDay = Seasons[SeasonIndex].Days;
         CurrentDay = 1;
         Hour = 12;
         Minutes = 1;
@@ -194,15 +195,15 @@ public class DateTimeGame
         {
             return;
         }
-        _seasonIndex++;
-        if (_seasonIndex == Seasons.Length)
+        SeasonIndex++;
+        if (SeasonIndex == Seasons.Length)
         {
-            _seasonIndex = 0;
+            SeasonIndex = 0;
             Year++;
         }
-        CurrentSeason = Seasons[_seasonIndex].SeasonName;
+        CurrentSeason = Seasons[SeasonIndex].SeasonName;
         CurrentDay = 1;
-        _maxDay = Seasons[_seasonIndex].Days;
+        _maxDay = Seasons[SeasonIndex].Days;
     }
 }
 

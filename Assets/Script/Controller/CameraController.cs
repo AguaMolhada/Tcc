@@ -6,7 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 using UnityEngine;
 /// <summary>
-/// Class used in the camera moviment.
+/// Handle the camera behaviour.
 /// </summary>
 public class CameraController : MonoBehaviour
 {

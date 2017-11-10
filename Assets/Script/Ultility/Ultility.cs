@@ -8,6 +8,8 @@
 using System.Text;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using System.Security.Cryptography;
+using System;
 
 public static class Ultility
 {
@@ -76,6 +78,24 @@ public static class Ultility
         while (x != 0)
         {
             rs.Append(charPool[(int) (rnd.NextDouble() * charPool.Length)]);
+            x--;
+        }
+        return rs.ToString();
+    }
+    public static string GetRandomString(int length)
+    {
+        var rng = new RNGCryptoServiceProvider();
+        var data = new byte[length];
+        rng.GetBytes(data);
+        var rnd = new System.Random(BitConverter.ToInt32(data, 0));
+
+        var x = length;
+        var charPool = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%&*()[]{}<>,.;:/?";
+        var rs = new StringBuilder();
+
+        while (x != 0)
+        {
+            rs.Append(charPool[(int)(rnd.NextDouble() * charPool.Length)]);
             x--;
         }
         return rs.ToString();

@@ -136,6 +136,10 @@ public class Citzen : MonoBehaviour
         Skills = sortedList;
     }
 
+    /// <summary>
+    /// Update citzen job.
+    /// </summary>
+    /// <param name="jobName">new job.</param>
     public void UpdateJob(string jobName)
     {
         if (Age < 18)
@@ -151,6 +155,7 @@ public class Citzen : MonoBehaviour
             Profession = GameController.Instance.GameData.Jobs.Find(a => a.JobName.Contains(jobName));
         }
     }
+
     /// <summary>
     /// Each year the age will increment (O RLY?!) and the death chance will adjust automaticaly.
     /// </summary>
@@ -174,6 +179,9 @@ public class Citzen : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Calculate the death chance.
+    /// </summary>
     private void CalculateDeathChance()
     {
         var x = 0f;
@@ -203,17 +211,16 @@ public class Citzen : MonoBehaviour
             StartCoroutine("WorkMachine");
         }
     }
+
     /// <summary>
     /// Controls the saturation decreasing and increasing.
     /// </summary>
     /// <returns></returns>
     private IEnumerator SaturationController()
     {
-        var going = false;
         while (true)
         {
             Saturation -= _isWorking ? 15 * GameController.Instance.City.Time.Speed : 5 * GameController.Instance.City.Time.Speed;
-
             if (Saturation <= 25)
             {
                 Debug.Log("Fome indo comer");
@@ -291,6 +298,7 @@ public class Citzen : MonoBehaviour
             }
         }
     }
+
     /// <summary>
     /// Simple state machine to move the citzen to the job location or to the house.
     /// </summary>

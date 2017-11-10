@@ -119,11 +119,15 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Control the game speed.
+    /// </summary>
     private IEnumerator TimeController()
     {
         while (true)
         {
             City.Time.TimePass(City.Time.Speed);
+            GUIContoller.Instance.ClockController(City.Time.SeasonIndex);
             yield return new WaitForSeconds(1);
         }
         // ReSharper disable once IteratorNeverReturns

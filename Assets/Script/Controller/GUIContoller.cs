@@ -15,6 +15,11 @@ using UnityEngine.UI;
 public class GUIContoller : MonoBehaviour
 {
     public static GUIContoller Instance;
+
+    /// <summary>
+    /// Season Clock Hand.
+    /// </summary>
+    public GameObject SeasonClockHand;
     /// <summary>
     /// Resources Panel.
     /// </summary>
@@ -27,12 +32,18 @@ public class GUIContoller : MonoBehaviour
     /// Citzen list item.
     /// </summary>
     public GameObject CitzenListItem;
-
+    /// <summary>
+    /// If will update the character overview window.
+    /// </summary>
     public bool UpdateCharacterOverview;
-
+    /// <summary>
+    /// Selected citzen.
+    /// </summary>
     public Citzen SelectedCitzen;
+    /// <summary>
+    /// private list with all citzens.
+    /// </summary>
     private List<GameObject> _citzens = new List<GameObject>();
-    private List<String> _jobList;
 
     private void Awake()
     {
@@ -60,6 +71,38 @@ public class GUIContoller : MonoBehaviour
         UpdateCitzenOverview();
         ResourceUpdate();
     }
+
+    /// <summary>
+    /// CLock hand rotation.
+    /// </summary>
+    /// <param name="seasonIndex">Current season Index</param>
+    public void ClockController(int seasonIndex)
+    {
+        var day = GameController.Instance.City.Time.CurrentDay;
+        var seasonDay = GameController.Instance.City.Time.Seasons[seasonIndex].Days;
+        var ammout = (float)day / seasonDay;
+        var rotateInitial = 0;
+        if (seasonIndex == 0)
+        {
+            rotateInitial = -180;
+        }
+        if(seasonIndex == 1)
+        {
+            rotateInitial = -270;
+        }
+        if(seasonIndex == 2)
+        {
+            rotateInitial = 0;
+        }
+        if(seasonIndex == 3)
+        {
+            rotateInitial = -90;
+        }
+        Debug.Log(seasonIndex);
+
+        SeasonClockHand.transform.rotation = Quaternion.Euler(0, 0, (rotateInitial + 45) - (90 * (float)day / seasonDay));
+    }
+
     /// <summary>
     /// This will display the Character Overview menu.
     /// </summary>
@@ -78,8 +121,12 @@ public class GUIContoller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Update the overviewGUI.
+    /// </summary>
     private void UpdateCitzenOverview()
     {
+        List<string> _jobList;
         if (CitzenOverview.transform.childCount == 0)
         {
             foreach (var citzen in _citzens)
@@ -115,6 +162,9 @@ public class GUIContoller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Clear the overviewGUI.
+    /// </summary>
     private void ClearCitzenOverview()
     {
         foreach (Transform child in CitzenOverview.transform)
@@ -123,6 +173,9 @@ public class GUIContoller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Resource PanelGUI updater.
+    /// </summary>
     private void ResourceUpdate()
     {
         if (GameController.Instance.City != null)

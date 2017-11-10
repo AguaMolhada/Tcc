@@ -35,7 +35,7 @@ public class MouseController : MonoBehaviour
                 {
                     if (!GameController.Instance.GameStarted)
                     {
-                        GameController.Instance.NewCity("","Normal",hit.point);
+                        GameController.Instance.NewCity("-","Normal",hit.point);
                     }
                 }
             }
