@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114151019564033204}
   m_Layer: 0
   m_Name: Chicken Farm
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -150,7 +150,10 @@ MonoBehaviour:
   MetalCost: 0
   TimeToBuild: 0
   MaxCitzenInside: 0
+  Workers: []
+  HoursToWork: 
+  SeasonsToWork: []
+  MaxWorkers: 0
   AnimalAllowed: Chicken
   AnimalInside: []
-  Workers: []
   MaxAnimals: 10

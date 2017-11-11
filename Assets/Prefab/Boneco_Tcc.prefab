@@ -116,6 +116,7 @@ MonoBehaviour:
     Speed: 0
     Female: 0
     Male: 0
+  Skills: []
   NpcHouse: {fileID: 0}
   JobLocation: {fileID: 0}
 --- !u!136 &136181612153255780

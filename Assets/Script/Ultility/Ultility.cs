@@ -713,7 +713,7 @@ public static class BuildingGrid
         var topLeftX = (mapChunkSize - 1) / -2f;
         var topleftZ = (mapChunkSize - 1) / 2f;
 
-        return new Vector3(topLeftX + (x / 10f) + 0.05f, 0, topleftZ - (y / 10f) - 0.05f);
+        return new Vector3(topLeftX + (x / 10f), 0, topleftZ - (y / 10f));
     }
 
     /// <summary>

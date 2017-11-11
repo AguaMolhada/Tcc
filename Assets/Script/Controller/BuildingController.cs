@@ -44,8 +44,7 @@ public class BuildingController : MonoBehaviour
             {
                 for (int gridY = y; gridY < y+pattern.Rows[0].Collums.Length; gridY++)
                 {
-                    // ReSharper disable once CompareOfFloatsByEqualityOperator
-                    if (grid[gridX, gridY] < 0 && grid[gridX,gridY] > 0)
+                    if (grid[gridX, gridY] != 0)
                     {
                         return false;
                     }

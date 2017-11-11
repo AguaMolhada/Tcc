@@ -61,7 +61,7 @@ public class Farm : GenericJobBuilding
     private void Start()
     {
         var rnd = new Random();
-        SelectedSeed = GameController.Instance.GameData.Seeds[rnd.Next(0, GameController.Instance.GameData.Seeds.Count)];
+        StartFarm(GameController.Instance.GameData.Seeds[rnd.Next(0, GameController.Instance.GameData.Seeds.Count)].SeedName);
     }
 
 
@@ -111,7 +111,6 @@ public class Farm : GenericJobBuilding
                 if (ShowProgress() >= 100)
                 {
                     FarmState = FarmEventsHandler.Harvesting;
-                    ;
                     DaysSinceStart = 0;
                 }
                 break;
@@ -119,8 +118,9 @@ public class Farm : GenericJobBuilding
                 if (ShowProgress() >= 100)
                 {
                     AddResources(GameController.Instance.City.CityResources);
+                    FarmState = FarmEventsHandler.Idle;
+                    DaysSinceStart = 0;
                 }
-                FarmState = FarmEventsHandler.Idle;
                 break;
             case FarmEventsHandler.Decaying:
                 if (GameController.Instance.City.Time.CurrentSeason == "Winter")

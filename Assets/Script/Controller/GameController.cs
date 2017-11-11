@@ -37,7 +37,10 @@ public class GameController : MonoBehaviour {
     /// Game Started?.
     /// </summary>
     public bool GameStarted;
-
+    /// <summary>
+    /// GameSeed;
+    /// </summary>
+    public int seed;
 
     void Awake () {
         if (Instance != null)
@@ -45,7 +48,7 @@ public class GameController : MonoBehaviour {
             Debug.LogError("You can't have 2 Game Controllers");
         }
         Instance = this;
-
+        DontDestroyOnLoad(transform);
 	}
 
     /// <summary>

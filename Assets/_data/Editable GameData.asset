@@ -44,59 +44,59 @@ MonoBehaviour:
   - {fileID: 1681346939387366, guid: b6d60fff2d82f664e8ee545273217af7, type: 2}
   Jobs:
   - JobName: Barmen
-    Speed: 0
+    Speed: 0.8
     Female: 0
     Male: 1
   - JobName: Blacksmith
-    Speed: 0
+    Speed: 0.7
     Female: 0
     Male: 1
   - JobName: Builder
-    Speed: 0
+    Speed: 1
     Female: 1
     Male: 1
   - JobName: Child
-    Speed: 0
+    Speed: 0.5
     Female: 1
     Male: 1
   - JobName: Cook
-    Speed: 0
+    Speed: 0.8
     Female: 1
     Male: 1
   - JobName: Farmer
-    Speed: 0
+    Speed: 1
     Female: 1
     Male: 1
   - JobName: Fisherman
-    Speed: 0
+    Speed: 0.6
     Female: 0
     Male: 1
   - JobName: Fisherwoman
-    Speed: 0
+    Speed: 0.5
     Female: 1
     Male: 0
   - JobName: Lumberjack
-    Speed: 0
+    Speed: 0.6
     Female: 0
     Male: 1
   - JobName: Medic
-    Speed: 0
+    Speed: 0.7
     Female: 0
     Male: 1
   - JobName: Nomad
-    Speed: 0
+    Speed: 1
     Female: 1
     Male: 1
   - JobName: Nurse
-    Speed: 0
+    Speed: 0.7
     Female: 1
     Male: 0
   - JobName: Priest
-    Speed: 0
+    Speed: 0.4
     Female: 0
     Male: 1
   - JobName: Student
-    Speed: 0
+    Speed: 0.6
     Female: 1
     Male: 1
   Seeds:

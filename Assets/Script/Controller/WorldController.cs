@@ -57,6 +57,7 @@ public class WorldController : MonoBehaviour
 
     private void Start()
     {
+        NoiseData.Seed = GameController.Instance.seed;
         GenerateMap();
         MapBuildingGrid = BuildingGrid.GenerateBuildingGrid(MapChunkSize * 10, _noiseMap);
     }

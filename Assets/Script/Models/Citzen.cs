@@ -98,6 +98,7 @@ public class Citzen : MonoBehaviour
         Happiness = 60;
         _mySelf = gameObject;
         StartCoroutine("SearchHouse");
+        StartCoroutine("WorkMachine");
         StartCoroutine("SaturationController");
         HappyBirthday();
     }
@@ -177,6 +178,7 @@ public class Citzen : MonoBehaviour
             NpcHouse = null;
             StartCoroutine("SearchHouse");
         }
+
     }
 
     /// <summary>
@@ -202,13 +204,13 @@ public class Citzen : MonoBehaviour
 
     private void Update()
     {
+        if (NpcHouse == null)
+        {
+            StartCoroutine("SearchHouse");
+        }
         if (JobLocation != null)
         {
             _workingTime = Ultility.Btween(GameController.Instance.City.Time.Hour, JobLocation.GetComponent<GenericJobBuilding>().HoursToWork[0], JobLocation.GetComponent<GenericJobBuilding>().HoursToWork[1], true);
-        }
-        if (!_isWorking && _workingTime)
-        {
-            StartCoroutine("WorkMachine");
         }
     }
 
@@ -306,48 +308,55 @@ public class Citzen : MonoBehaviour
     /// </summary>
     private IEnumerator WorkMachine()
     {
-        bool going;
-        if (JobLocation != null)
+        while (true)
         {
-            going = true;
-            _isWorking = true;
-            while (_workingTime)
+
+
+            bool going;
+            if (JobLocation != null)
             {
-                if (going && Saturation > 20)
+                going = true;
+                _isWorking = true;
+                while (_workingTime)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, JobLocation.transform.position,
-                        Profession.Speed * Time.deltaTime);
-                    if (Vector3.Distance(transform.position, JobLocation.transform.position) < 1)
+                    if (going && Saturation > 20)
                     {
-                        JobLocation.GetComponent<GenericJobBuilding>().AssignWorker(_mySelf);
-                        going = false;
-                        yield return new WaitForSeconds(5);
+                        transform.position = Vector3.MoveTowards(transform.position, JobLocation.transform.position,
+                            Profession.Speed * Time.deltaTime);
+                        if (Vector3.Distance(transform.position, JobLocation.transform.position) < 1)
+                        {
+                            JobLocation.GetComponent<GenericJobBuilding>().AssignWorker(_mySelf);
+                            going = false;
+                            yield return new WaitForSeconds(5);
+                        }
                     }
+                    else
+                    {
+                        transform.position = Vector3.MoveTowards(transform.position, NpcHouse.transform.position,
+                            Profession.Speed * Time.deltaTime);
+                        if (Vector3.Distance(transform.position, NpcHouse.transform.position) < 1)
+                        {
+                            yield return new WaitForSeconds(1);
+                        }
+                    }
+                    yield return new WaitForSeconds(1);
                 }
-                else
+                JobLocation.GetComponent<GenericJobBuilding>().AssignWorker(_mySelf);
+                _isWorking = false;
+            }
+            yield return new WaitForSeconds(1);
+            if (NpcHouse != null)
+            {
+                going = true;
+                while (going)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, NpcHouse.transform.position, Profession.Speed * Time.deltaTime);
+                    transform.position = Vector3.MoveTowards(transform.position, NpcHouse.transform.position,
+                        Profession.Speed * Time.deltaTime);
                     if (Vector3.Distance(transform.position, NpcHouse.transform.position) < 1)
                     {
+                        going = false;
                         yield return new WaitForSeconds(1);
                     }
-                }
-                yield return new WaitForSeconds(1);
-            }
-            JobLocation.GetComponent<GenericJobBuilding>().AssignWorker(_mySelf);
-            _isWorking = false;
-        }
-        yield return new WaitForSeconds(1);
-        if (NpcHouse != null)
-        {
-            going = true;
-            while (going)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, NpcHouse.transform.position, Profession.Speed * Time.deltaTime);
-                if (Vector3.Distance(transform.position, NpcHouse.transform.position) < 1)
-                {
-                    going = false;
-                    yield return new WaitForSeconds(1);
                 }
             }
         }
