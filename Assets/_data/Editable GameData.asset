@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f02ffac61b7884b9a8204efcc13ea9, type: 3}
   m_Name: Editable GameData
   m_EditorClassIdentifier: 
-  ShowJobCustomInspector: 0
+  ShowJobCustomInspector: 1
   ShowSeedsCustomInspector: 0
   ShowSeasonCustomInspector: 0
   ShowAnimalsCustomInspector: 0
@@ -38,8 +38,10 @@ MonoBehaviour:
   - {fileID: 1166537926108146, guid: 88bb0fa65d4eb644dba4c8ab09819273, type: 2}
   - {fileID: 1319965574017102, guid: cb0bedadb27e9524fa23a49ec50e669a, type: 2}
   - {fileID: 1797061719218000, guid: 8a54209885319af459b0ce4dd5131dab, type: 2}
+  - {fileID: 1629909395212038, guid: e058ee649d18c44428c66d8528a38245, type: 2}
   - {fileID: 1760633061164202, guid: 0616632f95b6e6149b19f8c13ba1060b, type: 2}
-  - {fileID: 1609041947634068, guid: a6c2f08cac61922489c7be7d84de35ec, type: 2}
+  - {fileID: 1012450654527522, guid: 974f29b4c348e304f95a3af7daea4404, type: 2}
+  - {fileID: 1681346939387366, guid: b6d60fff2d82f664e8ee545273217af7, type: 2}
   Jobs:
   - JobName: Barmen
     Speed: 0
@@ -67,7 +69,7 @@ MonoBehaviour:
     Male: 1
   - JobName: Fisherman
     Speed: 0
-    Female: 1
+    Female: 0
     Male: 1
   - JobName: Fisherwoman
     Speed: 0
@@ -92,6 +94,10 @@ MonoBehaviour:
   - JobName: Priest
     Speed: 0
     Female: 0
+    Male: 1
+  - JobName: Student
+    Speed: 0
+    Female: 1
     Male: 1
   Seeds:
   - SeedName: Beans

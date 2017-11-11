@@ -1,13 +1,15 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CityData.cs" company="Dauler Palhares">
+// <copyright file="CityData.cs" by="Akapagion">
 //  © Copyright Dauler Palhares da Costa Viana 2017.
 //          http://github.com/DaulerPalhares
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
 // ReSharper disable ReturnValueOfPureMethodIsNotUsed
 
 /// <summary>

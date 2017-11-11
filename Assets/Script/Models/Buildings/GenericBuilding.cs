@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GenericBuilding.cs" company="Dauler Palhares">
+// <copyright file="GenericBuilding.cs" by="Akapagion">
 //  © Copyright Dauler Palhares da Costa Viana 2017.
 //          http://github.com/DaulerPalhares
 // </copyright>
@@ -24,7 +24,7 @@ public class GenericBuilding : MonoBehaviour
     /// <summary>
     /// Building area Pattern
     /// </summary>
-    public BuildingPattern Pattern;
+    public BuildingPattern Pattern = new BuildingPattern();
 
     /// <summary>
     /// Lumber cost to build.

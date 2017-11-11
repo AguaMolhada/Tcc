@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GameController.cs" company="Dauler Palhares">
+// <copyright file="GameController.cs" by="Akapagion">
 //  © Copyright Dauler Palhares da Costa Viana 2017.
 //          http://github.com/DaulerPalhares
 // </copyright>
@@ -37,8 +37,7 @@ public class GameController : MonoBehaviour {
     /// Game Started?.
     /// </summary>
     public bool GameStarted;
-    public TypeBuilding SelectedTypeToBuild;
-    public string SelectedBuildingName;
+
 
     void Awake () {
         if (Instance != null)

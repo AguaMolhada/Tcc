@@ -1,9 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GameDataEditable.cs" company="Dauler Palhares">
+// <copyright file="GameDataEditable.cs" by="Akapagion">
 //  © Copyright Dauler Palhares da Costa Viana 2017.
 //          http://github.com/DaulerPalhares
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;

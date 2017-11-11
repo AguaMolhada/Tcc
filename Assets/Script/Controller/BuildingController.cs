@@ -1,9 +1,11 @@
-﻿// --------------------------------------------------------------------------------------------------------------------//
-// <copyright file="BuildingCOntroller.cs" company="Dauler Palhares">                                                  //
-//  © Copyright Dauler Palhares da Costa Viana 2017.                                                                   //
-//          http://github.com/DaulerPalhares                                                                           //
-// </copyright>                                                                                                        //
-// --------------------------------------------------------------------------------------------------------------------//
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="BuildingCOntroller.cs" by="Akapagion">                                                
+//  © Copyright Dauler Palhares da Costa Viana 2017.
+//          http://github.com/DaulerPalhares                                                                           
+// </copyright>                                                                                                        
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -15,7 +17,8 @@ public class BuildingController : MonoBehaviour
     /// Singleton
     /// </summary>
     public static BuildingController Instance { get; protected set; }
-
+    public TypeBuilding SelectedTypeToBuild;
+    public string SelectedBuildingName;
     void Awake()
     {
         if (Instance != null)
@@ -42,7 +45,7 @@ public class BuildingController : MonoBehaviour
                 for (int gridY = y; gridY < y+pattern.Rows[0].Collums.Length; gridY++)
                 {
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
-                    if (grid[gridX, gridY] != 0)
+                    if (grid[gridX, gridY] < 0 && grid[gridX,gridY] > 0)
                     {
                         return false;
                     }
@@ -54,6 +57,7 @@ public class BuildingController : MonoBehaviour
 
         return false;
     }
+
     /// <summary>
     /// Check if the position is inside of building grid
     /// </summary>
@@ -121,7 +125,7 @@ public class BuildingController : MonoBehaviour
     /// On click to construck will check if have something worng. If the building is clear to build will return Completed
     /// </summary>
     /// <returns>Return the Event related to the building</returns>
-    public BuildingEventsHandler OnConstruction(int x, int y, GameObject buildingGameObject)
+    public BuildingEventsHandler OnConstruction(int x, int y, GameObject buildingGameObject,Vector3 mousePos)
     {
         var building = buildingGameObject.GetComponent<GenericBuilding>();
         if (GameController.Instance.City.CityResources.Wood < building.LumberCost)
@@ -139,11 +143,13 @@ public class BuildingController : MonoBehaviour
         if (CheckOverlap(x, y, building.Pattern))
         {
             Vector3 worldPos = BuildingGrid.GridPositionRelatedToWorld(WorldController.MapChunkSize, x, y);
+            worldPos.y = mousePos.y;
             building.SetPositionOnWorld(worldPos);
             AssignBuildingToGrid(x, y, building.Pattern, (int)building.Type, buildingGameObject);
             Instantiate(buildingGameObject, worldPos, Quaternion.identity);
             GameController.Instance.City.CityResources.UpdateResources(building.LumberCost, building.RockCost, building.MetalCost);
             GameController.Instance.CityBuildings.Add(buildingGameObject);
+            GameController.Instance.City.CityResources.UpdateResources(-building.LumberCost,-building.RockCost,-building.MetalCost);
             return BuildingEventsHandler.Complete;
         }
         return BuildingEventsHandler.InvalidPos;

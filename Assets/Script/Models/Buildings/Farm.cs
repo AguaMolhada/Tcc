@@ -1,11 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Farm.cs" company="Dauler Palhares">
+// <copyright file="Farm.cs" by="Akapagion">
 //  © Copyright Dauler Palhares da Costa Viana 2017.
 //          http://github.com/DaulerPalhares
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
 
 /// <summary>
 /// Farm Script
@@ -40,6 +39,32 @@ public class Farm : GenericJobBuilding
     /// Current day stored.
     /// </summary>
     private int _currentDay;
+
+    /// <summary>
+    /// Initialize the Farm
+    /// </summary>
+    /// <param name="seedName">Seed selected on the farm</param>
+    public void StartFarm(string seedName)
+    {
+        if (seedName == "")
+        {
+            SelectedSeed = null;
+            IsReady = false;
+            FarmState = FarmEventsHandler.Idle;
+            return;
+        }
+        SelectedSeed = GameController.Instance.GameData.Seeds.Find(a => a.SeedName.Contains(seedName));
+        DaysSinceStart = 0;
+        IsReady = true;
+    }
+
+    private void Start()
+    {
+        var rnd = new Random();
+        SelectedSeed = GameController.Instance.GameData.Seeds[rnd.Next(0, GameController.Instance.GameData.Seeds.Count)];
+    }
+
+
 
     /// <inheritdoc />
     public override int ShowProgress()
@@ -119,6 +144,9 @@ public class Farm : GenericJobBuilding
 
     private void Update()
     {
-        CheckFarmState();
+        if (IsReady)
+        {
+            CheckFarmState();
+        }
     }
 }

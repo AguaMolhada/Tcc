@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MouseController.cs" company="Dauler Palhares">
+// <copyright file="MouseController.cs" by="Akapagion">
 //  © Copyright Dauler Palhares da Costa Viana 2017.
 //          http://github.com/DaulerPalhares
 // </copyright>
@@ -25,7 +25,8 @@ public class MouseController : MonoBehaviour
                 var x = BuildingGrid.WorldPositionRelatedToGrid(WorldController.MapChunkSize, hit.point);
                 if (SelectedMouseMode == MouseMode.Building)
                 {
-                    BuildThing(x);
+                    BuildThing(x,hit.point);
+                    SelectedMouseMode = MouseMode.Normal;
                 }
                 if (SelectedMouseMode == MouseMode.Demolish)
                 {
@@ -42,14 +43,14 @@ public class MouseController : MonoBehaviour
         }
     }
 
-    private void BuildThing(int[] x) 
+    private void BuildThing(int[] x,Vector3 pos) 
     {
         GameObject buildTemp = null;
         foreach (var building in GameController.Instance.GameData.Buildings)
         {
-            if (building.GetComponent<GenericBuilding>().Type == GameController.Instance.SelectedTypeToBuild)
+            if (building.GetComponent<GenericBuilding>().Type == BuildingController.Instance.SelectedTypeToBuild)
             {
-                if (building.GetComponent<GenericBuilding>().BuildingName == GameController.Instance.SelectedBuildingName)
+                if (building.GetComponent<GenericBuilding>().BuildingName == BuildingController.Instance.SelectedBuildingName)
                 {
                     buildTemp = building;
                 }
@@ -58,7 +59,12 @@ public class MouseController : MonoBehaviour
         if (buildTemp != null)
         {
             Debug.Log(buildTemp);
-            BuildingController.Instance.OnConstruction(x[0], x[1], buildTemp);
+            BuildingController.Instance.OnConstruction(x[0], x[1], buildTemp, pos);
         }
+    }
+
+    public void SetMouseMode(int x)
+    {
+        SelectedMouseMode = (MouseMode) x;
     }
 }

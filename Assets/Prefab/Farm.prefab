@@ -55,14 +55,21 @@ MonoBehaviour:
   Type: 4
   Pattern:
     Rows:
-    - Collums: 
-    - Collums: 
-    - Collums: 
-    - Collums: 
+    - Collums: 0000000000000000
+    - Collums: 0000000000000000
+    - Collums: 0000000000000000
+    - Collums: 0000000000000000
+    - Collums: 0000000000000000
+    - Collums: 0000000000000000
+    - Collums: 0000000000000000
+    - Collums: 0000000000000000
   LumberCost: 15
   RockCost: 0
   MetalCost: 0
   TimeToBuild: 3
   MaxCitzenInside: 0
   Workers: []
+  HoursToWork: 
+  SeasonsToWork: []
+  MaxWorkers: 0
   FarmState: 0

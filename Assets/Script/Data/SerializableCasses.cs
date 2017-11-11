@@ -1,9 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SerializableClasses.cs" company="Dauler Palhares">
+// <copyright file="SerializableClasses.cs" by="Akapagion">
 //  © Copyright Dauler Palhares da Costa Viana 2017.
 //          http://github.com/DaulerPalhares
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -89,7 +91,7 @@ public class MeshData {
 /// <summary>
 /// Class used to manager the resources in-game.
 /// </summary>
-[System.Serializable]
+[Serializable]
 public class GameResources {
     /// <summary>
     /// Ammout of wood.
@@ -120,7 +122,7 @@ public class GameResources {
 /// <summary>
 /// Class used for monitoring the game time.
 /// </summary>
-[System.Serializable]
+[Serializable]
 public class DateTimeGame
 {
     public string CurrentSeason;
@@ -181,14 +183,14 @@ public class DateTimeGame
         }
         else if(x >= 60)
         {
-            Hour += (int) (x / 60);
-            Minutes -= (int) (x % 60);
+            Hour += x / 60;
+            Minutes = x % 60;
         }
 
         if (Hour >= 23)
         {
-            CurrentDay += (int) (Hour/24);
-            Hour = (int) (Hour % 24);
+            CurrentDay += Hour/24;
+            Hour = Hour % 24;
         }
 
         if (CurrentDay <= _maxDay)
@@ -210,7 +212,7 @@ public class DateTimeGame
 /// <summary>
 /// Class used for seed plantation variables.
 /// </summary>
-[System.Serializable]
+[Serializable]
 public class PlantationSeeds {
     /// <summary>
     /// Seed Name.
@@ -241,7 +243,7 @@ public class PlantationSeeds {
 /// <summary>
 /// Class used for all trees used in the Orcherd
 /// </summary>
-[System.Serializable]
+[Serializable]
 public class OrchardTrees {
     /// <summary>
     /// Tree Type Name.
@@ -268,7 +270,7 @@ public class OrchardTrees {
 /// <summary>
 /// Class used for in-game season.
 /// </summary>
-[System.Serializable]
+[Serializable]
 public class Season {
     /// <summary>
     /// Season Name.
@@ -291,7 +293,7 @@ public class Season {
 /// <summary>
 /// Base class for job.
 /// </summary>
-[System.Serializable]
+[Serializable]
 public class Job {
     /// <summary>
     /// Job Name.
@@ -314,7 +316,7 @@ public class Job {
 /// <summary>
 /// Base class for citzen skills.
 /// </summary>
-[System.Serializable]
+[Serializable]
 public class Skill
 {
     /// <summary>
@@ -350,7 +352,7 @@ public enum TypeBuilding {
     Tailor = 14,
     Tavern = 15,
     TownHall = 16,
-    Woodcutter = 17,
+    Woodcutter = 17
 }
 
 /// <summary>
@@ -364,7 +366,7 @@ public enum OrganizerFilter {
     HappyDesc,
     Job,
     GenereFm,
-    GenereMf,
+    GenereMf
 }
 
 /// <summary>
@@ -375,7 +377,7 @@ public enum BuildingEventsHandler {
     NoLumber,
     NoStone,
     NoIron,
-    InvalidPos,
+    InvalidPos
 }
 
 /// <summary>
@@ -386,7 +388,7 @@ public enum HouseEventsHandler {
     HabitantesFull,
     EnoughtFamilies,
     TooCold,
-    EmptyHouse,
+    EmptyHouse
 }
 
 /// <summary>
@@ -398,7 +400,7 @@ public enum FarmEventsHandler {
     Growing,
     Harvesting,
     Decaying,
-    Plage,
+    Plage
 }
 
 /// <summary>
@@ -406,7 +408,7 @@ public enum FarmEventsHandler {
 /// </summary>
 public enum Genere {
     Female,
-    Male,
+    Male
 }
 
 public enum MouseMode
@@ -416,13 +418,13 @@ public enum MouseMode
     Demolish
 }
 
-[System.Serializable]
+[Serializable]
 public class BuildingPattern
 {
-    [System.Serializable]
+    [Serializable]
     public struct RowData
     {
         public bool[] Collums;
     }
-    public RowData[] Rows;
+    public RowData[] Rows = new RowData[1];
 }

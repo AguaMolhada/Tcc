@@ -1,11 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GUIController.cs" company="Dauler Palhares">
+// <copyright file="GUIController.cs" by="Akapagion">
 //  © Copyright Dauler Palhares da Costa Viana 2017.
 //          http://github.com/DaulerPalhares
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,9 +16,17 @@ public class GUIContoller : MonoBehaviour
     public static GUIContoller Instance;
 
     /// <summary>
+    /// Seed choice dropdown menu.
+    /// </summary>
+   // public GameObject SeedChoiceDropdown;
+    /// <summary>
     /// Season Clock Hand.
     /// </summary>
     public GameObject SeasonClockHand;
+    /// <summary>
+    /// Game Speed display.
+    /// </summary>
+    public GameObject GameSpeedObj;
     /// <summary>
     /// Resources Panel.
     /// </summary>
@@ -37,9 +44,13 @@ public class GUIContoller : MonoBehaviour
     /// </summary>
     public bool UpdateCharacterOverview;
     /// <summary>
-    /// Selected citzen.
+    /// If will update the seed choice.
     /// </summary>
-    public Citzen SelectedCitzen;
+    private bool UpdateSeed;
+    /// <summary>
+    /// Selected thing.
+    /// </summary>
+    public GameObject SelectedThing;
     /// <summary>
     /// private list with all citzens.
     /// </summary>
@@ -69,7 +80,40 @@ public class GUIContoller : MonoBehaviour
             }
         }
         UpdateCitzenOverview();
-        ResourceUpdate();
+        UpdateAllGUI();
+  //      UpdateSeedChoice();
+    }
+    /// <summary>
+    /// Activate and deactivate the current menu.
+    /// </summary>
+    /// <param name="target">Target to activate and deactivate</param>
+    public void ActivateMenu(GameObject target)
+    {
+        target.SetActive(!target.activeSelf);
+    }
+
+    /// <summary>
+    /// Set the game speed.
+    /// </summary>
+    /// <param name="x"></param>
+    public void SetGameSpeed(int x)
+    {
+        if (x < 0)
+        {
+            GameController.Instance.City.Time.Speed -= x;
+        }
+        else if (x > 1)
+        {
+            GameController.Instance.City.Time.Speed += x;
+        }
+        else
+        {
+            GameController.Instance.City.Time.Speed = x;
+        }
+        if (GameController.Instance.City.Time.Speed <= 0)
+        {
+            GameController.Instance.City.Time.Speed = 0;
+        }
     }
 
     /// <summary>
@@ -100,7 +144,7 @@ public class GUIContoller : MonoBehaviour
         }
         Debug.Log(seasonIndex);
 
-        SeasonClockHand.transform.rotation = Quaternion.Euler(0, 0, (rotateInitial + 45) - (90 * (float)day / seasonDay));
+        SeasonClockHand.transform.rotation = Quaternion.Euler(0, 0, (rotateInitial + 45) - (90 * ammout));
     }
 
     /// <summary>
@@ -162,6 +206,26 @@ public class GUIContoller : MonoBehaviour
         }
     }
 
+    /*
+    /// <summary>
+    /// Update the seed selection dropdown menu.
+    /// </summary>
+    private void UpdateSeedChoice()
+    {
+        if (!UpdateSeed)
+        {
+            List<string> seedList = new List<string>();
+            var tempData = GameController.Instance.GameData.Seeds;
+            foreach (var seed in tempData)
+            {
+                seedList.Add(seed.SeedName);
+            }
+            var temp = SeedChoiceDropdown.GetComponent<Dropdown>();
+            temp.AddOptions(seedList);
+            UpdateSeed = true;
+        }
+    }
+    */
     /// <summary>
     /// Clear the overviewGUI.
     /// </summary>
@@ -175,11 +239,13 @@ public class GUIContoller : MonoBehaviour
 
     /// <summary>
     /// Resource PanelGUI updater.
-    /// </summary>
-    private void ResourceUpdate()
+    /// </summary>    
+    // ReSharper disable once InconsistentNaming
+    private void UpdateAllGUI()
     {
         if (GameController.Instance.City != null)
         {
+            GameSpeedObj.GetComponent<Text>().text = GameController.Instance.City.Time.Speed.ToString();
             var tempStone = ResourcesPanel.transform.Find("StoneText").GetComponent<Text>();
             var tempWood = ResourcesPanel.transform.Find("WoodText").GetComponent<Text>();
             var tempFood = ResourcesPanel.transform.Find("FoodText").GetComponent<Text>();
@@ -188,15 +254,21 @@ public class GUIContoller : MonoBehaviour
             tempFood.text = GameController.Instance.City.CityResources.Food.ToString("####");
         }
     }
-    
+
+    // ReSharper disable once InconsistentNaming
+    private void SelectThingGUI()
+    {
+        
+    }
+
     public void SelectBuildingType(int x)
     {
-        GameController.Instance.SelectedTypeToBuild = (TypeBuilding) x;
+        BuildingController.Instance.SelectedTypeToBuild = (TypeBuilding) x;
     }
 
     public void SelectBuilding(string x)
     {
-        GameController.Instance.SelectedBuildingName = x;
+        BuildingController.Instance.SelectedBuildingName = x;
     }
 
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Citzen.cs" company="Dauler Palhares">
+// <copyright file="Citzen.cs" by="Akapagion">
 //  © Copyright Dauler Palhares da Costa Viana 2017.
 //          http://github.com/DaulerPalhares
 // </copyright>
@@ -243,12 +243,14 @@ public class Citzen : MonoBehaviour
                     DeathChance += DeathChance/2+5;
                     if (DeathChance >= 100)
                     {
+                        GameController.Instance.City.CityHabitants.Remove(_mySelf);
                         Destroy(gameObject);
                     }
                 }
             }
             yield return new WaitForSeconds(5);
         }
+        // ReSharper disable once IteratorNeverReturns
     }
 
     /// <summary>

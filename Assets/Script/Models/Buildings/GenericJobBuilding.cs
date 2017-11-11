@@ -21,6 +21,11 @@ public abstract class GenericJobBuilding : GenericBuilding
     /// </summary>
     public int MaxWorkers;
     /// <summary>
+    /// If is ready to start.
+    /// </summary>
+    protected bool IsReady;
+
+    /// <summary>
     /// Method to show the building progress.
     /// </summary>
     /// <returns></returns>
@@ -51,13 +56,11 @@ public abstract class GenericJobBuilding : GenericBuilding
         else
         {
             return false;
-        }
-       
+        } 
     }
 
     public virtual void RemoveWoerker(GameObject citzen)
     {
         Workers.Remove(citzen);
-
     }
 }

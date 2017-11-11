@@ -53,12 +53,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingName: Sheep Farm
   Type: 8
+  Pattern:
+    Rows:
+    - Collums: 0000000000000000
+    - Collums: 0000000000000000
+    - Collums: 0000000000000000
+    - Collums: 0000000000000000
+    - Collums: 0000000000000000
+    - Collums: 0000000000000000
+    - Collums: 0000000000000000
+    - Collums: 0000000000000000
   LumberCost: 15
   RockCost: 0
   MetalCost: 0
   TimeToBuild: 0
   MaxCitzenInside: 0
+  Workers: []
+  HoursToWork: 
+  SeasonsToWork: []
+  MaxWorkers: 0
   AnimalAllowed: Sheep
   AnimalInside: []
-  Workers: []
   MaxAnimals: 4
